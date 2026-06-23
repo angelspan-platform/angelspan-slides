@@ -21,34 +21,34 @@
     --color-warning: #FF8000;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
-  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); padding: 48px 56px; max-width: 960px; margin: 0 auto; }
-  .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-pale); margin-bottom: 6px; }
-  h1 { font-size: 22px; font-weight: 600; color: var(--color-primary); margin-bottom: 2px; letter-spacing: -0.01em; }
-  .subtitle { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 28px; }
+  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); padding: 48px 56px; max-width: 1000px; margin: 0 auto; }
+  .eyebrow { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-pale); margin-bottom: 8px; }
+  h1 { font-size: 28px; font-weight: 600; color: var(--color-primary); margin-bottom: 4px; letter-spacing: -0.01em; }
+  .subtitle { font-size: 16px; color: var(--color-text-secondary); margin-bottom: 32px; }
   .chart-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 28px 28px 20px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-  .chart-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 14px; }
+  .chart-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 14px; }
   svg.chart { width: 100%; height: 300px; display: block; }
   .bullets { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin-bottom: 20px; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 4px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-  .bullets li { font-size: 13px; line-height: 1.65; padding: 12px 0 12px 18px; border-bottom: 1px solid var(--color-border); position: relative; color: var(--color-text); }
+  .bullets li { font-size: 15px; line-height: 1.65; padding: 14px 0 14px 20px; border-bottom: 1px solid var(--color-border); position: relative; color: var(--color-text); }
   .bullets li:nth-last-child(-n+2) { border-bottom: none; }
-  .bullets li::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 16px; background: var(--color-success); border-radius: 2px; }
-  .scope-box { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-primary-pale); border-radius: 4px; padding: 16px 18px; margin-bottom: 20px; }
-  .scope-box h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 12px; }
-  .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 32px; }
-  .scope-item { font-size: 12px; color: var(--color-text-secondary); padding: 4px 0 4px 14px; position: relative; }
+  .bullets li::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 18px; background: var(--color-success); border-radius: 2px; }
+  .scope-box { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-primary-pale); border-radius: 4px; padding: 16px 20px; margin-bottom: 20px; }
+  .scope-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 12px; }
+  .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; }
+  .scope-item { font-size: 14px; color: var(--color-text-secondary); padding: 4px 0 4px 16px; position: relative; line-height: 1.5; }
   .scope-item::before { content: "·"; position: absolute; left: 4px; color: var(--color-primary-pale); font-weight: 700; }
-  .footer { display: flex; border-top: 2px solid var(--color-success); padding-top: 18px; margin-bottom: 20px; }
+  .footer { display: flex; border-top: 2px solid var(--color-success); padding-top: 20px; margin-bottom: 20px; }
   .stat { flex: 1; padding-right: 20px; border-right: 1px solid var(--color-border); margin-right: 20px; }
   .stat:last-child { border-right: none; margin-right: 0; }
-  .stat-val { font-size: 22px; font-weight: 700; color: var(--color-success); }
-  .stat-lbl { font-size: 11px; color: var(--color-text-secondary); margin-top: 3px; }
-  .caveat { font-size: 11px; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .stat-val { font-size: 26px; font-weight: 700; color: var(--color-success); }
+  .stat-lbl { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; }
+  .caveat { font-size: 13px; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
 </style>
 </head>
 <body>
   <div class="eyebrow">Path 2</div>
   <h1>Prototype + Validate</h1>
-  <p class="subtitle">Prove the model before committing full capital</p>
+  <p class="subtitle">Prove the model works before committing full capital</p>
 
   <div class="chart-wrap">
     <div class="chart-title">Monthly spend rate — same scale as Path 1 — 16-month view</div>
@@ -59,75 +59,75 @@
       <line x1="80" y1="40"  x2="760" y2="40"  stroke="#E0DBD3" stroke-width="1"/>
       <line x1="80" y1="20" x2="80" y2="248" stroke="#E0DBD3" stroke-width="1.5"/>
       <line x1="80" y1="248" x2="764" y2="248" stroke="#E0DBD3" stroke-width="1.5"/>
-      <text x="72" y="244" font-size="10" fill="#ADADAD" text-anchor="end" font-family="Inter">$0</text>
-      <text x="72" y="177" font-size="10" fill="#ADADAD" text-anchor="end" font-family="Inter">$50k</text>
-      <text x="72" y="111" font-size="10" fill="#ADADAD" text-anchor="end" font-family="Inter">$100k</text>
-      <text x="72" y="44"  font-size="10" fill="#ADADAD" text-anchor="end" font-family="Inter">$150k</text>
-      <text x="12" y="140" font-size="10" fill="#ADADAD" text-anchor="middle" font-family="Inter" transform="rotate(-90,12,140)">$/month</text>
+      <text x="72" y="244" font-size="11" fill="#ADADAD" text-anchor="end" font-family="Inter">$0</text>
+      <text x="72" y="177" font-size="11" fill="#ADADAD" text-anchor="end" font-family="Inter">$50k</text>
+      <text x="72" y="111" font-size="11" fill="#ADADAD" text-anchor="end" font-family="Inter">$100k</text>
+      <text x="72" y="44"  font-size="11" fill="#ADADAD" text-anchor="end" font-family="Inter">$150k</text>
+      <text x="12" y="140" font-size="11" fill="#ADADAD" text-anchor="middle" font-family="Inter" transform="rotate(-90,12,140)">$/month</text>
       <!-- prototype phase M1-M2 -->
       <polygon points="80,240 80,173 133,173 133,240" fill="#2A6B3C" fill-opacity="0.18"/>
       <polyline points="80,240 80,173 133,173 133,240" fill="none" stroke="#2A6B3C" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      <text x="107" y="163" font-size="10" fill="#2A6B3C" font-weight="600" text-anchor="middle" font-family="Inter">$50k/mo</text>
-      <text x="107" y="151" font-size="9" fill="#2A6B3C" text-anchor="middle" font-family="Inter">prototype</text>
+      <text x="107" y="162" font-size="11" fill="#2A6B3C" font-weight="600" text-anchor="middle" font-family="Inter">$50k/mo</text>
+      <text x="107" y="149" font-size="10" fill="#2A6B3C" text-anchor="middle" font-family="Inter">prototype*</text>
       <!-- validation phase M3-M8 -->
       <polygon points="133,240 133,207 453,207 453,240" fill="#2A6B3C" fill-opacity="0.07"/>
       <line x1="133" y1="240" x2="133" y2="207" stroke="#2A6B3C" stroke-width="2"/>
       <line x1="133" y1="207" x2="453" y2="207" stroke="#2A6B3C" stroke-width="2" stroke-dasharray="6,4"/>
       <line x1="453" y1="207" x2="453" y2="240" stroke="#2A6B3C" stroke-width="1" stroke-dasharray="3,3"/>
-      <text x="293" y="200" font-size="10" fill="#2A6B3C" font-weight="600" text-anchor="middle" font-family="Inter">$25k/mo — validation</text>
-      <!-- decision gate M6-8 -->
+      <text x="293" y="199" font-size="11" fill="#2A6B3C" font-weight="600" text-anchor="middle" font-family="Inter">$25k/mo — validation</text>
+      <!-- decision gate -->
       <line x1="453" y1="20" x2="453" y2="248" stroke="#FF8000" stroke-width="1.5" stroke-dasharray="5,4"/>
-      <rect x="413" y="22" width="84" height="32" rx="2" fill="#FF8000" fill-opacity="0.1"/>
-      <text x="455" y="35" font-size="10" fill="#FF8000" font-weight="700" text-anchor="middle" font-family="Inter">Decision Gate</text>
-      <text x="455" y="48" font-size="9" fill="#FF8000" text-anchor="middle" font-family="Inter">validate or stop</text>
+      <rect x="413" y="22" width="84" height="34" rx="2" fill="#FF8000" fill-opacity="0.1"/>
+      <text x="455" y="36" font-size="11" fill="#FF8000" font-weight="700" text-anchor="middle" font-family="Inter">Decision Gate</text>
+      <text x="455" y="50" font-size="10" fill="#FF8000" text-anchor="middle" font-family="Inter">validate or stop</text>
       <!-- conditional full build ramp -->
       <polyline points="453,207 513,173 573,127 633,87 693,47 743,34" fill="none" stroke="#004A6D" stroke-width="2" stroke-dasharray="6,4" stroke-linecap="round"/>
       <polygon points="453,207 513,173 573,127 633,87 693,47 743,34 743,240 453,240" fill="#004A6D" fill-opacity="0.04"/>
-      <text x="670" y="65" font-size="10" fill="#004A6D" font-weight="600" font-family="Inter">→ full build</text>
-      <text x="670" y="79" font-size="9" fill="#0179B5" font-family="Inter">if validated</text>
+      <text x="670" y="64" font-size="11" fill="#004A6D" font-weight="600" font-family="Inter">→ full build</text>
+      <text x="670" y="79" font-size="10" fill="#0179B5" font-family="Inter">if validated</text>
       <!-- x labels -->
-      <text x="80"  y="262" font-size="10" fill="#ADADAD" text-anchor="middle" font-family="Inter">M1</text>
-      <text x="133" y="262" font-size="10" fill="#ADADAD" text-anchor="middle" font-family="Inter">M2</text>
-      <text x="293" y="262" font-size="10" fill="#ADADAD" text-anchor="middle" font-family="Inter">M5</text>
-      <text x="453" y="262" font-size="10" fill="#FF8000" text-anchor="middle" font-weight="700" font-family="Inter">M6–8</text>
-      <text x="613" y="262" font-size="10" fill="#004A6D" text-anchor="middle" font-family="Inter">M11</text>
-      <text x="743" y="262" font-size="10" fill="#ADADAD" text-anchor="middle" font-family="Inter">M13+</text>
-      <text x="420" y="276" font-size="10" fill="#ADADAD" text-anchor="middle" font-family="Inter">months</text>
+      <text x="80"  y="264" font-size="11" fill="#ADADAD" text-anchor="middle" font-family="Inter">M1</text>
+      <text x="133" y="264" font-size="11" fill="#ADADAD" text-anchor="middle" font-family="Inter">M2</text>
+      <text x="293" y="264" font-size="11" fill="#ADADAD" text-anchor="middle" font-family="Inter">M5</text>
+      <text x="453" y="264" font-size="11" fill="#FF8000" text-anchor="middle" font-weight="700" font-family="Inter">M6–8</text>
+      <text x="613" y="264" font-size="11" fill="#004A6D" text-anchor="middle" font-family="Inter">M11</text>
+      <text x="743" y="264" font-size="11" fill="#ADADAD" text-anchor="middle" font-family="Inter">M13+</text>
+      <text x="420" y="278" font-size="11" fill="#ADADAD" text-anchor="middle" font-family="Inter">months</text>
     </svg>
   </div>
 
   <ul class="bullets">
-    <li>Prototype phase: ~$50k/mo for 2 months — end-to-end build covering client, PA, and Legacy Fund workflows</li>
-    <li>Prototype doubles as fallback if the existing Angular 1 platform fails — real operational insurance</li>
-    <li>Validation phase drops to ~$25k/mo — small active team while Legacy Funds operate on the prototype</li>
-    <li>Decision gate at M6–8: model validates → ramp into full build at Path 1 intensity. Doesn't validate → stop</li>
-    <li>Total exposure to decision gate: ~$200k vs. ~$1M committed before any validation in Path 1</li>
-    <li>Prototype must accommodate new workflow improvements for both client-facing and internal PA users</li>
+    <li>* A working end-to-end prototype is built in 2 months — covering startup investor reporting, fund management tools, and internal staff workflows — functional enough for real use from day one</li>
+    <li>The prototype also serves as an emergency backup if the existing platform fails — protecting current customers during the transition to a modern system</li>
+    <li>After the build, spend drops to ~$25k/mo — a small team keeps the platform running while early fund operations generate real usage and revenue data</li>
+    <li>At month 6–8, a clear decision point: if the model is working, invest to build the full platform. If not, stop — with far less capital at risk than Path 1</li>
+    <li>Total spend to reach that decision: ~$200k — compared to ~$1M already fully deployed by that same point in Path 1</li>
+    <li>The prototype is built to support improvements to workflows for both customers and internal staff — not just a replica of what exists today</li>
   </ul>
 
   <div class="scope-box">
-    <h3>Prototype Scope Considerations — Subject to Engineering Scoping</h3>
+    <h3>What the Prototype Must Cover — Subject to Engineering Scoping*</h3>
     <div class="scope-grid">
-      <div class="scope-item">Internal PA tools — update curation, SMART IR scoring workflow</div>
-      <div class="scope-item">Stripe integration — subscriptions, known bugs must not carry forward</div>
-      <div class="scope-item">Legacy Fund flows — fund creation, startup application, LP &amp; GP access</div>
-      <div class="scope-item">SendGrid / Twilio — email and notification delivery</div>
-      <div class="scope-item">Role-based access — PA, startup client, LP, GP, Sponsor, stakeholder</div>
-      <div class="scope-item">Data migration — stakeholder lists, engagement history, past updates</div>
-      <div class="scope-item">MFA and multi-user login — security baseline for production use</div>
-      <div class="scope-item">SMART IR tear sheet output — replace manual Google Slides process</div>
-      <div class="scope-item">Infrastructure — hosting, compute, storage decisions</div>
-      <div class="scope-item">Client migration, user guides, training for existing customers</div>
+      <div class="scope-item">Internal staff tools — investor report curation, SMART IR scoring workflow</div>
+      <div class="scope-item">Payment processing — subscription billing, correcting known issues in current system</div>
+      <div class="scope-item">Legacy Fund features — fund creation, startup applications, investor and fund manager access</div>
+      <div class="scope-item">Email and notifications — delivery of reports and updates to stakeholders</div>
+      <div class="scope-item">Role-based access — staff, startup clients, fund investors, fund managers, and sponsors</div>
+      <div class="scope-item">Data migration — bringing over existing client history, contacts, and past reports</div>
+      <div class="scope-item">Security baseline — multi-factor login and multi-user account access</div>
+      <div class="scope-item">Automated report output — replacing the current manual process for generating investor reports</div>
+      <div class="scope-item">Infrastructure — decisions on hosting, compute, and data storage</div>
+      <div class="scope-item">Client onboarding — migration support, user guides, and training for existing customers</div>
     </div>
   </div>
 
   <div class="footer">
-    <div class="stat"><div class="stat-val">~$200k</div><div class="stat-lbl">Total to decision gate</div></div>
-    <div class="stat"><div class="stat-val">$50k/mo</div><div class="stat-lbl">Peak spend (prototype phase)</div></div>
+    <div class="stat"><div class="stat-val">~$200k</div><div class="stat-lbl">Total spend to decision gate</div></div>
+    <div class="stat"><div class="stat-val">$50k/mo</div><div class="stat-lbl">Peak spend (prototype build)</div></div>
     <div class="stat"><div class="stat-val">M6–M8</div><div class="stat-lbl">When you get market signal</div></div>
     <div class="stat"><div class="stat-val">vs. $1M</div><div class="stat-lbl">Committed upfront in Path 1</div></div>
   </div>
 
-  <p class="caveat">* All figures are conceptual estimates. Exact prototype scope, cost, and timeline require a formal engineering scoping exercise before commitments are made to investors.</p>
+  <p class="caveat">* All figures are conceptual estimates. Exact prototype scope, cost, and timeline require a formal engineering scoping exercise — approximately 2 months of discovery — before commitments are made to investors.</p>
 </body>
 </html>
