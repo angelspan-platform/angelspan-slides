@@ -43,6 +43,16 @@
   .stat-val { font-size: 26px; font-weight: 700; color: var(--color-success); }
   .stat-lbl { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; }
   .caveat { font-size: 13px; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .risk-box { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-warning); border-radius: 4px; padding: 20px 24px; margin-bottom: 16px; }
+  .risk-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-warning); margin-bottom: 6px; }
+  .risk-intro { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 14px; }
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
+  .risk-item { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; padding: 10px 12px; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; }
+  .risk-item.risk-trigger { border-color: var(--color-warning); background: #fff8f0; }
+  .risk-label { display: block; font-weight: 700; font-size: 12px; color: var(--color-text); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .risk-trigger .risk-label { color: var(--color-warning); }
+  .additive-note { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .additive-note strong { color: var(--color-primary); }
 </style>
 </head>
 <body>
@@ -112,6 +122,23 @@
       <div class="scope-item"><strong>2 — Legacy Fund integration</strong>The first digital connection between a startup's AngelSpan data and the Legacy Fund layer. A startup can apply for funding through a portal, be screened for eligibility, and have their SMART IR scoring history inform the Champion review process. Builds on an AI-assisted interactive mockup already completed.</div>
       <div class="scope-item"><strong>3 — Portfolio management</strong>Fund-level views for GPs, LPs, and Champions to monitor portfolio companies, track SMART IR performance, and manage fund activity. Designed to support Legacy Fund operations once capital is allocated — scope confirmed through real usage during the validation phase.</div>
     </div>
+  </div>
+
+  <div class="risk-box">
+    <h3>What This Path Requires You to Accept</h3>
+    <p class="risk-intro">The pilot is not a production platform. Going in with eyes open means accepting the following:</p>
+    <div class="risk-grid">
+      <div class="risk-item"><span class="risk-label">Scale</span>The system is designed for a small number of carefully managed early adopters. Every additional customer increases operational risk. It may work for 5–10 but fail at 50–100.</div>
+      <div class="risk-item"><span class="risk-label">Reliability</span>No formal SLA. Occasional downtime is expected. Some failures will require manual intervention by the team rather than automated recovery.</div>
+      <div class="risk-item"><span class="risk-label">Supportability</span>Code built with AI tools may not be cleanly organized. Only one or two people may fully understand how the system works, making debugging and changes slower than expected.</div>
+      <div class="risk-item"><span class="risk-label">Product correctness</span>Edge cases and unusual workflows may not be handled. Human review of outputs is expected — especially for anything that influences a funding decision.</div>
+      <div class="risk-item"><span class="risk-label">Governance</span>No formal audit trail, change control, or decision history. Not appropriate for high-stakes automated decisions without human oversight.</div>
+      <div class="risk-item risk-trigger"><span class="risk-label">If demand accelerates</span>If 50–100 companies sign up within the first few months, the full enterprise build will need to be accelerated ahead of schedule. The pilot cannot support that volume — rapid adoption is the success signal that triggers the full build, not a reason to stay on the pilot.</div>
+    </div>
+  </div>
+
+  <div class="additive-note">
+    <strong>Important:</strong> The $200k pilot is additive — not a substitute for the full platform investment. Path 2 validates the model. The full enterprise build (~$1M+) follows if the model is confirmed. Total investment across both paths is comparable; Path 2 sequences the risk.
   </div>
 
   <div class="footer">
