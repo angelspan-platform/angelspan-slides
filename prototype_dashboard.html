@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — Prototype Build Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --color-primary: #004A6D;
+  --color-primary-light: #0179B5;
+  --color-primary-pale: #50ADDB;
+  --color-lf: #5B21B6;
+  --color-lf-light: #7C3AED;
+  --color-lf-pale: #A78BFA;
+  --color-green: #15803D;
+  --color-green-bg: #F0FDF4;
+  --color-green-border: #BBF7D0;
+  --color-amber: #B45309;
+  --color-amber-bg: #FFFBEB;
+  --color-amber-border: #FDE68A;
+  --color-bg: #FAFAF8;
+  --color-surface: #F4F1EC;
+  --color-border: #E0DBD3;
+  --color-text: #303030;
+  --color-text-secondary: #606060;
+  --color-text-disabled: #ADADAD;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); padding: 48px 56px; max-width: 1080px; margin: 0 auto; }
+
+/* Header */
+.eyebrow { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-pale); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-amber); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+h1 { font-size: 28px; font-weight: 600; color: var(--color-primary); margin-bottom: 4px; letter-spacing: -0.01em; }
+.subtitle { font-size: 16px; color: var(--color-text-secondary); margin-bottom: 8px; }
+.header-meta { font-size: 13px; color: var(--color-text-disabled); margin-bottom: 32px; }
+.header-meta a { color: var(--color-primary-light); text-decoration: none; }
+.header-meta a:hover { text-decoration: underline; }
+
+/* Progress bar */
+.progress-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 22px 28px 20px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.progress-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+.progress-pct { font-size: 32px; font-weight: 700; color: var(--color-primary); letter-spacing: -1px; }
+.progress-label { font-size: 13px; color: var(--color-text-secondary); }
+.progress-bar { height: 8px; background: var(--color-surface); border-radius: 4px; overflow: hidden; display: flex; border: 1px solid var(--color-border); }
+.pb-v { background: var(--color-green); }
+.pb-b { background: var(--color-lf-pale); }
+.progress-legend { display: flex; gap: 20px; margin-top: 8px; }
+.pl { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); }
+.pl-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
+.kpi { padding: 18px 20px; border-right: 1px solid var(--color-border); }
+.kpi:last-child { border-right: none; }
+.kpi-val { font-size: 28px; font-weight: 700; color: var(--color-primary); letter-spacing: -0.5px; line-height: 1; }
+.kpi-val.warn { color: var(--color-amber); }
+.kpi-val.green { color: var(--color-green); }
+.kpi-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+.kpi-bar { height: 3px; background: var(--color-surface); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.kpi-bar-fill { height: 100%; border-radius: 2px; }
+.kpi-sub { font-size: 11px; color: var(--color-text-disabled); margin-top: 6px; }
+
+/* Process flow */
+.section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 14px; }
+.process-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 22px 28px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.process-flow { display: flex; align-items: center; }
+.proc-step { flex: 1; text-align: center; }
+.proc-icon { font-size: 24px; margin-bottom: 8px; }
+.proc-name { font-size: 13px; font-weight: 600; color: var(--color-text); }
+.proc-who { font-size: 11px; color: var(--color-text-disabled); margin-top: 2px; }
+.proc-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-top: 6px; padding: 2px 8px; border-radius: 2px; display: inline-block; }
+.ps-done { background: var(--color-green-bg); color: var(--color-green); border: 1px solid var(--color-green-border); }
+.ps-active { background: var(--color-amber-bg); color: var(--color-amber); border: 1px solid var(--color-amber-border); }
+.ps-next { background: var(--color-surface); color: var(--color-text-disabled); border: 1px solid var(--color-border); }
+.proc-arrow { color: var(--color-border); font-size: 22px; padding: 0 4px; margin-bottom: 18px; flex-shrink: 0; }
+
+/* Body grid */
+.body-grid { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
+
+/* Feature cards */
+.feature-card { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
+.feature-card:last-child { margin-bottom: 0; }
+.track-head { padding: 12px 18px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
+.track-label { display: flex; align-items: center; gap: 10px; }
+.track-stripe { width: 3px; height: 18px; border-radius: 2px; }
+.ts-as { background: var(--color-primary); }
+.ts-lf { background: var(--color-lf); }
+.track-name { font-size: 13px; font-weight: 600; color: var(--color-text); }
+.track-badges { display: flex; gap: 6px; }
+.badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 2px 7px; border-radius: 2px; }
+.badge-as { background: #EBF4FC; color: var(--color-primary); border: 1px solid #B3D8EF; }
+.badge-lf { background: #F3EFFE; color: var(--color-lf); border: 1px solid #DDD6FE; }
+.badge-ok { background: var(--color-green-bg); color: var(--color-green); border: 1px solid var(--color-green-border); }
+.badge-warn { background: var(--color-amber-bg); color: var(--color-amber); border: 1px solid var(--color-amber-border); }
+.badge-neu { background: var(--color-surface); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+
+/* Feature rows */
+.feat-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 18px; border-bottom: 1px solid var(--color-border);
+  cursor: pointer; transition: background .08s; user-select: none;
+}
+.feat-row:last-of-type { border-bottom: none; }
+.feat-row:hover { background: var(--color-surface); }
+.feat-row.open { background: #EBF4FC; border-left: 3px solid var(--color-primary); padding-left: 15px; }
+.feat-row.open.lf-row { background: #F3EFFE; border-left-color: var(--color-lf); }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.sd-verified { background: var(--color-green); }
+.sd-built { background: var(--color-lf-pale); }
+.feat-id { font-family: 'SFMono-Regular', 'Fira Code', monospace; font-size: 10px; color: var(--color-text-disabled); min-width: 26px; }
+.feat-name { flex: 1; font-size: 13px; color: var(--color-text); }
+.feat-meta { font-size: 11px; color: var(--color-text-disabled); white-space: nowrap; }
+.feat-caret { font-size: 11px; color: var(--color-text-disabled); transition: transform .15s; }
+.feat-row.open .feat-caret { transform: rotate(90deg); }
+
+/* Detail panel */
+.feat-detail { display: none; padding: 16px 18px; background: var(--color-bg); border-bottom: 1px solid var(--color-border); }
+.feat-detail.open { display: block; }
+.det-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--color-border); }
+.det-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.det-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-disabled); margin-bottom: 8px; }
+.story-li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; padding: 5px 0; border-bottom: 1px solid var(--color-border); }
+.story-li:last-child { border-bottom: none; }
+.s-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.dec-li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--color-text-secondary); line-height: 1.45; padding: 5px 0; border-bottom: 1px solid var(--color-border); }
+.dec-li:last-child { border-bottom: none; }
+.dec-code { font-family: 'SFMono-Regular', 'Fira Code', monospace; font-size: 10px; font-weight: 600; min-width: 36px; flex-shrink: 0; padding-top: 1px; }
+.dc-as { color: var(--color-primary-light); }
+.dc-lf { color: var(--color-lf-light); }
+.dc-proc { color: var(--color-green); }
+
+/* Sidebar */
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+.side-card { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
+.side-head { padding: 10px 16px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
+.side-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary); }
+
+.sprint-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 16px; border-bottom: 1px solid var(--color-border); }
+.sprint-item:last-child { border-bottom: none; }
+.sprint-icon { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.si-done { background: var(--color-green-bg); color: var(--color-green); border: 1px solid var(--color-green-border); }
+.si-ready { background: var(--color-surface); color: var(--color-text-disabled); border: 1px solid var(--color-border); }
+.si-warn { background: var(--color-amber-bg); color: var(--color-amber); border: 1px solid var(--color-amber-border); }
+.sprint-name { font-size: 12px; font-weight: 500; color: var(--color-text); line-height: 1.35; }
+.sprint-meta { font-size: 10px; color: var(--color-text-disabled); margin-top: 2px; }
+
+.attn-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 16px; border-bottom: 1px solid var(--color-border); }
+.attn-item:last-child { border-bottom: none; }
+.attn-marker { width: 3px; border-radius: 2px; align-self: stretch; flex-shrink: 0; background: var(--color-amber); }
+.attn-name { font-size: 12px; font-weight: 500; color: var(--color-text); line-height: 1.35; }
+.attn-sub { font-size: 11px; color: var(--color-text-disabled); margin-top: 2px; line-height: 1.4; }
+
+.dom-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-bottom: 1px solid var(--color-border); }
+.dom-item:last-child { border-bottom: none; }
+.dom-name { flex: 1; font-size: 12px; color: var(--color-text-secondary); }
+.dom-bar-wrap { width: 80px; height: 4px; background: var(--color-surface); border-radius: 2px; overflow: hidden; }
+.dom-bar { height: 100%; border-radius: 2px; }
+.dom-count { font-size: 13px; font-weight: 600; color: var(--color-text); min-width: 20px; text-align: right; }
+
+/* Roles */
+.roles-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.role-cell { padding: 8px 12px; border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); font-size: 11px; color: var(--color-text-secondary); }
+.role-cell:nth-child(3n) { border-right: none; }
+.role-cell:nth-last-child(-n+3) { border-bottom: none; }
+.role-org { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-disabled); display: block; margin-bottom: 2px; }
+
+/* Footer */
+.footer { border-top: 2px solid var(--color-primary); padding-top: 20px; margin-top: 36px; display: flex; justify-content: space-between; align-items: flex-start; }
+.footer-left { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.footer-right { text-align: right; font-size: 12px; color: var(--color-text-disabled); line-height: 1.6; }
+.footer-right a { color: var(--color-primary-light); text-decoration: none; }
+.footer-right a:hover { text-decoration: underline; }
+
+@media (max-width: 800px) {
+  body { padding: 28px 20px; }
+  .kpi-row { grid-template-columns: repeat(2,1fr); }
+  .body-grid { grid-template-columns: 1fr; }
+  .det-cols { grid-template-columns: 1fr; }
+  .process-flow { flex-wrap: wrap; gap: 10px; }
+  .proc-arrow { display: none; }
+  .footer { flex-direction: column; gap: 10px; }
+  .footer-right { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<div class="eyebrow"><div class="live-dot"></div> Prototype Build · Phase 3 of 4</div>
+<h1>AngelSpan Prototype Dashboard</h1>
+<p class="subtitle">Investor-relations SaaS + Legacy Funds V-TAMP · Build status for engineering handoff</p>
+<p class="header-meta">
+  Last updated: July 15, 2026 &nbsp;·&nbsp;
+  Prototype: <a href="https://angelspan-bridge-flow.lovable.app" target="_blank">angelspan-bridge-flow.lovable.app ↗</a> &nbsp;·&nbsp;
+  Password: <code style="font-family:monospace;font-size:12px;background:var(--color-surface);padding:1px 5px;border-radius:2px;">demo1234</code>
+</p>
+
+<!-- Progress -->
+<div class="progress-wrap">
+  <div class="progress-top">
+    <div>
+      <span class="progress-pct">88%</span>
+      <span style="font-size:15px;color:var(--color-text-secondary);margin-left:8px;">toward engineering handoff</span>
+    </div>
+    <span class="progress-label">14 / 14 features built &nbsp;·&nbsp; 8 / 14 verified end-to-end</span>
+  </div>
+  <div class="progress-bar">
+    <div class="pb-v" style="width:57%;"></div>
+    <div class="pb-b" style="width:43%;"></div>
+  </div>
+  <div class="progress-legend">
+    <div class="pl"><div class="pl-dot" style="background:var(--color-green);"></div>8 features verified (AngelSpan track)</div>
+    <div class="pl"><div class="pl-dot" style="background:var(--color-lf-pale);"></div>6 features built — E2E verification pending (Legacy Funds track)</div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-val">14</div>
+    <div class="kpi-label">Features built</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:var(--color-primary);"></div></div>
+    <div class="kpi-sub">8 AngelSpan · 6 Legacy Funds · 100% of scope</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-val green">8 <span style="font-size:16px;color:var(--color-text-disabled);font-weight:400;">/ 14</span></div>
+    <div class="kpi-label">Verified end-to-end</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:57%;background:var(--color-green);"></div></div>
+    <div class="kpi-sub">AngelSpan complete · LF track pending UAT pass</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-val">38</div>
+    <div class="kpi-label">Decisions logged</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:var(--color-primary-light);"></div></div>
+    <div class="kpi-sub">16 AngelSpan · 17 Legacy Funds · 5 Process</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-val warn">3</div>
+    <div class="kpi-label">Open items</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:33%;background:var(--color-amber);"></div></div>
+    <div class="kpi-sub">1 prompt unwritten · 5 decision gaps · LF E2E pending</div>
+  </div>
+</div>
+
+<!-- Process -->
+<div class="process-wrap">
+  <div class="section-title">How this project works</div>
+  <div class="process-flow">
+    <div class="proc-step">
+      <div class="proc-icon">📝</div>
+      <div class="proc-name">Specification</div>
+      <div class="proc-who">Adam + Claude (Cowork)</div>
+      <div class="proc-status ps-done">Complete</div>
+    </div>
+    <div class="proc-arrow">›</div>
+    <div class="proc-step">
+      <div class="proc-icon">⚡</div>
+      <div class="proc-name">Prototype build</div>
+      <div class="proc-who">Lovable · Clusters 0–11</div>
+      <div class="proc-status ps-done">Complete</div>
+    </div>
+    <div class="proc-arrow">›</div>
+    <div class="proc-step">
+      <div class="proc-icon">🧪</div>
+      <div class="proc-name">UAT &amp; stabilization</div>
+      <div class="proc-who">Cluster 12 · Internal testers</div>
+      <div class="proc-status ps-active">In progress</div>
+    </div>
+    <div class="proc-arrow">›</div>
+    <div class="proc-step">
+      <div class="proc-icon">🏢</div>
+      <div class="proc-name">Engineering handoff</div>
+      <div class="proc-who">Development partner · TBD</div>
+      <div class="proc-status ps-next">Not started</div>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="body-grid">
+  <div>
+
+    <!-- AS track -->
+    <div class="feature-card">
+      <div class="track-head">
+        <div class="track-label">
+          <div class="track-stripe ts-as"></div>
+          <div class="track-name">AngelSpan track</div>
+        </div>
+        <div class="track-badges">
+          <span class="badge badge-as">8 features</span>
+          <span class="badge badge-ok">All verified</span>
+        </div>
+      </div>
+      <div id="as-list"></div>
+    </div>
+
+    <!-- LF track -->
+    <div class="feature-card">
+      <div class="track-head">
+        <div class="track-label">
+          <div class="track-stripe ts-lf"></div>
+          <div class="track-name">Legacy Funds track</div>
+        </div>
+        <div class="track-badges">
+          <span class="badge badge-lf">6 features</span>
+          <span class="badge badge-warn">E2E verification pending</span>
+        </div>
+      </div>
+      <div id="lf-list"></div>
+    </div>
+
+    <!-- Roles -->
+    <div class="feature-card">
+      <div class="track-head">
+        <div class="track-label">
+          <div class="track-name">Roles covered in prototype</div>
+        </div>
+        <div class="track-badges">
+          <span class="badge badge-neu">13 roles · 2 E2E workflows</span>
+        </div>
+      </div>
+      <div class="roles-grid">
+        <div class="role-cell"><span class="role-org">AngelSpan</span>Founder</div>
+        <div class="role-cell"><span class="role-org">AngelSpan</span>Performance Analyst</div>
+        <div class="role-cell"><span class="role-org">AngelSpan</span>Admin</div>
+        <div class="role-cell"><span class="role-org">AngelSpan</span>Team Member</div>
+        <div class="role-cell"><span class="role-org">AngelSpan</span>Stakeholder (magic link)</div>
+        <div class="role-cell"><span class="role-org">AngelSpan</span>Super Admin</div>
+        <div class="role-cell"><span class="role-org">Legacy Funds</span>LF Admin</div>
+        <div class="role-cell"><span class="role-org">Legacy Funds</span>General Partner</div>
+        <div class="role-cell"><span class="role-org">Legacy Funds</span>Limited Partner</div>
+        <div class="role-cell"><span class="role-org">Legacy Funds</span>Champion</div>
+        <div class="role-cell"><span class="role-org">Multi-role</span>Founder + LP</div>
+        <div class="role-cell"><span class="role-org">UAT</span>New Founder (onboarding)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="side-card">
+      <div class="side-head">
+        <span class="side-title">Sprint — Cluster 12</span>
+        <span class="badge badge-warn">4 / 5</span>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-icon si-done">✓</div>
+        <div><div class="sprint-name">Clean-slate founder accounts</div><div class="sprint-meta">D-039 · C12-A · Verified</div></div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-icon si-done">✓</div>
+        <div><div class="sprint-name">Feedback Supabase persistence</div><div class="sprint-meta">D-040 · C12-B · Verified</div></div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-icon si-done">✓</div>
+        <div><div class="sprint-name">PA ↔ Founder loop + distribution</div><div class="sprint-meta">D-041 · C12-C · Verification in progress</div></div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-icon si-ready">→</div>
+        <div><div class="sprint-name">Champion logout UAT reset</div><div class="sprint-meta">D-043 · C12-D · Ready to send</div></div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-icon si-warn">!</div>
+        <div><div class="sprint-name">LF application persistence</div><div class="sprint-meta">D-042 · C12-E · Prompt not yet written</div></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-head">
+        <span class="side-title">Needs attention</span>
+        <span class="badge badge-warn">3 items</span>
+      </div>
+      <div class="attn-item">
+        <div class="attn-marker"></div>
+        <div>
+          <div class="attn-name">C12-E prompt not written</div>
+          <div class="attn-sub">LF application session persistence — last fix before handoff-ready</div>
+        </div>
+      </div>
+      <div class="attn-item">
+        <div class="attn-marker"></div>
+        <div>
+          <div class="attn-name">5 missing decision IDs</div>
+          <div class="attn-sub">D-021 through D-024 and D-037 are unaccounted for</div>
+        </div>
+      </div>
+      <div class="attn-item">
+        <div class="attn-marker"></div>
+        <div>
+          <div class="attn-name">LF track E2E not started</div>
+          <div class="attn-sub">Features F09–F14 built but not verified end-to-end</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-head">
+        <span class="side-title">Decisions by domain</span>
+        <span class="badge badge-neu">38 total</span>
+      </div>
+      <div class="dom-item">
+        <div class="dom-name">AngelSpan platform</div>
+        <div class="dom-bar-wrap"><div class="dom-bar" style="width:42%;background:var(--color-primary);"></div></div>
+        <div class="dom-count">16</div>
+      </div>
+      <div class="dom-item">
+        <div class="dom-name">Legacy Funds</div>
+        <div class="dom-bar-wrap"><div class="dom-bar" style="width:45%;background:var(--color-lf);"></div></div>
+        <div class="dom-count">17</div>
+      </div>
+      <div class="dom-item">
+        <div class="dom-name">Process &amp; engineering</div>
+        <div class="dom-bar-wrap"><div class="dom-bar" style="width:13%;background:var(--color-green);"></div></div>
+        <div class="dom-count">5</div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-head"><span class="side-title">Quick access</span></div>
+      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
+        <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="display:block;text-align:center;padding:8px;background:var(--color-primary);color:#fff;border-radius:3px;font-size:13px;font-weight:600;text-decoration:none;">Open prototype ↗</a>
+        <a href="path2_prototype_validate.html" style="display:block;text-align:center;padding:8px;background:var(--color-surface);color:var(--color-primary);border:1px solid var(--color-border);border-radius:3px;font-size:13px;font-weight:500;text-decoration:none;">Path 2 — Validate first ↗</a>
+        <a href="path1_full_build.html" style="display:block;text-align:center;padding:8px;background:var(--color-surface);color:var(--color-primary);border:1px solid var(--color-border);border-radius:3px;font-size:13px;font-weight:500;text-decoration:none;">Path 1 — Full build ↗</a>
+      </div>
+      <div style="padding:0 16px 12px;font-size:11px;color:var(--color-text-disabled);line-height:1.6;">
+        Test password: <code style="font-family:monospace;background:var(--color-surface);padding:1px 4px;border-radius:2px;">demo1234</code><br>
+        MFA: click "Skip — prototype only"
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-left">
+    <strong>AngelSpan</strong> investor-relations platform &amp; Legacy Funds V-TAMP<br>
+    Prototype build dashboard · Phase 3 of 4
+  </div>
+  <div class="footer-right">
+    Built with Lovable · Specifications by Claude (Cowork)<br>
+    <a href="mailto:adam@angelspan.com">adam@angelspan.com</a>
+  </div>
+</div>
+
+<script>
+const DECS = {
+  'D-003':{ t:'Auth — two URLs, one Supabase backend', c:'as' },
+  'D-004':{ t:'Stakeholder phases — magic link → portal', c:'as' },
+  'D-005':{ t:'Founder onboarding wizard requirements', c:'as' },
+  'D-006':{ t:'Slide-out pattern + monthly update consolidation', c:'as' },
+  'D-007':{ t:'Artifact lifecycle — Draft → Distributed', c:'as' },
+  'D-008':{ t:'PA read-only stakeholder access', c:'as' },
+  'D-009':{ t:'Founder self-service signup — no ghost records', c:'as' },
+  'D-010':{ t:'Shared stakeholder roster + engagement components', c:'as' },
+  'D-011':{ t:'Lovable prompt standard — prose + schema, no code', c:'proc' },
+  'D-012':{ t:'Stripe billing — Elements, Portal, webhooks', c:'as' },
+  'D-013':{ t:'UAT feedback process — triage lifecycle + rounds', c:'proc' },
+  'D-014':{ t:'Fund entity structure (prototype representation)', c:'lf' },
+  'D-015':{ t:'LP accreditation workflow', c:'lf' },
+  'D-016':{ t:'Capital calls and distributions', c:'lf' },
+  'D-017':{ t:'Prototype-to-production handoff strategy', c:'proc' },
+  'D-018':{ t:'Multiple GPs per fund', c:'lf' },
+  'D-019':{ t:'Champion workflow', c:'lf' },
+  'D-020':{ t:'Fund formation application (deferred)', c:'lf' },
+  'D-025':{ t:'LP management scope', c:'lf' },
+  'D-026':{ t:'GP-to-LP reporting via platform', c:'lf' },
+  'D-027':{ t:'Champion management scope', c:'lf' },
+  'D-028':{ t:'Fund eligibility filtering', c:'lf' },
+  'D-029':{ t:'Multi-fund application model', c:'lf' },
+  'D-030':{ t:'Champion application review — self-select pool', c:'lf' },
+  'D-031':{ t:'Intelligence plan as LF admission obligation', c:'lf' },
+  'D-032':{ t:'PA is the only internal staff role (CRA/CC retired)', c:'as' },
+  'D-033':{ t:'Bubble chart temporal animation', c:'as' },
+  'D-034':{ t:'GP dashboard fund filter', c:'lf' },
+  'D-035':{ t:'Shared company detail components', c:'as' },
+  'D-036':{ t:'Fund administrator portal links', c:'lf' },
+  'D-038':{ t:'Capital tracking model for Legacy Funds', c:'lf' },
+  'D-039':{ t:'Clean slate for new founder accounts', c:'as' },
+  'D-040':{ t:'Feedback Supabase persistence fix', c:'proc' },
+  'D-041':{ t:'PA distribution action', c:'as' },
+  'D-042':{ t:'LF application cross-session persistence', c:'lf' },
+  'D-043':{ t:'UAT end-to-end test designations + demo reset', c:'proc' },
+};
+
+const FEATURES = [
+  { id:'F01', name:'Authentication & login', track:'as', status:'verified', w:2,
+    desc:'Two-brand login, MFA screen, role-based routing, and context switcher for multi-role users.',
+    stories:['Correct branded login (AngelSpan vs Legacy Funds) determined by URL','MFA screen on every login; prototype bypass via "Skip — prototype only"','Context switcher for users holding multiple roles — no re-login required','Forgot password and credential reset accessible from login'],
+    decs:['D-003','D-004'] },
+  { id:'F02', name:'Founder workspace', track:'as', status:'verified', w:5,
+    desc:'Full founder experience: onboarding, dashboard, company profile, stakeholders, updates, announcements, and engagement.',
+    stories:['Onboarding wizard (company name, vision/mission, one stakeholder)','Dashboard: activity bar, quick-update entry, notifications, stakeholder summary','Company profile: logo, highlight color, vision/mission, team, advisors','Stakeholders: CRUD, sensitive-access flag, CSV import/export','Monthly updates through Submission → PA Review → Approved → Waiting phases','Engagement analytics by publication (bar chart) and by stakeholder (table)'],
+    decs:['D-005','D-006','D-009','D-010','D-039'] },
+  { id:'F03', name:'Publications engine', track:'as', status:'verified', w:4,
+    desc:'Unified lifecycle for all publication types with PA priority queue and artifact state management.',
+    stories:['All publication types share one lifecycle: Draft → Distributed (locked)','Corrections create a superseding document — full history preserved','PA unified priority queue across all clients, filtered by type and urgency','Announcement review slide-out: edit content, select recipient group, note founder'],
+    decs:['D-007','D-008'] },
+  { id:'F04', name:'Stakeholder delivery & engagement', track:'as', status:'verified', w:5,
+    desc:'Magic link stakeholder portal, delivery simulation, and multi-view engagement analytics.',
+    stories:['Stakeholders receive publications via unique magic link — no login required','Stakeholder portal: history, frequency preferences, unsubscribe','Delivery simulation generates mock open events on PA distribute action','Founder sees engagement by publication (bar chart) and by stakeholder (table)'],
+    decs:['D-004','D-008','D-010'] },
+  { id:'F05', name:'PA analyst workspace', track:'as', status:'verified', w:9,
+    desc:'Full PA experience: portfolio management, SMART IR scoring, publication review, tear sheet authoring, and portfolio analytics.',
+    stories:['Unified client list across all assigned clients, tagged by fund association','Client detail: 6 tabs — Overview, Publications, Scoring, Tear Sheet, History, Stakeholders','SMART IR scoring entry across 5 categories and 4 stages','Announcement review via 680px slide-out; request changes or compile and forward','Bubble chart: portfolio in score × stage space with temporal animation','PA initiates distribution from Publications tab after founder approval'],
+    decs:['D-006','D-007','D-008','D-032','D-033','D-035','D-041'] },
+  { id:'F06', name:'Subscription tiers & billing', track:'as', status:'verified', w:4,
+    desc:'Three-tier plan system with feature gating, plan badges, and PDF download.',
+    stories:['Essentials ($249/mo): updates, announcements, stakeholder management, send prior','Insights ($399/mo): adds SMART IR dashboard and tear sheet PDF download','Intelligence ($599/mo): adds quarterly reports and priority PA support','Plan badge on PA client list and founder profile; upgrade prompt for Essentials at SMART IR'],
+    decs:['D-012'] },
+  { id:'F07', name:'Client lifecycle', track:'as', status:'verified', w:3,
+    desc:'Self-service founder signup, onboarding wizard, and admin PA-assignment confirmation flow.',
+    stories:['Founders sign up at /signup without admin pre-creation (4 steps)','Signup queues client record for PA assignment confirmation','Admin confirms PA from New Signups queue on the admin dashboard','Admin can archive, reassign PA, or change plan for any client'],
+    decs:['D-005','D-009'] },
+  { id:'F08', name:'AngelSpan admin suite', track:'as', status:'verified', w:9,
+    desc:'Full admin operations: client and user management, billing oversight, audit log, and feedback queue.',
+    stories:['Dashboard KPIs: active clients, MRR, pending assignments, failed payments, unreviewed feedback','User management: invite/deactivate PAs; reset credentials or suspend founders','Billing screen: MRR by plan, per-client status, invoice history, coupon management','Audit log: all platform actions with actor, action, target, and timestamp'],
+    decs:['D-012','D-013','D-040'] },
+  { id:'F09', name:'Legacy Funds admin', track:'lf', status:'built', w:7,
+    desc:'LF Admin control plane: fund creation and management, GP/Champion assignment, LP application queue.',
+    stories:['Create funds with name, sponsor, theme, target raise, and QSBS strategy','GPs assigned to funds; Champions assigned to specific portfolio companies','LP application queue with accreditation status management','Fund administrator portal links connect to external cap-table systems per fund'],
+    decs:['D-014','D-015','D-018','D-020','D-036'] },
+  { id:'F10', name:'GP portfolio management', track:'lf', status:'built', w:11,
+    desc:'GP workspace: multi-fund portfolio view, fund filter, bubble chart, Champion management, and LP reporting.',
+    stories:['Portfolio companies with SMART IR scores, stage, and Champion assignment','Fund filter pills for multi-fund GPs to switch context without logging out','Bubble chart: portfolio in score × stage space with 28-month temporal animation','GP composes and distributes quarterly LP reports (narrative + portfolio summary)'],
+    decs:['D-019','D-026','D-027','D-034','D-035','D-038'] },
+  { id:'F11', name:'Founder → fund application', track:'lf', status:'built', w:8,
+    desc:'Founder applies to join a Legacy Fund via eligibility wizard, Champion review, and GP admission decision.',
+    stories:['Intelligence plan required to initiate a fund application','Eligibility wizard gates on stage, sector, geography, and SMART IR score','Champion pool self-selects; first to open an application locks it to them','GP reviews Champion recommendation and grants or denies admission','Application status on founder dashboard with notification toasts'],
+    decs:['D-028','D-029','D-030','D-031','D-042'] },
+  { id:'F12', name:'SMART IR analytics', track:'lf', status:'built', w:9,
+    desc:'SMART IR visual layer: arc chart, trajectory chart, portfolio bubble chart, and annotated copy spec.',
+    stories:['Arc chart: current SMART IR score across 5 Bell Mason categories','Trajectory chart: score progression by quarter and stage','Bubble chart: portfolio in score × stage space with temporal animation','All tooltips and annotations sourced from the canonical copy spec'],
+    decs:['D-033','D-035'] },
+  { id:'F13', name:'LP investor portal', track:'lf', status:'built', w:8,
+    desc:'LP dashboard: fund holdings, portfolio company view with SMART IR, QSBS calculator, and fund admin links.',
+    stories:['Fund holdings with commitment amounts, vintage, and capital call history','Portfolio companies: name, stage, read-only SMART IR and Transparency Tell scores','QSBS Benefit Calculator for modeling after-tax performance advantage','Fund administrator portal links connect to external admin portals per fund'],
+    decs:['D-015','D-016','D-025','D-036','D-038'] },
+  { id:'F14', name:'UAT stabilization', track:'lf', status:'built', w:7,
+    desc:'UAT-round fixes: clean slate accounts, Supabase feedback persistence, PA distribution, Champion reset, E2E designations.',
+    stories:['New founder accounts start with no pre-loaded test data (clean slate)','Feedback submissions persist across sessions via Supabase','PA distribution with correct confirmation and lock-state behavior','Champion logout auto-resets Acme/Heartland demo for repeatable UAT','LF application data persistence across page reloads (C12-E pending)'],
+    decs:['D-011','D-013','D-017','D-043'] },
+];
+
+let openId = null;
+
+function buildRows(containerId, features) {
+  const container = document.getElementById(containerId);
+  features.forEach(f => {
+    const isLF = f.track === 'lf';
+    const dotColor = isLF ? 'var(--color-lf-pale)' : 'var(--color-primary)';
+
+    const row = document.createElement('div');
+    row.className = 'feat-row' + (isLF ? ' lf-row' : '');
+    row.dataset.id = f.id;
+    row.innerHTML = `
+      <div class="status-dot ${f.status === 'verified' ? 'sd-verified' : 'sd-built'}"></div>
+      <div class="feat-id">${f.id}</div>
+      <div class="feat-name">${f.name}</div>
+      <div class="feat-meta">${f.w} prompts · ${f.decs.length} decisions</div>
+      <div class="feat-caret">›</div>
+    `;
+
+    const detail = document.createElement('div');
+    detail.className = 'feat-detail';
+
+    const stories = f.stories.map(s =>
+      `<div class="story-li"><div class="s-dot" style="background:${dotColor}"></div><span>${s}</span></div>`
+    ).join('');
+
+    const decs = f.decs.map(id => {
+      const d = DECS[id] || { t: 'Decision details pending', c: 'as' };
+      return `<div class="dec-li"><span class="dec-code dc-${d.c}">${id}</span><span>${d.t}</span></div>`;
+    }).join('');
+
+    detail.innerHTML = `
+      <div class="det-desc">${f.desc}</div>
+      <div class="det-cols">
+        <div><div class="det-head">User stories</div>${stories}</div>
+        <div><div class="det-head">Architecture decisions</div>${decs}</div>
+      </div>
+    `;
+
+    row.addEventListener('click', () => {
+      const isOpen = openId === f.id;
+      document.querySelectorAll('.feat-row').forEach(r => r.classList.remove('open'));
+      document.querySelectorAll('.feat-detail').forEach(d => d.classList.remove('open'));
+      if (!isOpen) {
+        row.classList.add('open');
+        detail.classList.add('open');
+        openId = f.id;
+      } else {
+        openId = null;
+      }
+    });
+
+    container.appendChild(row);
+    container.appendChild(detail);
+  });
+}
+
+buildRows('as-list', FEATURES.filter(f => f.track === 'as'));
+buildRows('lf-list', FEATURES.filter(f => f.track === 'lf'));
+</script>
+</body>
+</html>
