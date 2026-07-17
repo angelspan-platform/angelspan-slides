@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AngelSpan — Working Mock Build Methodology & Handoff Strategy</title>
 <style>
+html { font-size: clamp(14px, 0.5vw + 11px, 18px); }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -39,38 +40,38 @@
 :root[data-theme="light"] { --c-bg:#FAFAF8; --c-surface:#F4F1EC; --c-border:#E0DBD3; --c-text:#1C1C1C; --c-text-2:#4A4A4A; --c-text-3:#888; }
 :root[data-theme="dark"]  { --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A; --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870; }
 
-body { font-family: var(--font); background: var(--c-bg); color: var(--c-text); font-size: 22px; line-height: 1.72; }
+body { font-family: var(--font); background: var(--c-bg); color: var(--c-text); font-size: 0.9167rem; line-height: 1.72; }
 
 /* Layout */
 .layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
 
 /* Sidebar */
 .toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--c-border); background: var(--c-surface); }
-.toc-brand { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--c-sky); margin-bottom: 4px; }
-.toc-title { font-size: 18px; font-weight: 600; color: var(--c-text-2); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
-.toc-group { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin: 18px 0 5px; }
-.toc nav a { display: block; font-size: 18px; color: var(--c-text-2); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+.toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--c-sky); margin-bottom: 4px; }
+.toc-title { font-size: 0.75rem; font-weight: 600; color: var(--c-text-2); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+.toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin: 18px 0 5px; }
+.toc nav a { display: block; font-size: 0.75rem; color: var(--c-text-2); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
 .toc nav a:hover, .toc nav a.on { color: var(--c-navy); border-left-color: var(--c-navy); padding-left: 8px; }
 
 /* Content */
 .content { padding: 56px 68px 100px; max-width: 880px; }
-.eyebrow { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--c-sky); margin-bottom: 12px; }
-h1 { font-size: 45px; font-weight: 700; color: var(--c-navy); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 10px; text-wrap: balance; }
-.subtitle { font-size: 24px; color: var(--c-text-2); margin-bottom: 8px; line-height: 1.5; }
-.meta { font-size: 18px; color: var(--c-text-3); padding-bottom: 40px; border-bottom: 2px solid var(--c-navy); margin-bottom: 56px; }
+.eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--c-sky); margin-bottom: 12px; }
+h1 { font-size: 1.875rem; font-weight: 700; color: var(--c-navy); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 10px; text-wrap: balance; }
+.subtitle { font-size: 1.0rem; color: var(--c-text-2); margin-bottom: 8px; line-height: 1.5; }
+.meta { font-size: 0.75rem; color: var(--c-text-3); padding-bottom: 40px; border-bottom: 2px solid var(--c-navy); margin-bottom: 56px; }
 
 /* Sections */
 .sec { margin-top: 60px; scroll-margin-top: 20px; }
-.sec-label { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--c-text-3); margin-bottom: 4px; }
-.sec h2 { font-size: 32px; font-weight: 700; color: var(--c-navy); border-bottom: 1px solid var(--c-border); padding-bottom: 12px; margin-bottom: 22px; letter-spacing: -.01em; }
-.sec h3 { font-size: 21px; font-weight: 700; color: var(--c-text); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: .04em; }
+.sec-label { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--c-text-3); margin-bottom: 4px; }
+.sec h2 { font-size: 1.3333rem; font-weight: 700; color: var(--c-navy); border-bottom: 1px solid var(--c-border); padding-bottom: 12px; margin-bottom: 22px; letter-spacing: -.01em; }
+.sec h3 { font-size: 0.875rem; font-weight: 700; color: var(--c-text); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: .04em; }
 p { color: var(--c-text-2); margin-bottom: 16px; }
 p:last-child { margin-bottom: 0; }
 strong { color: var(--c-text); font-weight: 600; }
 
 /* Callouts */
-.box { border-left: 3px solid; padding: 16px 20px; border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 21px; line-height: 1.65; }
-.box .lbl { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; display: block; margin-bottom: 7px; }
+.box { border-left: 3px solid; padding: 16px 20px; border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 0.875rem; line-height: 1.65; }
+.box .lbl { font-size: 0.5833rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; display: block; margin-bottom: 7px; }
 .box.blue  { border-color: var(--c-blue); background: rgba(1,121,181,.07); color: var(--c-text-2); }
 .box.blue .lbl { color: var(--c-blue); }
 .box.green { border-color: #16A34A; background: var(--c-green-bg); color: var(--c-green); }
@@ -85,11 +86,11 @@ strong { color: var(--c-text); font-weight: 600; }
 .wf-step { display: grid; grid-template-columns: 48px 1fr; border-bottom: 1px solid var(--c-border); }
 .wf-step:last-child { border-bottom: none; }
 .wf-step:nth-child(even) { background: var(--c-surface); }
-.wf-num { background: var(--c-navy); color: rgba(255,255,255,.85); font-size: 18px; font-weight: 700; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; flex-shrink: 0; }
+.wf-num { background: var(--c-navy); color: rgba(255,255,255,.85); font-size: 0.75rem; font-weight: 700; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; flex-shrink: 0; }
 .wf-body { padding: 14px 20px; }
-.wf-title { font-size: 21px; font-weight: 700; color: var(--c-text); margin-bottom: 5px; }
-.wf-desc { font-size: 20px; color: var(--c-text-2); line-height: 1.6; }
-.wf-note { display: inline-block; font-size: 16px; color: var(--c-blue); background: rgba(1,121,181,.07); border: 1px solid rgba(1,121,181,.2); padding: 2px 9px; border-radius: 2px; margin-top: 8px; font-weight: 500; }
+.wf-title { font-size: 0.875rem; font-weight: 700; color: var(--c-text); margin-bottom: 5px; }
+.wf-desc { font-size: 0.8333rem; color: var(--c-text-2); line-height: 1.6; }
+.wf-note { display: inline-block; font-size: 0.6667rem; color: var(--c-blue); background: rgba(1,121,181,.07); border: 1px solid rgba(1,121,181,.2); padding: 2px 9px; border-radius: 2px; margin-top: 8px; font-weight: 500; }
 
 /* Hierarchy */
 .hier { border: 1px solid var(--c-border); border-radius: 4px; overflow: hidden; margin: 20px 0; }
@@ -98,10 +99,10 @@ strong { color: var(--c-text); font-weight: 600; }
 .hr:nth-child(even) { background: var(--c-surface); }
 .hr-bar { width: 4px; flex-shrink: 0; }
 .hr-body { padding: 13px 18px; flex: 1; }
-.hr-name { font-size: 21px; font-weight: 700; color: var(--c-text); margin-bottom: 3px; }
-.hr-sub { font-size: 20px; color: var(--c-text-2); line-height: 1.5; margin-bottom: 4px; }
-.hr-ex { font-family: var(--mono); font-size: 16px; color: var(--c-text-3); }
-.pid { display: inline-block; font-size: 15px; font-weight: 700; padding: 1px 7px; border-radius: 2px; margin-right: 6px; }
+.hr-name { font-size: 0.875rem; font-weight: 700; color: var(--c-text); margin-bottom: 3px; }
+.hr-sub { font-size: 0.8333rem; color: var(--c-text-2); line-height: 1.5; margin-bottom: 4px; }
+.hr-ex { font-family: var(--mono); font-size: 0.6667rem; color: var(--c-text-3); }
+.pid { display: inline-block; font-size: 0.625rem; font-weight: 700; padding: 1px 7px; border-radius: 2px; margin-right: 6px; }
 .pid-e { background: rgba(0,74,109,.08); color: var(--c-navy); border: 1px solid rgba(0,74,109,.2); }
 .pid-f { background: rgba(1,121,181,.08); color: var(--c-blue); border: 1px solid rgba(1,121,181,.2); }
 .pid-s { background: rgba(80,173,219,.1); color: #0369A1; border: 1px solid rgba(80,173,219,.3); }
@@ -112,17 +113,17 @@ strong { color: var(--c-text); font-weight: 600; }
 .st { padding: 18px 14px; border-right: 1px solid var(--c-border); position: relative; }
 .st:last-child { border-right: none; }
 .st.now { background: rgba(0,74,109,.05); }
-.st-n { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin-bottom: 6px; }
-.st-name { font-size: 20px; font-weight: 700; color: var(--c-text); margin-bottom: 5px; line-height: 1.3; }
-.st-when { font-size: 16px; color: var(--c-text-3); margin-bottom: 10px; }
-.st-desc { font-size: 18px; color: var(--c-text-2); line-height: 1.55; }
-.st-badge { position: absolute; top: 10px; right: 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border-radius: 2px; }
+.st-n { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin-bottom: 6px; }
+.st-name { font-size: 0.8333rem; font-weight: 700; color: var(--c-text); margin-bottom: 5px; line-height: 1.3; }
+.st-when { font-size: 0.6667rem; color: var(--c-text-3); margin-bottom: 10px; }
+.st-desc { font-size: 0.75rem; color: var(--c-text-2); line-height: 1.55; }
+.st-badge { position: absolute; top: 10px; right: 10px; font-size: 0.5833rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border-radius: 2px; }
 .b-now  { background: rgba(0,74,109,.1); color: var(--c-navy); border: 1px solid rgba(0,74,109,.2); }
 .b-skip { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
 
 /* Tables */
-table { width: 100%; border-collapse: collapse; font-size: 20px; margin: 18px 0; }
-thead th { background: var(--c-navy); color: rgba(255,255,255,.85); text-align: left; padding: 10px 14px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+table { width: 100%; border-collapse: collapse; font-size: 0.8333rem; margin: 18px 0; }
+thead th { background: var(--c-navy); color: rgba(255,255,255,.85); text-align: left; padding: 10px 14px; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
 tbody tr { border-bottom: 1px solid var(--c-border); }
 tbody tr:nth-child(even) { background: var(--c-surface); }
 tbody td { padding: 11px 14px; color: var(--c-text-2); vertical-align: top; }
@@ -131,21 +132,21 @@ tbody tr:last-child td { border-bottom: none; }
 
 /* Stress table */
 .stress-hd { display: grid; grid-template-columns: 1.1fr 1fr 1fr; background: var(--c-navy); border-radius: 4px 4px 0 0; }
-.stress-hd div { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.75); padding: 10px 14px; }
+.stress-hd div { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.75); padding: 10px 14px; }
 .stress-body { border: 1px solid var(--c-border); border-top: none; border-radius: 0 0 4px 4px; overflow: hidden; margin-bottom: 28px; }
 .sr { display: grid; grid-template-columns: 1.1fr 1fr 1fr; border-bottom: 1px solid var(--c-border); }
 .sr:last-child { border-bottom: none; }
 .sr:nth-child(even) { background: var(--c-surface); }
-.sc { padding: 12px 14px; font-size: 20px; color: var(--c-text-2); border-right: 1px solid var(--c-border); line-height: 1.55; }
+.sc { padding: 12px 14px; font-size: 0.8333rem; color: var(--c-text-2); border-right: 1px solid var(--c-border); line-height: 1.55; }
 .sc:last-child { border-right: none; }
-.sc strong { font-size: 18px; color: var(--c-text); display: block; margin-bottom: 3px; }
-.sev { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 1px 6px; border-radius: 2px; display: inline-block; margin-top: 5px; }
+.sc strong { font-size: 0.75rem; color: var(--c-text); display: block; margin-bottom: 3px; }
+.sev { font-size: 0.5833rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 1px 6px; border-radius: 2px; display: inline-block; margin-top: 5px; }
 .sev-h { background: var(--c-red-bg); color: var(--c-red); border: 1px solid #FECACA; }
 .sev-m { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
 .sev-l { background: var(--c-green-bg); color: var(--c-green); border: 1px solid var(--c-green-bd); }
 
 /* Tag */
-.tag { display: inline-block; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 2px 7px; border-radius: 2px; margin-right: 3px; }
+.tag { display: inline-block; font-size: 0.5833rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 2px 7px; border-radius: 2px; margin-right: 3px; }
 .t-now { background: rgba(0,74,109,.08); color: var(--c-navy); border: 1px solid rgba(0,74,109,.2); }
 .t-s3  { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
 .t-s4  { background: rgba(91,33,182,.07); color: var(--c-lf); border: 1px solid rgba(91,33,182,.2); }
@@ -154,13 +155,13 @@ tbody tr:last-child td { border-bottom: none; }
 .recs { list-style: none; margin: 20px 0; }
 .recs li { display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--c-border); align-items: flex-start; }
 .recs li:last-child { border-bottom: none; }
-.rn { font-size: 20px; font-weight: 700; color: var(--c-sky); min-width: 22px; padding-top: 2px; }
-.rb strong { display: block; font-size: 21px; color: var(--c-text); margin-bottom: 4px; }
-.rb span { font-size: 20px; color: var(--c-text-2); line-height: 1.65; }
+.rn { font-size: 0.8333rem; font-weight: 700; color: var(--c-sky); min-width: 22px; padding-top: 2px; }
+.rb strong { display: block; font-size: 0.875rem; color: var(--c-text); margin-bottom: 4px; }
+.rb span { font-size: 0.8333rem; color: var(--c-text-2); line-height: 1.65; }
 
 /* Closing rule */
 .closing { border-top: 2px solid var(--c-navy); margin-top: 68px; padding-top: 28px; }
-.closing p { font-size: 21px; color: var(--c-text-2); line-height: 1.8; }
+.closing p { font-size: 0.875rem; color: var(--c-text-2); line-height: 1.8; }
 
 @media (max-width: 760px) {
   .layout { grid-template-columns: 1fr; }
@@ -179,7 +180,7 @@ tbody tr:last-child td { border-bottom: none; }
 <nav class="toc">
   <div class="toc-brand">AngelSpan</div>
   <div class="toc-title">Working Mock — Build Methodology &amp; Handoff Strategy</div>
-  <a href="prototype_dashboard.html" style="display:inline-flex;align-items:center;gap:5px;font-size:16px;color:var(--c-text-3);text-decoration:none;margin-bottom:20px;margin-top:-10px;" onmouseover="this.style.color='var(--c-blue)'" onmouseout="this.style.color='var(--c-text-3)'">← Build Tracker</a>
+  <a href="prototype_dashboard.html" style="display:inline-flex;align-items:center;gap:5px;font-size:0.6667rem;color:var(--c-text-3);text-decoration:none;margin-bottom:20px;margin-top:-10px;" onmouseover="this.style.color='var(--c-blue)'" onmouseout="this.style.color='var(--c-text-3)'">← Build Tracker</a>
   <nav>
     <div class="toc-group">The Approach</div>
     <a href="#methodology">Build Methodology</a>
@@ -299,10 +300,10 @@ tbody tr:last-child td { border-bottom: none; }
     <p>The decision log is the direct response to that risk. Every record in decisions/ has four sections:</p>
 
     <ul style="list-style:none; border:1px solid var(--c-border); border-radius:4px; overflow:hidden; margin:16px 0;">
-      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:21px; color:var(--c-text-2);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Context</strong> What problem or question prompted the decision — why it needed to be made at all.</li>
-      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:21px; color:var(--c-text-2); background:var(--c-surface);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Options considered</strong> What alternatives were evaluated, described plainly enough to understand the trade-offs.</li>
-      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:21px; color:var(--c-text-2);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Choice</strong> What was selected and, where relevant, how it works in the prototype.</li>
-      <li style="padding:12px 18px; font-size:21px; color:var(--c-text-2); background:var(--c-surface);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Consequences</strong> What the choice enables, what it constrains, what remains open.</li>
+      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:0.875rem; color:var(--c-text-2);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Context</strong> What problem or question prompted the decision — why it needed to be made at all.</li>
+      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:0.875rem; color:var(--c-text-2); background:var(--c-surface);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Options considered</strong> What alternatives were evaluated, described plainly enough to understand the trade-offs.</li>
+      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:0.875rem; color:var(--c-text-2);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Choice</strong> What was selected and, where relevant, how it works in the prototype.</li>
+      <li style="padding:12px 18px; font-size:0.875rem; color:var(--c-text-2); background:var(--c-surface);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Consequences</strong> What the choice enables, what it constrains, what remains open.</li>
     </ul>
 
     <div class="box navy">
