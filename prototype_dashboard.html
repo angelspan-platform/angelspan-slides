@@ -4,609 +4,1168 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AngelSpan — Prototype Build Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --color-primary: #004A6D;
-  --color-primary-light: #0179B5;
-  --color-primary-pale: #50ADDB;
-  --color-lf: #5B21B6;
-  --color-lf-light: #7C3AED;
-  --color-lf-pale: #A78BFA;
-  --color-green: #15803D;
-  --color-green-bg: #F0FDF4;
-  --color-green-border: #BBF7D0;
-  --color-amber: #B45309;
-  --color-amber-bg: #FFFBEB;
-  --color-amber-border: #FDE68A;
-  --color-bg: #FAFAF8;
-  --color-surface: #F4F1EC;
-  --color-border: #E0DBD3;
-  --color-text: #303030;
-  --color-text-secondary: #606060;
-  --color-text-disabled: #ADADAD;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --navy:#004A6D; --blue:#0179B5; --sky:#50ADDB;
+  --lf:#5B21B6; --lf-l:#7C3AED;
+  --green:#15803D; --green-bg:#F0FDF4; --green-bd:#BBF7D0;
+  --amber:#B45309; --amber-bg:#FFFBEB; --amber-bd:#FDE68A;
+  --red:#991B1B; --red-bg:#FEF2F2; --red-bd:#FECACA;
+  --bg:#FAFAF8; --surface:#F4F1EC; --border:#E0DBD3;
+  --text:#1C1C1C; --text-2:#505050; --text-3:#909090; --raised:#ffffff;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica Neue,Arial,sans-serif;
+  --mono:'SFMono-Regular','SF Mono','Fira Code',Consolas,monospace;
 }
-body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); padding: 48px 56px; max-width: 1080px; margin: 0 auto; }
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0F1219;--surface:#181C26;--border:#252B3A;
+  --text:#E4E8F0;--text-2:#94A0B3;--text-3:#4E5870;--raised:#1D2130;
+  --green-bg:rgba(21,128,61,.13);--green-bd:rgba(21,128,61,.32);
+  --amber-bg:rgba(180,83,9,.13);--amber-bd:rgba(180,83,9,.32);
+  --red-bg:rgba(153,27,27,.13);--red-bd:rgba(153,27,27,.32);
+}}
+:root[data-theme="light"]{--bg:#FAFAF8;--surface:#F4F1EC;--border:#E0DBD3;--text:#1C1C1C;--text-2:#505050;--text-3:#909090;--raised:#ffffff;--green-bg:#F0FDF4;--green-bd:#BBF7D0;--amber-bg:#FFFBEB;--amber-bd:#FDE68A;--red-bg:#FEF2F2;--red-bd:#FECACA;}
+:root[data-theme="dark"]{--bg:#0F1219;--surface:#181C26;--border:#252B3A;--text:#E4E8F0;--text-2:#94A0B3;--text-3:#4E5870;--raised:#1D2130;--green-bg:rgba(21,128,61,.13);--green-bd:rgba(21,128,61,.32);--amber-bg:rgba(180,83,9,.13);--amber-bd:rgba(180,83,9,.32);--red-bg:rgba(153,27,27,.13);--red-bd:rgba(153,27,27,.32);}
 
-/* Header */
-.eyebrow { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-pale); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-amber); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
-h1 { font-size: 28px; font-weight: 600; color: var(--color-primary); margin-bottom: 4px; letter-spacing: -0.01em; }
-.subtitle { font-size: 16px; color: var(--color-text-secondary); margin-bottom: 8px; }
-.header-meta { font-size: 13px; color: var(--color-text-disabled); margin-bottom: 32px; }
-.header-meta a { color: var(--color-primary-light); text-decoration: none; }
-.header-meta a:hover { text-decoration: underline; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
 
-/* Progress bar */
-.progress-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 22px 28px 20px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
-.progress-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
-.progress-pct { font-size: 32px; font-weight: 700; color: var(--color-primary); letter-spacing: -1px; }
-.progress-label { font-size: 13px; color: var(--color-text-secondary); }
-.progress-bar { height: 8px; background: var(--color-surface); border-radius: 4px; overflow: hidden; display: flex; border: 1px solid var(--color-border); }
-.pb-v { background: var(--color-green); }
-.pb-b { background: var(--color-lf-pale); }
-.progress-legend { display: flex; gap: 20px; margin-top: 8px; }
-.pl { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); }
-.pl-dot { width: 8px; height: 8px; border-radius: 2px; }
+/* ── Utilities ── */
+.badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:2px;}
+.b-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.b-amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);}
+.b-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.b-neu{background:var(--surface);color:var(--text-3);border:1px solid var(--border);}
+.mono{font-family:var(--mono);}
 
-/* KPI row */
-.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
-.kpi { padding: 18px 20px; border-right: 1px solid var(--color-border); }
-.kpi:last-child { border-right: none; }
-.kpi-val { font-size: 28px; font-weight: 700; color: var(--color-primary); letter-spacing: -0.5px; line-height: 1; }
-.kpi-val.warn { color: var(--color-amber); }
-.kpi-val.green { color: var(--color-green); }
-.kpi-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
-.kpi-bar { height: 3px; background: var(--color-surface); border-radius: 2px; margin-top: 10px; overflow: hidden; }
-.kpi-bar-fill { height: 100%; border-radius: 2px; }
-.kpi-sub { font-size: 11px; color: var(--color-text-disabled); margin-top: 6px; }
+/* ── Shell ── */
+.page{max-width:1120px;margin:0 auto;padding:0 48px;}
 
-/* Process flow */
-.section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 14px; }
-.process-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 22px 28px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
-.process-flow { display: flex; align-items: center; }
-.proc-step { flex: 1; text-align: center; }
-.proc-icon { font-size: 24px; margin-bottom: 8px; }
-.proc-name { font-size: 13px; font-weight: 600; color: var(--color-text); }
-.proc-who { font-size: 11px; color: var(--color-text-disabled); margin-top: 2px; }
-.proc-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-top: 6px; padding: 2px 8px; border-radius: 2px; display: inline-block; }
-.ps-done { background: var(--color-green-bg); color: var(--color-green); border: 1px solid var(--color-green-border); }
-.ps-active { background: var(--color-amber-bg); color: var(--color-amber); border: 1px solid var(--color-amber-border); }
-.ps-next { background: var(--color-surface); color: var(--color-text-disabled); border: 1px solid var(--color-border); }
-.proc-arrow { color: var(--color-border); font-size: 22px; padding: 0 4px; margin-bottom: 18px; flex-shrink: 0; }
+/* ── Header ── */
+.hdr{padding-top:32px;}
+.hdr-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;}
+.hdr-brand{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.brand-mark{width:30px;height:30px;background:var(--navy);border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.brand-mark span{color:rgba(255,255,255,.9);font-size:11px;font-weight:800;letter-spacing:-.02em;}
+.brand-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);}
+.brand-sep{color:var(--border);}
+.brand-ctx{font-size:12px;color:var(--text-3);}
+h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margin-bottom:4px;}
+.hdr-sub{font-size:13px;color:var(--text-2);margin-bottom:8px;}
+.hdr-meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:12px;color:var(--text-3);}
+.live-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:3px 9px;font-size:11px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.btn{display:inline-block;font-size:12px;font-weight:600;padding:8px 16px;border-radius:3px;text-decoration:none;white-space:nowrap;transition:background .1s,color .1s;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{background:var(--blue);text-decoration:none;color:#fff;}
 
-/* Body grid */
-.body-grid { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
+/* ── Milestone bar ── */
+.milestones{margin-top:24px;}
+.ms-track{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr 36px 1fr;align-items:center;}
+.ms-node{text-align:center;}
+.ms-circle{width:28px;height:28px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.ms-done{background:var(--green);color:#fff;}
+.ms-active{background:var(--amber);color:#fff;box-shadow:0 0 0 4px var(--amber-bg);}
+.ms-pending{background:var(--surface);color:var(--text-3);border:2px solid var(--border);}
+.ms-label{font-size:11px;font-weight:600;color:var(--text);}
+.ms-who{font-size:10px;color:var(--text-3);margin-top:2px;}
+.ms-line{height:2px;margin-bottom:24px;border-radius:1px;}
+.ms-line.done{background:var(--green);}
+.ms-line.active{background:linear-gradient(to right,var(--green),var(--amber));}
+.ms-line.ahead{background:var(--border);}
 
-/* Feature cards */
-.feature-card { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
-.feature-card:last-child { margin-bottom: 0; }
-.track-head { padding: 12px 18px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
-.track-label { display: flex; align-items: center; gap: 10px; }
-.track-stripe { width: 3px; height: 18px; border-radius: 2px; }
-.ts-as { background: var(--color-primary); }
-.ts-lf { background: var(--color-lf); }
-.track-name { font-size: 13px; font-weight: 600; color: var(--color-text); }
-.track-badges { display: flex; gap: 6px; }
-.badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 2px 7px; border-radius: 2px; }
-.badge-as { background: #EBF4FC; color: var(--color-primary); border: 1px solid #B3D8EF; }
-.badge-lf { background: #F3EFFE; color: var(--color-lf); border: 1px solid #DDD6FE; }
-.badge-ok { background: var(--color-green-bg); color: var(--color-green); border: 1px solid var(--color-green-border); }
-.badge-warn { background: var(--color-amber-bg); color: var(--color-amber); border: 1px solid var(--color-amber-border); }
-.badge-neu { background: var(--color-surface); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+/* ── Context strip ── */
+.ctx-strip{margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--text-2);display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;}
+.ctx-body{display:flex;flex-direction:column;gap:6px;flex:1;}
+.ctx-distinction{font-size:11px;color:var(--text-3);padding:6px 10px;background:var(--raised);border:1px solid var(--border);border-radius:3px;line-height:1.6;}
+/* guide card */
+.guide-card{background:var(--raised);border:1px solid var(--border);border-radius:4px;margin-bottom:14px;overflow:hidden;}
+/* single always-visible bar: URL · password · guide button */
+.guide-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:10px;flex-wrap:wrap;}
+.gb-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--text-2);}
+.gb-divider{width:1px;height:13px;background:var(--border);flex-shrink:0;}
+.gs-code{font-family:var(--mono);font-size:11px;background:var(--surface);border:1px solid var(--border);padding:1px 5px;border-radius:2px;color:var(--text-2);}
+/* the button IS the toggle */
+.gb-guide-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--blue);background:rgba(1,121,181,.07);border:1px solid rgba(1,121,181,.22);border-radius:3px;padding:5px 11px;cursor:pointer;font-family:var(--font);transition:background .1s,border-color .1s;white-space:nowrap;flex-shrink:0;}
+.gb-guide-btn:hover,.gb-guide-btn[aria-expanded="true"]{background:rgba(1,121,181,.14);border-color:rgba(1,121,181,.4);}
+.gb-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+.gb-arrow{font-size:10px;transition:transform .15s;display:inline-block;}
+.gb-arrow.open{transform:rotate(180deg);}
+/* collapsible detail */
+.guide-body{display:none;padding:16px 18px 18px;border-top:1px solid var(--border);}
+.guide-body.open{display:block;}
+.guide-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
+.guide-step{display:flex;flex-direction:column;gap:5px;}
+.gs-num{width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.gs-label{font-size:12px;font-weight:600;color:var(--text);}
+.gs-detail{font-size:11px;color:var(--text-2);line-height:1.55;}
+.guide-note{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);}
+.gn-col-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:8px;}
+.gn-row{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--text-2);line-height:1.5;padding:3px 0;}
+.gn-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+@media(max-width:640px){.guide-steps{grid-template-columns:1fr 1fr;}.guide-note{grid-template-columns:1fr;}.guide-bar{flex-direction:column;align-items:flex-start;}}
+.ctx-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);padding:2px 8px;border-radius:2px;background:var(--raised);border:1px solid var(--border);flex-shrink:0;}
 
-/* Feature rows */
-.feat-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 18px; border-bottom: 1px solid var(--color-border);
-  cursor: pointer; transition: background .08s; user-select: none;
+/* ── Body ── */
+.body{margin-top:18px;padding-bottom:60px;display:grid;grid-template-columns:1fr 248px;gap:18px;align-items:start;}
+
+/* ── Cards ── */
+.card{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:14px;}
+.card:last-child{margin-bottom:0;}
+.card-head{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);}
+
+/* ── Chart row ── */
+.chart-row{display:grid;grid-template-columns:1fr 1.55fr 1fr;gap:14px;margin-bottom:14px;}
+.cc{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;}
+.cc-head{padding:11px 14px 0;}
+.cc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);margin-bottom:2px;}
+.cc-hint{font-size:10px;color:var(--text-3);margin-bottom:10px;}
+.cc-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 14px 10px;}
+.cc-foot{padding:0 14px 12px;display:flex;flex-direction:column;gap:5px;}
+
+/* Donut */
+.donut-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+.donut-wrap canvas{display:block;cursor:pointer;}
+.dleg{display:flex;flex-direction:column;gap:6px;width:100%;}
+.dleg-row{display:flex;align-items:center;gap:7px;cursor:pointer;border-radius:3px;padding:4px 6px;transition:background .08s;user-select:none;}
+.dleg-row:hover{background:var(--surface);}
+.dleg-row.active{background:var(--surface);}
+.dleg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dleg-lbl{font-size:11px;color:var(--text-2);flex:1;}
+.dleg-n{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+
+/* Line */
+.line-wrap{width:100%;position:relative;}
+.line-wrap canvas{display:block;width:100%;}
+.chart-tooltip{position:absolute;background:var(--raised);border:1px solid var(--border);border-radius:3px;padding:6px 10px;font-size:11px;color:var(--text);pointer-events:none;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.line-leg{display:flex;gap:14px;flex-wrap:wrap;}
+.ll-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-3);}
+.ll-swatch{width:16px;height:2px;border-radius:1px;}
+
+/* Bar */
+.bar-total{font-size:28px;font-weight:700;letter-spacing:-1px;color:var(--text);font-variant-numeric:tabular-nums;margin-bottom:8px;line-height:1;}
+.bar-tot-lbl{font-size:11px;color:var(--text-3);margin-bottom:12px;}
+.bar-svg{width:100%;overflow:visible;}
+
+/* ── Scope map ── */
+.sm-legend{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--text-3);flex-wrap:wrap;}
+.sm-leg-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;vertical-align:middle;}
+.sm-body{padding:14px 16px 0;}
+.sm-track-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--text-3);margin-bottom:5px;}
+.sm-row{display:flex;overflow-x:auto;gap:2px;border-radius:3px;margin-bottom:12px;}
+.sm-block{
+  flex-shrink:0;min-height:104px;padding:8px 9px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  cursor:pointer;border-radius:3px;border:1px solid transparent;
+  transition:filter .1s,border-color .1s,opacity .15s;
+  position:relative;overflow:hidden;user-select:none;
 }
-.feat-row:last-of-type { border-bottom: none; }
-.feat-row:hover { background: var(--color-surface); }
-.feat-row.open { background: #EBF4FC; border-left: 3px solid var(--color-primary); padding-left: 15px; }
-.feat-row.open.lf-row { background: #F3EFFE; border-left-color: var(--color-lf); }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.sd-verified { background: var(--color-green); }
-.sd-built { background: var(--color-lf-pale); }
-.feat-id { font-family: 'SFMono-Regular', 'Fira Code', monospace; font-size: 10px; color: var(--color-text-disabled); min-width: 26px; }
-.feat-name { flex: 1; font-size: 13px; color: var(--color-text); }
-.feat-meta { font-size: 11px; color: var(--color-text-disabled); white-space: nowrap; }
-.feat-caret { font-size: 11px; color: var(--color-text-disabled); transition: transform .15s; }
-.feat-row.open .feat-caret { transform: rotate(90deg); }
+.sm-block:hover{filter:brightness(.93);}
+.sm-block.sel{box-shadow:0 0 0 2px var(--sel-c) inset;}
+.sm-block.dim{opacity:.28;}
+.sm-block-as{background:var(--green-bg);border-color:var(--green-bd);--sel-c:var(--navy);}
+.sm-block-lf{background:var(--amber-bg);border-color:var(--amber-bd);--sel-c:var(--lf);}
+.sm-bid{font-family:var(--mono);font-size:8px;font-weight:800;letter-spacing:.04em;padding:2px 4px;border-radius:2px;display:inline-block;align-self:flex-start;}
+.sm-bid-as{color:var(--navy);background:rgba(0,74,109,.1);}
+.sm-bid-lf{color:var(--lf);background:rgba(91,33,182,.1);}
+.sm-bname{font-size:11px;font-weight:600;color:var(--text);line-height:1.25;flex:1;display:flex;align-items:center;padding:4px 0;overflow:hidden;}
+.sm-bname span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.sm-bfoot{display:flex;align-items:center;justify-content:space-between;gap:3px;}
+.sm-pcount{font-size:9px;color:var(--text-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.sm-stat{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 5px;border-radius:2px;}
+.sm-stat-v{color:var(--green);background:var(--green-bg);border:1px solid var(--green-bd);}
+.sm-stat-b{color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-bd);}
+.sm-block.narrow .sm-bname{display:none;}
+.sm-block.narrow .sm-bfoot{display:none;}
 
 /* Detail panel */
-.feat-detail { display: none; padding: 16px 18px; background: var(--color-bg); border-bottom: 1px solid var(--color-border); }
-.feat-detail.open { display: block; }
-.det-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--color-border); }
-.det-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.det-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-disabled); margin-bottom: 8px; }
-.story-li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; padding: 5px 0; border-bottom: 1px solid var(--color-border); }
-.story-li:last-child { border-bottom: none; }
-.s-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-.dec-li { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--color-text-secondary); line-height: 1.45; padding: 5px 0; border-bottom: 1px solid var(--color-border); }
-.dec-li:last-child { border-bottom: none; }
-.dec-code { font-family: 'SFMono-Regular', 'Fira Code', monospace; font-size: 10px; font-weight: 600; min-width: 36px; flex-shrink: 0; padding-top: 1px; }
-.dc-as { color: var(--color-primary-light); }
-.dc-lf { color: var(--color-lf-light); }
-.dc-proc { color: var(--color-green); }
+.sm-detail{display:none;border-top:1px solid var(--border);margin:0 -16px;background:var(--surface);}
+.sm-detail.open{display:block;}
+.fd-inner{padding:16px 16px 18px;}
+.fd-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.fd-name{font-size:14px;font-weight:700;color:var(--text);}
+.fd-meta{display:flex;gap:8px;margin-top:4px;align-items:center;flex-wrap:wrap;}
+.fd-close{font-size:11px;color:var(--text-3);cursor:pointer;background:none;border:1px solid var(--border);padding:3px 10px;border-radius:2px;font-family:var(--font);flex-shrink:0;}
+.fd-close:hover{background:var(--border);color:var(--text);}
+.fd-desc{font-size:12px;color:var(--text-2);line-height:1.65;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.fd-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.fd-col-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:8px;}
+.story-li{display:flex;gap:7px;align-items:flex-start;font-size:12px;color:var(--text-2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border);}
+.story-li:last-child{border-bottom:none;}
+.s-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.dec-li{display:flex;gap:7px;align-items:flex-start;font-size:12px;color:var(--text-2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border);}
+.dec-li:last-child{border-bottom:none;}
+.dec-code{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 5px;border-radius:2px;flex-shrink:0;text-decoration:none;transition:opacity .1s;}
+.dc-a{color:var(--navy);background:rgba(0,74,109,.08);border:1px solid rgba(0,74,109,.2);}
+.dc-l{color:var(--lf);background:rgba(91,33,182,.08);border:1px solid rgba(91,33,182,.2);}
+.dc-p{color:var(--green);background:var(--green-bg);border:1px solid var(--green-bd);}
+.dec-code:hover{opacity:.6;text-decoration:none;}
 
-/* Sidebar */
-.sidebar { display: flex; flex-direction: column; gap: 16px; }
-.side-card { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
-.side-head { padding: 10px 16px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
-.side-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-secondary); }
+/* ── Epic table ── */
+.et-hdr{display:grid;grid-template-columns:32px 38px 1fr 44px 52px 84px;padding:5px 14px 5px 0;border-bottom:1px solid var(--border);background:var(--surface);}
+.et-hdr>div{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);padding-left:8px;}
+.et-hdr>div:first-child{padding-left:12px;}
+.et-hdr>div:last-child{text-align:right;padding-right:12px;}
+.et-row{display:grid;grid-template-columns:32px 38px 1fr 44px 52px 84px;align-items:center;border-bottom:1px solid var(--border);transition:background .08s;}
+.et-row:last-child{border-bottom:none;}
+.et-row:hover{background:var(--surface);}
+.et-row.et-active{background:var(--amber-bg);}
+.et-ic{padding:9px 0 9px 10px;}
+.et-id{padding:9px 4px;}
+.et-id-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text-3);}
+.et-name{padding:8px 6px;}
+.et-main{font-size:12px;font-weight:500;color:var(--text);line-height:1.3;}
+.et-sub{font-size:10px;color:var(--text-3);margin-top:2px;line-height:1.3;}
+.et-track{padding:9px 6px;}
+.et-stories{padding:9px 6px;font-size:12px;font-weight:700;color:var(--text-2);font-variant-numeric:tabular-nums;text-align:right;}
+.et-status{padding:9px 12px 9px 6px;text-align:right;}
+/* ── Sprint sub-tasks (E12) ── */
+.sprint-hdr{display:grid;grid-template-columns:36px 1fr 100px 96px;padding:5px 14px 5px 0;border-bottom:1px solid var(--border);background:var(--surface);}
+.sprint-hdr>div{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);padding-left:10px;}
+.sprint-hdr>div:first-child{padding-left:14px;}
+.sprint-hdr>div:last-child{text-align:right;padding-right:14px;}
+.sprint-row{display:grid;grid-template-columns:36px 1fr 100px 96px;align-items:center;border-bottom:1px solid var(--border);transition:background .08s;}
+.sprint-row:last-child{border-bottom:none;}
+.sprint-row:hover{background:var(--surface);}
+.sr-icw{padding:10px 0 10px 10px;}
+.sr-tw{padding:10px 8px;}
+.sr-name{font-size:12px;font-weight:500;color:var(--text);}
+.sr-id{font-family:var(--mono);font-size:9px;color:var(--text-3);margin-top:2px;}
+.sr-own{font-size:11px;color:var(--text-2);padding:10px 8px;}
+.sr-st{padding:10px 14px 10px 8px;text-align:right;}
+.sp-ic{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;}
+.si-done{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.si-act{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);}
+.si-rdy{background:var(--surface);color:var(--text-3);border:1px solid var(--border);}
+.si-blk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.sp-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:2px;}
+.st-done{background:var(--green-bg);color:var(--green);}
+.st-vrf{background:var(--amber-bg);color:var(--amber);}
+.st-rdy{background:var(--surface);color:var(--text-3);border:1px solid var(--border);}
+.st-blk{background:var(--red-bg);color:var(--red);}
 
-.sprint-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 16px; border-bottom: 1px solid var(--color-border); }
-.sprint-item:last-child { border-bottom: none; }
-.sprint-icon { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-.si-done { background: var(--color-green-bg); color: var(--color-green); border: 1px solid var(--color-green-border); }
-.si-ready { background: var(--color-surface); color: var(--color-text-disabled); border: 1px solid var(--color-border); }
-.si-warn { background: var(--color-amber-bg); color: var(--color-amber); border: 1px solid var(--color-amber-border); }
-.sprint-name { font-size: 12px; font-weight: 500; color: var(--color-text); line-height: 1.35; }
-.sprint-meta { font-size: 10px; color: var(--color-text-disabled); margin-top: 2px; }
+/* ── Attention ── */
+.attn-row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:flex-start;}
+.attn-row:last-child{border-bottom:none;}
+.attn-sev{width:3px;align-self:stretch;border-radius:2px;flex-shrink:0;}
+.sev-r{background:var(--red);}
+.sev-a{background:var(--amber);}
+.attn-ttl{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.attn-dsc{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:6px;}
 
-.attn-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 16px; border-bottom: 1px solid var(--color-border); }
-.attn-item:last-child { border-bottom: none; }
-.attn-marker { width: 3px; border-radius: 2px; align-self: stretch; flex-shrink: 0; background: var(--color-amber); }
-.attn-name { font-size: 12px; font-weight: 500; color: var(--color-text); line-height: 1.35; }
-.attn-sub { font-size: 11px; color: var(--color-text-disabled); margin-top: 2px; line-height: 1.4; }
+/* ── Sidebar ── */
+.sidebar{display:flex;flex-direction:column;gap:14px;}
+.side-card{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.side-head{padding:9px 14px;border-bottom:1px solid var(--border);background:var(--surface);}
+.side-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);}
+.qa-item{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .08s;}
+.qa-item:last-of-type{border-bottom:none;}
+.qa-item:hover{background:var(--surface);text-decoration:none;}
+.qa-icon{width:26px;height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.qi-p{background:var(--navy);color:#fff;}
+.qi-s{background:rgba(80,173,219,.12);color:var(--blue);border:1px solid rgba(80,173,219,.3);}
+.qi-gh{background:var(--surface);color:var(--text-2);border:1px solid var(--border);}
+.qi-doc{background:rgba(21,128,61,.1);color:var(--green);border:1px solid rgba(21,128,61,.2);}
+.qa-text{flex:1;}
+.qa-name{font-size:12px;font-weight:600;color:var(--text);}
+.qa-sub{font-size:10px;color:var(--text-3);margin-top:1px;}
+.cred-sec{padding:9px 14px;background:var(--surface);border-top:1px solid var(--border);font-size:11px;color:var(--text-3);}
+.cred-m{font-family:var(--mono);font-size:12px;color:var(--text-2);}
+.dom-row{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--border);}
+.dom-row:last-of-type{border-bottom:none;}
+.dom-stripe{width:3px;height:26px;border-radius:2px;flex-shrink:0;}
+.dom-info{flex:1;}
+.dom-name{font-size:12px;color:var(--text-2);margin-bottom:4px;}
+.dom-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.dom-fill{height:100%;border-radius:2px;}
+.dom-n{font-size:15px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;min-width:20px;text-align:right;}
+.gh-note{padding:9px 14px;font-size:11px;color:var(--text-3);line-height:1.6;border-top:1px solid var(--border);}
 
-.dom-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-bottom: 1px solid var(--color-border); }
-.dom-item:last-child { border-bottom: none; }
-.dom-name { flex: 1; font-size: 12px; color: var(--color-text-secondary); }
-.dom-bar-wrap { width: 80px; height: 4px; background: var(--color-surface); border-radius: 2px; overflow: hidden; }
-.dom-bar { height: 100%; border-radius: 2px; }
-.dom-count { font-size: 13px; font-weight: 600; color: var(--color-text); min-width: 20px; text-align: right; }
+/* ── Footer ── */
+.footer{border-top:1px solid var(--border);padding:14px 48px 36px;max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);}
 
-/* Roles */
-.roles-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-.role-cell { padding: 8px 12px; border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); font-size: 11px; color: var(--color-text-secondary); }
-.role-cell:nth-child(3n) { border-right: none; }
-.role-cell:nth-last-child(-n+3) { border-bottom: none; }
-.role-org { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-disabled); display: block; margin-bottom: 2px; }
-
-/* Footer */
-.footer { border-top: 2px solid var(--color-primary); padding-top: 20px; margin-top: 36px; display: flex; justify-content: space-between; align-items: flex-start; }
-.footer-left { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
-.footer-right { text-align: right; font-size: 12px; color: var(--color-text-disabled); line-height: 1.6; }
-.footer-right a { color: var(--color-primary-light); text-decoration: none; }
-.footer-right a:hover { text-decoration: underline; }
-
-@media (max-width: 800px) {
-  body { padding: 28px 20px; }
-  .kpi-row { grid-template-columns: repeat(2,1fr); }
-  .body-grid { grid-template-columns: 1fr; }
-  .det-cols { grid-template-columns: 1fr; }
-  .process-flow { flex-wrap: wrap; gap: 10px; }
-  .proc-arrow { display: none; }
-  .footer { flex-direction: column; gap: 10px; }
-  .footer-right { text-align: left; }
+/* ── Responsive ── */
+@media(max-width:640px){
+  .page,.footer{padding-left:18px;padding-right:18px;}
+  .body{grid-template-columns:1fr;}
+  .chart-row{grid-template-columns:1fr;}
+  .fd-cols{grid-template-columns:1fr;}
+  .hdr-inner{flex-direction:column;}
+  .ms-track{grid-template-columns:1fr;gap:4px;}
+  .ms-line{display:none;}
+  .sprint-row{grid-template-columns:36px 1fr 80px;}
+  .sr-own{display:none;}
+  .footer{flex-direction:column;gap:6px;}
+  .sm-body{padding:12px 12px 0;}
+  .sm-detail{margin:0 -12px;}
 }
 </style>
 </head>
 <body>
 
-<div class="eyebrow"><div class="live-dot"></div> Prototype Build · Phase 3 of 4</div>
-<h1>AngelSpan Prototype Dashboard</h1>
-<p class="subtitle">Investor-relations SaaS + Legacy Funds V-TAMP · Build status for engineering handoff</p>
-<p class="header-meta">
-  Last updated: July 15, 2026 &nbsp;·&nbsp;
-  Prototype: <a href="https://angelspan-bridge-flow.lovable.app" target="_blank">angelspan-bridge-flow.lovable.app ↗</a> &nbsp;·&nbsp;
-  Password: <code style="font-family:monospace;font-size:12px;background:var(--color-surface);padding:1px 5px;border-radius:2px;">demo1234</code>
-</p>
-
-<!-- Progress -->
-<div class="progress-wrap">
-  <div class="progress-top">
+<!-- HEADER -->
+<div class="page hdr">
+  <div class="hdr-inner">
     <div>
-      <span class="progress-pct">88%</span>
-      <span style="font-size:15px;color:var(--color-text-secondary);margin-left:8px;">toward engineering handoff</span>
+      <div class="hdr-brand">
+        <div class="brand-mark"><span>AS</span></div>
+        <span class="brand-name">AngelSpan</span>
+        <span class="brand-sep">·</span>
+        <span class="brand-ctx">Working Mock — Build Tracker</span>
+      </div>
+      <h1>Working Mock Build Tracker</h1>
+      <p class="hdr-sub">AngelSpan IR + Legacy Funds &nbsp;·&nbsp; built with Lovable &nbsp;·&nbsp; 12 sprints</p>
+      <div class="hdr-meta">
+        <div class="live-chip"><div class="live-dot"></div>Phase 3 of 4 — UAT &amp; Stabilization</div>
+        <span class="badge b-red" style="font-size:10px;">1 task blocking handoff</span>
+        <span style="font-size:11px;color:var(--text-3);">Updated Jul 15, 2026</span>
+      </div>
     </div>
-    <span class="progress-label">14 / 14 features built &nbsp;·&nbsp; 8 / 14 verified end-to-end</span>
-  </div>
-  <div class="progress-bar">
-    <div class="pb-v" style="width:57%;"></div>
-    <div class="pb-b" style="width:43%;"></div>
-  </div>
-  <div class="progress-legend">
-    <div class="pl"><div class="pl-dot" style="background:var(--color-green);"></div>8 features verified (AngelSpan track)</div>
-    <div class="pl"><div class="pl-dot" style="background:var(--color-lf-pale);"></div>6 features built — E2E verification pending (Legacy Funds track)</div>
-  </div>
-</div>
-
-<!-- KPIs -->
-<div class="kpi-row">
-  <div class="kpi">
-    <div class="kpi-val">14</div>
-    <div class="kpi-label">Features built</div>
-    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:var(--color-primary);"></div></div>
-    <div class="kpi-sub">8 AngelSpan · 6 Legacy Funds · 100% of scope</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val green">8 <span style="font-size:16px;color:var(--color-text-disabled);font-weight:400;">/ 14</span></div>
-    <div class="kpi-label">Verified end-to-end</div>
-    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:57%;background:var(--color-green);"></div></div>
-    <div class="kpi-sub">AngelSpan complete · LF track pending UAT pass</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val">38</div>
-    <div class="kpi-label">Decisions logged</div>
-    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:var(--color-primary-light);"></div></div>
-    <div class="kpi-sub">16 AngelSpan · 17 Legacy Funds · 5 Process</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val warn">3</div>
-    <div class="kpi-label">Open items</div>
-    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:33%;background:var(--color-amber);"></div></div>
-    <div class="kpi-sub">1 prompt unwritten · 5 decision gaps · LF E2E pending</div>
-  </div>
-</div>
-
-<!-- Process -->
-<div class="process-wrap">
-  <div class="section-title">How this project works</div>
-  <div class="process-flow">
-    <div class="proc-step">
-      <div class="proc-icon">📝</div>
-      <div class="proc-name">Specification</div>
-      <div class="proc-who">Adam + Claude (Cowork)</div>
-      <div class="proc-status ps-done">Complete</div>
-    </div>
-    <div class="proc-arrow">›</div>
-    <div class="proc-step">
-      <div class="proc-icon">⚡</div>
-      <div class="proc-name">Prototype build</div>
-      <div class="proc-who">Lovable · Clusters 0–11</div>
-      <div class="proc-status ps-done">Complete</div>
-    </div>
-    <div class="proc-arrow">›</div>
-    <div class="proc-step">
-      <div class="proc-icon">🧪</div>
-      <div class="proc-name">UAT &amp; stabilization</div>
-      <div class="proc-who">Cluster 12 · Internal testers</div>
-      <div class="proc-status ps-active">In progress</div>
-    </div>
-    <div class="proc-arrow">›</div>
-    <div class="proc-step">
-      <div class="proc-icon">🏢</div>
-      <div class="proc-name">Engineering handoff</div>
-      <div class="proc-who">Development partner · TBD</div>
-      <div class="proc-status ps-next">Not started</div>
+    <div style="flex-shrink:0;margin-top:4px;">
+      <a class="btn btn-primary" href="https://angelspan-bridge-flow.lovable.app" target="_blank">Open working mock ↗</a>
     </div>
   </div>
 </div>
 
-<!-- Body -->
-<div class="body-grid">
-  <div>
-
-    <!-- AS track -->
-    <div class="feature-card">
-      <div class="track-head">
-        <div class="track-label">
-          <div class="track-stripe ts-as"></div>
-          <div class="track-name">AngelSpan track</div>
-        </div>
-        <div class="track-badges">
-          <span class="badge badge-as">8 features</span>
-          <span class="badge badge-ok">All verified</span>
-        </div>
-      </div>
-      <div id="as-list"></div>
+<!-- MILESTONE BAR -->
+<div class="page milestones">
+  <div class="ms-track">
+    <div class="ms-node">
+      <div class="ms-circle ms-done">✓</div>
+      <div class="ms-label">Specification</div>
+      <div class="ms-who">Adam + Claude</div>
     </div>
-
-    <!-- LF track -->
-    <div class="feature-card">
-      <div class="track-head">
-        <div class="track-label">
-          <div class="track-stripe ts-lf"></div>
-          <div class="track-name">Legacy Funds track</div>
-        </div>
-        <div class="track-badges">
-          <span class="badge badge-lf">6 features</span>
-          <span class="badge badge-warn">E2E verification pending</span>
-        </div>
-      </div>
-      <div id="lf-list"></div>
+    <div class="ms-line done"></div>
+    <div class="ms-node">
+      <div class="ms-circle ms-done">✓</div>
+      <div class="ms-label">Prototype Build</div>
+      <div class="ms-who">Lovable · 12 sprints</div>
     </div>
+    <div class="ms-line active"></div>
+    <div class="ms-node">
+      <div class="ms-circle ms-active">3</div>
+      <div class="ms-label">UAT &amp; Stabilization</div>
+      <div class="ms-who">Adam + internal testers</div>
+    </div>
+    <div class="ms-line ahead"></div>
+    <div class="ms-node">
+      <div class="ms-circle ms-pending">4</div>
+      <div class="ms-label">Engineering Handoff</div>
+      <div class="ms-who">Dev partner · TBD</div>
+    </div>
+  </div>
+</div>
 
-    <!-- Roles -->
-    <div class="feature-card">
-      <div class="track-head">
-        <div class="track-label">
-          <div class="track-name">Roles covered in prototype</div>
+
+<!-- MOCK DISTINCTION CALLOUT -->
+<div class="page" style="margin-top:14px;">
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:4px;font-size:12px;color:var(--text-2);line-height:1.5;">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;color:var(--amber);"><circle cx="7" cy="7" r="6.5" stroke="currentColor"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <span><strong style="color:var(--amber);">Working clickable mock</strong> — all flows are simulated with no real backend. This is not the Path 2 prototype, which would involve a dev partner engagement with real clients, real data, and real transactions.</span>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="page body">
+<div id="main-col">
+
+  <!-- ACCESS GUIDE -->
+  <div class="guide-card">
+    <div class="guide-bar">
+      <div class="gb-left">
+        <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="font-weight:600;color:var(--blue);font-size:12px;">angelspan-bridge-flow.lovable.app ↗</a>
+        <div class="gb-divider"></div>
+        <span>Password: <span class="gs-code">demo1234</span></span>
+        <div class="gb-divider"></div>
+        <span style="font-size:11px;color:var(--text-3);">MFA: click "Skip — prototype only"</span>
+      </div>
+      <button class="gb-guide-btn" onclick="toggleGuide()" id="gb-guide-btn" aria-expanded="false">
+        <span class="gb-dot"></span>
+        In-mock testing guide
+        <span class="gb-arrow" id="guide-toggle">▾</span>
+      </button>
+    </div>
+    <div class="guide-body" id="guide-body">
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">1</div><div class="gs-label">Open the mock</div></div>
+          <div class="gs-detail">Visit <a href="https://angelspan-bridge-flow.lovable.app" target="_blank">angelspan-bridge-flow.lovable.app ↗</a></div>
+          <div class="gs-detail" style="margin-top:5px;">Password: <span class="gs-code">demo1234</span></div>
         </div>
-        <div class="track-badges">
-          <span class="badge badge-neu">13 roles · 2 E2E workflows</span>
+        <div class="guide-step">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">2</div><div class="gs-label">Bypass MFA</div></div>
+          <div class="gs-detail">At the MFA screen, click <strong>"Skip — prototype only"</strong> to proceed without a real authentication code.</div>
+        </div>
+        <div class="guide-step">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">3</div><div class="gs-label">Choose a track</div></div>
+          <div class="gs-detail"><strong>AngelSpan</strong> — log in as Founder, Performance Analyst, or Admin to explore IR workflows.</div>
+          <div class="gs-detail" style="margin-top:4px;"><strong>Legacy Funds</strong> — log in as GP, LP, or Champion to explore fund management.</div>
+        </div>
+        <div class="guide-step">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">4</div><div class="gs-label">Switch roles</div></div>
+          <div class="gs-detail">Multi-role users (e.g. a Founder who is also an LP) can switch context from the top navigation without logging out.</div>
         </div>
       </div>
-      <div class="roles-grid">
-        <div class="role-cell"><span class="role-org">AngelSpan</span>Founder</div>
-        <div class="role-cell"><span class="role-org">AngelSpan</span>Performance Analyst</div>
-        <div class="role-cell"><span class="role-org">AngelSpan</span>Admin</div>
-        <div class="role-cell"><span class="role-org">AngelSpan</span>Team Member</div>
-        <div class="role-cell"><span class="role-org">AngelSpan</span>Stakeholder (magic link)</div>
-        <div class="role-cell"><span class="role-org">AngelSpan</span>Super Admin</div>
-        <div class="role-cell"><span class="role-org">Legacy Funds</span>LF Admin</div>
-        <div class="role-cell"><span class="role-org">Legacy Funds</span>General Partner</div>
-        <div class="role-cell"><span class="role-org">Legacy Funds</span>Limited Partner</div>
-        <div class="role-cell"><span class="role-org">Legacy Funds</span>Champion</div>
-        <div class="role-cell"><span class="role-org">Multi-role</span>Founder + LP</div>
-        <div class="role-cell"><span class="role-org">UAT</span>New Founder (onboarding)</div>
+      <div class="guide-note">
+        <div>
+          <div class="gn-col-head">What works in the mock</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>End-to-end clickable flows for all 14 features</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>Role-based navigation and access control</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>Simulated data across dashboards, scoring, and reports</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>UAT feedback form on every screen</div>
+        </div>
+        <div>
+          <div class="gn-col-head">What is simulated (not real)</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>Client signups and subscription payments (Stripe)</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>SMART IR score calculations and Bell Mason scoring</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>Stakeholder email delivery and magic links</div>
+          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>GP/LP fund connections and capital transactions</div>
+        </div>
       </div>
     </div>
-
   </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
+  <!-- CHART ROW -->
+  <div class="chart-row">
 
-    <div class="side-card">
-      <div class="side-head">
-        <span class="side-title">Sprint — Cluster 12</span>
-        <span class="badge badge-warn">4 / 5</span>
+    <!-- Donut: build verification -->
+    <div class="cc">
+      <div class="cc-head">
+        <div class="cc-title">Epics</div>
+        <div class="cc-hint">Click to filter scope map</div>
       </div>
-      <div class="sprint-item">
-        <div class="sprint-icon si-done">✓</div>
-        <div><div class="sprint-name">Clean-slate founder accounts</div><div class="sprint-meta">D-039 · C12-A · Verified</div></div>
-      </div>
-      <div class="sprint-item">
-        <div class="sprint-icon si-done">✓</div>
-        <div><div class="sprint-name">Feedback Supabase persistence</div><div class="sprint-meta">D-040 · C12-B · Verified</div></div>
-      </div>
-      <div class="sprint-item">
-        <div class="sprint-icon si-done">✓</div>
-        <div><div class="sprint-name">PA ↔ Founder loop + distribution</div><div class="sprint-meta">D-041 · C12-C · Verification in progress</div></div>
-      </div>
-      <div class="sprint-item">
-        <div class="sprint-icon si-ready">→</div>
-        <div><div class="sprint-name">Champion logout UAT reset</div><div class="sprint-meta">D-043 · C12-D · Ready to send</div></div>
-      </div>
-      <div class="sprint-item">
-        <div class="sprint-icon si-warn">!</div>
-        <div><div class="sprint-name">LF application persistence</div><div class="sprint-meta">D-042 · C12-E · Prompt not yet written</div></div>
-      </div>
-    </div>
-
-    <div class="side-card">
-      <div class="side-head">
-        <span class="side-title">Needs attention</span>
-        <span class="badge badge-warn">3 items</span>
-      </div>
-      <div class="attn-item">
-        <div class="attn-marker"></div>
-        <div>
-          <div class="attn-name">C12-E prompt not written</div>
-          <div class="attn-sub">LF application session persistence — last fix before handoff-ready</div>
+      <div class="cc-body">
+        <div class="donut-wrap">
+          <canvas id="c-donut" style="cursor:pointer;"></canvas>
         </div>
       </div>
-      <div class="attn-item">
-        <div class="attn-marker"></div>
-        <div>
-          <div class="attn-name">5 missing decision IDs</div>
-          <div class="attn-sub">D-021 through D-024 and D-037 are unaccounted for</div>
-        </div>
-      </div>
-      <div class="attn-item">
-        <div class="attn-marker"></div>
-        <div>
-          <div class="attn-name">LF track E2E not started</div>
-          <div class="attn-sub">Features F09–F14 built but not verified end-to-end</div>
+      <div class="cc-foot">
+        <div class="dleg">
+          <div class="dleg-row" id="dleg-done" data-f="done">
+            <span class="dleg-dot" style="background:var(--green);"></span>
+            <span class="dleg-lbl">Epics complete</span>
+            <span class="dleg-n" style="color:var(--green);">11</span>
+          </div>
+          <div class="dleg-row" id="dleg-active" data-f="active">
+            <span class="dleg-dot" style="background:var(--amber);"></span>
+            <span class="dleg-lbl">Active · UAT</span>
+            <span class="dleg-n" style="color:var(--amber);">1</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="side-card">
-      <div class="side-head">
-        <span class="side-title">Decisions by domain</span>
-        <span class="badge badge-neu">38 total</span>
+    <!-- Line: build velocity -->
+    <div class="cc">
+      <div class="cc-head">
+        <div class="cc-title">Build velocity by sprint</div>
+        <div class="cc-hint">Cumulative features + decisions · hover for values</div>
       </div>
-      <div class="dom-item">
+      <div class="cc-body" style="padding-bottom:4px;">
+        <div class="line-wrap">
+          <canvas id="c-line"></canvas>
+          <div id="line-tip" class="chart-tooltip" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="cc-foot" style="padding-top:6px;">
+        <div class="line-leg">
+          <span class="ll-item"><span class="ll-swatch" style="background:var(--navy);"></span>Features (14)</span>
+          <span class="ll-item"><span class="ll-swatch" style="background:var(--lf-l);height:1.5px;"></span>Decisions (38)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar: decision coverage -->
+    <div class="cc">
+      <div class="cc-head">
+        <div class="cc-title">Decisions logged</div>
+        <div class="cc-hint">Architecture choices for the dev team</div>
+      </div>
+      <div class="cc-body" style="align-items:flex-start;">
+        <div class="bar-total">38</div>
+        <div class="bar-tot-lbl">decisions across 3 domains</div>
+        <svg id="svg-bars" class="bar-svg" style="overflow:visible;"></svg>
+      </div>
+      <div class="cc-foot">
+        <div style="font-size:10px;color:var(--text-3);">
+          <a href="https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions" target="_blank">Browse decisions/ on GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /chart-row -->
+
+  <!-- SCOPE MAP -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Project scope map</span>
+      <span class="sm-legend">
+        <span><span class="sm-leg-dot" style="background:var(--green);"></span>Verified E2E</span>
+        <span><span class="sm-leg-dot" style="background:var(--amber);"></span>Built · E2E pending</span>
+        <span style="color:var(--text-3);">Block width = build complexity &nbsp;·&nbsp; Click any block to drill in</span>
+      </span>
+    </div>
+    <div class="sm-body">
+      <div class="sm-track-lbl">AngelSpan — 8 features · 41 build prompts · all verified end-to-end</div>
+      <div class="sm-row" id="sm-as"></div>
+      <div class="sm-track-lbl">Legacy Funds — 6 features · 50 build prompts · built, E2E verification pending</div>
+      <div class="sm-row" id="sm-lf"></div>
+      <div class="sm-detail" id="sm-detail"></div>
+      <div style="height:14px;"></div>
+    </div>
+  </div>
+
+  <!-- EPICS -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">All epics — 12 sprints</span>
+      <span style="font-size:11px;color:var(--text-3);">63 user stories · 38 decisions</span>
+    </div>
+    <div class="et-hdr">
+      <div></div><div>Epic</div><div>Feature(s) delivered</div><div>Track</div><div style="text-align:right;">Stories</div><div>Status</div>
+    </div>
+    <div id="epic-table-body"></div>
+    <!-- E12 sub-tasks -->
+    <div style="border-top:1px solid var(--border);background:var(--surface);padding:6px 14px 4px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);margin-bottom:2px;">E12 sprint tasks</div>
+    </div>
+    <div class="sprint-hdr" style="border-top:none;">
+      <div></div><div>Task</div><div>Owner</div><div>Status</div>
+    </div>
+    <div class="sprint-row">
+      <div class="sr-icw"><div class="sp-ic si-done">✓</div></div>
+      <div class="sr-tw"><div class="sr-name">Clean-slate founder accounts</div><div class="sr-id">Task A</div></div>
+      <div class="sr-own">Adam + Lovable</div>
+      <div class="sr-st"><span class="sp-tag st-done">Verified</span></div>
+    </div>
+    <div class="sprint-row">
+      <div class="sr-icw"><div class="sp-ic si-done">✓</div></div>
+      <div class="sr-tw"><div class="sr-name">Feedback data persistence</div><div class="sr-id">Task B</div></div>
+      <div class="sr-own">Adam + Lovable</div>
+      <div class="sr-st"><span class="sp-tag st-done">Verified</span></div>
+    </div>
+    <div class="sprint-row">
+      <div class="sr-icw"><div class="sp-ic si-act">→</div></div>
+      <div class="sr-tw"><div class="sr-name">PA ↔ Founder review loop</div><div class="sr-id">Task C</div></div>
+      <div class="sr-own">Adam + Lovable</div>
+      <div class="sr-st"><span class="sp-tag st-vrf">Verifying</span></div>
+    </div>
+    <div class="sprint-row">
+      <div class="sr-icw"><div class="sp-ic si-rdy">○</div></div>
+      <div class="sr-tw"><div class="sr-name">Champion logout UAT reset</div><div class="sr-id">Task D</div></div>
+      <div class="sr-own">Adam</div>
+      <div class="sr-st"><span class="sp-tag st-rdy">Ready to send</span></div>
+    </div>
+    <div class="sprint-row">
+      <div class="sr-icw"><div class="sp-ic si-blk">!</div></div>
+      <div class="sr-tw"><div class="sr-name">Fund application session persistence</div><div class="sr-id">Task E · blocking handoff</div></div>
+      <div class="sr-own">Adam</div>
+      <div class="sr-st"><span class="sp-tag st-blk">Blocked</span></div>
+    </div>
+  </div>
+
+  <!-- ATTENTION -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Needs attention before handoff</span>
+      <span class="badge b-amber">3 items</span>
+    </div>
+    <div class="attn-row">
+      <div class="attn-sev sev-r"></div>
+      <div>
+        <div class="attn-ttl">Fund application data doesn't survive page reload</div>
+        <div class="attn-dsc">The Lovable build prompt for this fix has not been drafted. The fix strategy is documented — this prompt needs to be written and sent before the prototype is handoff-ready.</div>
+        <span class="badge b-red">Blocking handoff</span>
+      </div>
+    </div>
+    <div class="attn-row">
+      <div class="attn-sev sev-a"></div>
+      <div>
+        <div class="attn-ttl">5 decision IDs missing from the log — gaps at D-021 through D-024 and D-037</div>
+        <div class="attn-dsc">Before handoff: confirm whether these decisions were never written, captured under different IDs, or superseded. A gap in the decision log means the dev team is missing reasoning they'll need.</div>
+        <span class="badge b-amber">Action required</span>
+      </div>
+    </div>
+    <div class="attn-row">
+      <div class="attn-sev sev-a"></div>
+      <div>
+        <div class="attn-ttl">Legacy Funds end-to-end verification not started</div>
+        <div class="attn-dsc">All 6 Legacy Funds features are built and running in the prototype but haven't been walked end-to-end. UAT round 2 should trace the full flow: fund creation → GP assignment → founder application → Champion review → LP dashboard.</div>
+        <span class="badge b-amber">Action required</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-col -->
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+  <div class="side-card">
+    <div class="side-head"><div class="side-title">Quick access</div></div>
+    <a class="qa-item" href="https://angelspan-bridge-flow.lovable.app" target="_blank">
+      <div class="qa-icon qi-p">AS</div>
+      <div class="qa-text"><div class="qa-name">Open working mock</div><div class="qa-sub">angelspan-bridge-flow.lovable.app</div></div>
+      <span style="color:var(--text-3);font-size:12px;">↗</span>
+    </a>
+    <a class="qa-item" href="path2_prototype_validate.html">
+      <div class="qa-icon qi-s">P2</div>
+      <div class="qa-text"><div class="qa-name">Path 2 — Validate first</div><div class="qa-sub">Funding path analysis</div></div>
+      <span style="color:var(--text-3);font-size:12px;">→</span>
+    </a>
+    <a class="qa-item" href="path1_full_build.html">
+      <div class="qa-icon qi-s">P1</div>
+      <div class="qa-text"><div class="qa-name">Path 1 — Full build</div><div class="qa-sub">Full platform scope</div></div>
+      <span style="color:var(--text-3);font-size:12px;">→</span>
+    </a>
+    <a class="qa-item" href="https://github.com/angelspan-platform/angelspan-platform" target="_blank">
+      <div class="qa-icon qi-gh">GH</div>
+      <div class="qa-text"><div class="qa-name">GitHub repository</div><div class="qa-sub">Specs, decisions, source</div></div>
+      <span style="color:var(--text-3);font-size:12px;">↗</span>
+    </a>
+    <a class="qa-item" href="https://docs.google.com/document/d/10DR3-uz90S8FfMLpEqqElgK4csjuOncVRAnm-62KC2E/edit?usp=drive_link" target="_blank">
+      <div class="qa-icon qi-doc">DOC</div>
+      <div class="qa-text"><div class="qa-name">Prototype assumptions</div><div class="qa-sub">Google Doc · design decisions</div></div>
+      <span style="color:var(--text-3);font-size:12px;">↗</span>
+    </a>
+    <div class="cred-sec">
+      Test password &nbsp;<span class="cred-m">demo1234</span>
+      <div style="font-size:10px;margin-top:2px;">MFA: click "Skip — prototype only"</div>
+    </div>
+  </div>
+
+  <div class="side-card">
+    <div class="side-head"><div class="side-title">Decisions by domain</div></div>
+    <div class="dom-row">
+      <div class="dom-stripe" style="background:var(--navy);"></div>
+      <div class="dom-info">
         <div class="dom-name">AngelSpan platform</div>
-        <div class="dom-bar-wrap"><div class="dom-bar" style="width:42%;background:var(--color-primary);"></div></div>
-        <div class="dom-count">16</div>
+        <div class="dom-bar"><div class="dom-fill" style="width:42%;background:var(--navy);"></div></div>
       </div>
-      <div class="dom-item">
+      <div class="dom-n">16</div>
+    </div>
+    <div class="dom-row">
+      <div class="dom-stripe" style="background:var(--lf);"></div>
+      <div class="dom-info">
         <div class="dom-name">Legacy Funds</div>
-        <div class="dom-bar-wrap"><div class="dom-bar" style="width:45%;background:var(--color-lf);"></div></div>
-        <div class="dom-count">17</div>
+        <div class="dom-bar"><div class="dom-fill" style="width:45%;background:var(--lf);"></div></div>
       </div>
-      <div class="dom-item">
+      <div class="dom-n">17</div>
+    </div>
+    <div class="dom-row">
+      <div class="dom-stripe" style="background:var(--green);"></div>
+      <div class="dom-info">
         <div class="dom-name">Process &amp; engineering</div>
-        <div class="dom-bar-wrap"><div class="dom-bar" style="width:13%;background:var(--color-green);"></div></div>
-        <div class="dom-count">5</div>
+        <div class="dom-bar"><div class="dom-fill" style="width:13%;background:var(--green);"></div></div>
       </div>
+      <div class="dom-n">5</div>
     </div>
-
-    <div class="side-card">
-      <div class="side-head"><span class="side-title">Quick access</span></div>
-      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
-        <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="display:block;text-align:center;padding:8px;background:var(--color-primary);color:#fff;border-radius:3px;font-size:13px;font-weight:600;text-decoration:none;">Open prototype ↗</a>
-        <a href="path2_prototype_validate.html" style="display:block;text-align:center;padding:8px;background:var(--color-surface);color:var(--color-primary);border:1px solid var(--color-border);border-radius:3px;font-size:13px;font-weight:500;text-decoration:none;">Path 2 — Validate first ↗</a>
-        <a href="path1_full_build.html" style="display:block;text-align:center;padding:8px;background:var(--color-surface);color:var(--color-primary);border:1px solid var(--color-border);border-radius:3px;font-size:13px;font-weight:500;text-decoration:none;">Path 1 — Full build ↗</a>
-      </div>
-      <div style="padding:0 16px 12px;font-size:11px;color:var(--color-text-disabled);line-height:1.6;">
-        Test password: <code style="font-family:monospace;background:var(--color-surface);padding:1px 4px;border-radius:2px;">demo1234</code><br>
-        MFA: click "Skip — prototype only"
-      </div>
-    </div>
-
+    <div class="gh-note">Click any decision badge in a feature to browse the <a href="https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions" target="_blank">decisions/ folder ↗</a></div>
   </div>
-</div>
 
-<!-- Footer -->
+</div><!-- /sidebar -->
+</div><!-- /body -->
+
 <div class="footer">
-  <div class="footer-left">
-    <strong>AngelSpan</strong> investor-relations platform &amp; Legacy Funds V-TAMP<br>
-    Prototype build dashboard · Phase 3 of 4
-  </div>
-  <div class="footer-right">
-    Built with Lovable · Specifications by Claude (Cowork)<br>
-    <a href="mailto:adam@angelspan.com">adam@angelspan.com</a>
-  </div>
+  <span>AngelSpan investor-relations + Legacy Funds V-TAMP &nbsp;·&nbsp; Working Mock — Build Tracker</span>
+  <span>Spec: Claude &nbsp;·&nbsp; Build: Lovable &nbsp;·&nbsp; <a href="mailto:adam@angelspan.com">adam@angelspan.com</a></span>
 </div>
 
 <script>
+/* ── helpers ── */
+const GH = 'https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions';
+function cv(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+function toggleGuide(){
+  const body = document.getElementById('guide-body');
+  const btn  = document.getElementById('gb-guide-btn');
+  const arr  = document.getElementById('guide-toggle');
+  const open = body.classList.toggle('open');
+  arr.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ── data ── */
 const DECS = {
-  'D-003':{ t:'Auth — two URLs, one Supabase backend', c:'as' },
-  'D-004':{ t:'Stakeholder phases — magic link → portal', c:'as' },
-  'D-005':{ t:'Founder onboarding wizard requirements', c:'as' },
-  'D-006':{ t:'Slide-out pattern + monthly update consolidation', c:'as' },
-  'D-007':{ t:'Artifact lifecycle — Draft → Distributed', c:'as' },
-  'D-008':{ t:'PA read-only stakeholder access', c:'as' },
-  'D-009':{ t:'Founder self-service signup — no ghost records', c:'as' },
-  'D-010':{ t:'Shared stakeholder roster + engagement components', c:'as' },
-  'D-011':{ t:'Lovable prompt standard — prose + schema, no code', c:'proc' },
-  'D-012':{ t:'Stripe billing — Elements, Portal, webhooks', c:'as' },
-  'D-013':{ t:'UAT feedback process — triage lifecycle + rounds', c:'proc' },
-  'D-014':{ t:'Fund entity structure (prototype representation)', c:'lf' },
-  'D-015':{ t:'LP accreditation workflow', c:'lf' },
-  'D-016':{ t:'Capital calls and distributions', c:'lf' },
-  'D-017':{ t:'Prototype-to-production handoff strategy', c:'proc' },
-  'D-018':{ t:'Multiple GPs per fund', c:'lf' },
-  'D-019':{ t:'Champion workflow', c:'lf' },
-  'D-020':{ t:'Fund formation application (deferred)', c:'lf' },
-  'D-025':{ t:'LP management scope', c:'lf' },
-  'D-026':{ t:'GP-to-LP reporting via platform', c:'lf' },
-  'D-027':{ t:'Champion management scope', c:'lf' },
-  'D-028':{ t:'Fund eligibility filtering', c:'lf' },
-  'D-029':{ t:'Multi-fund application model', c:'lf' },
-  'D-030':{ t:'Champion application review — self-select pool', c:'lf' },
-  'D-031':{ t:'Intelligence plan as LF admission obligation', c:'lf' },
-  'D-032':{ t:'PA is the only internal staff role (CRA/CC retired)', c:'as' },
-  'D-033':{ t:'Bubble chart temporal animation', c:'as' },
-  'D-034':{ t:'GP dashboard fund filter', c:'lf' },
-  'D-035':{ t:'Shared company detail components', c:'as' },
-  'D-036':{ t:'Fund administrator portal links', c:'lf' },
-  'D-038':{ t:'Capital tracking model for Legacy Funds', c:'lf' },
-  'D-039':{ t:'Clean slate for new founder accounts', c:'as' },
-  'D-040':{ t:'Feedback Supabase persistence fix', c:'proc' },
-  'D-041':{ t:'PA distribution action', c:'as' },
-  'D-042':{ t:'LF application cross-session persistence', c:'lf' },
-  'D-043':{ t:'UAT end-to-end test designations + demo reset', c:'proc' },
+  'D-003':{ t:'Auth — two URLs, one Supabase backend', c:'a' },
+  'D-004':{ t:'Stakeholder phases — magic link → portal', c:'a' },
+  'D-005':{ t:'Founder onboarding wizard requirements', c:'a' },
+  'D-006':{ t:'Slide-out pattern + monthly update consolidation', c:'a' },
+  'D-007':{ t:'Artifact lifecycle — Draft → Distributed', c:'a' },
+  'D-008':{ t:'PA read-only stakeholder access', c:'a' },
+  'D-009':{ t:'Founder self-service signup — no ghost records', c:'a' },
+  'D-010':{ t:'Shared stakeholder roster + engagement components', c:'a' },
+  'D-011':{ t:'Lovable prompt standard — prose + schema, no code', c:'p' },
+  'D-012':{ t:'Stripe billing — Elements, Portal, webhooks', c:'a' },
+  'D-013':{ t:'UAT feedback process — triage lifecycle + rounds', c:'p' },
+  'D-014':{ t:'Fund entity structure (prototype representation)', c:'l' },
+  'D-015':{ t:'LP accreditation workflow', c:'l' },
+  'D-016':{ t:'Capital calls and distributions', c:'l' },
+  'D-017':{ t:'Prototype-to-production handoff strategy', c:'p' },
+  'D-018':{ t:'Multiple GPs per fund', c:'l' },
+  'D-019':{ t:'Champion workflow', c:'l' },
+  'D-020':{ t:'Fund formation application (deferred)', c:'l' },
+  'D-025':{ t:'LP management scope', c:'l' },
+  'D-026':{ t:'GP-to-LP reporting via platform', c:'l' },
+  'D-027':{ t:'Champion management scope', c:'l' },
+  'D-028':{ t:'Fund eligibility filtering', c:'l' },
+  'D-029':{ t:'Multi-fund application model', c:'l' },
+  'D-030':{ t:'Champion application review — self-select pool', c:'l' },
+  'D-031':{ t:'Intelligence plan as LF admission obligation', c:'l' },
+  'D-032':{ t:'PA is the only internal staff role (CRA/CC retired)', c:'a' },
+  'D-033':{ t:'Bubble chart temporal animation', c:'a' },
+  'D-034':{ t:'GP dashboard fund filter', c:'l' },
+  'D-035':{ t:'Shared company detail components', c:'a' },
+  'D-036':{ t:'Fund administrator portal links', c:'l' },
+  'D-038':{ t:'Capital tracking model for Legacy Funds', c:'l' },
+  'D-039':{ t:'Clean slate for new founder accounts', c:'a' },
+  'D-040':{ t:'Feedback Supabase persistence fix', c:'p' },
+  'D-041':{ t:'PA distribution action', c:'a' },
+  'D-042':{ t:'LF application cross-session persistence', c:'l' },
+  'D-043':{ t:'UAT end-to-end test designations + demo reset', c:'p' },
 };
 
-const FEATURES = [
-  { id:'F01', name:'Authentication & login', track:'as', status:'verified', w:2,
-    desc:'Two-brand login, MFA screen, role-based routing, and context switcher for multi-role users.',
-    stories:['Correct branded login (AngelSpan vs Legacy Funds) determined by URL','MFA screen on every login; prototype bypass via "Skip — prototype only"','Context switcher for users holding multiple roles — no re-login required','Forgot password and credential reset accessible from login'],
-    decs:['D-003','D-004'] },
-  { id:'F02', name:'Founder workspace', track:'as', status:'verified', w:5,
-    desc:'Full founder experience: onboarding, dashboard, company profile, stakeholders, updates, announcements, and engagement.',
-    stories:['Onboarding wizard (company name, vision/mission, one stakeholder)','Dashboard: activity bar, quick-update entry, notifications, stakeholder summary','Company profile: logo, highlight color, vision/mission, team, advisors','Stakeholders: CRUD, sensitive-access flag, CSV import/export','Monthly updates through Submission → PA Review → Approved → Waiting phases','Engagement analytics by publication (bar chart) and by stakeholder (table)'],
-    decs:['D-005','D-006','D-009','D-010','D-039'] },
-  { id:'F03', name:'Publications engine', track:'as', status:'verified', w:4,
-    desc:'Unified lifecycle for all publication types with PA priority queue and artifact state management.',
-    stories:['All publication types share one lifecycle: Draft → Distributed (locked)','Corrections create a superseding document — full history preserved','PA unified priority queue across all clients, filtered by type and urgency','Announcement review slide-out: edit content, select recipient group, note founder'],
-    decs:['D-007','D-008'] },
-  { id:'F04', name:'Stakeholder delivery & engagement', track:'as', status:'verified', w:5,
-    desc:'Magic link stakeholder portal, delivery simulation, and multi-view engagement analytics.',
-    stories:['Stakeholders receive publications via unique magic link — no login required','Stakeholder portal: history, frequency preferences, unsubscribe','Delivery simulation generates mock open events on PA distribute action','Founder sees engagement by publication (bar chart) and by stakeholder (table)'],
-    decs:['D-004','D-008','D-010'] },
-  { id:'F05', name:'PA analyst workspace', track:'as', status:'verified', w:9,
-    desc:'Full PA experience: portfolio management, SMART IR scoring, publication review, tear sheet authoring, and portfolio analytics.',
-    stories:['Unified client list across all assigned clients, tagged by fund association','Client detail: 6 tabs — Overview, Publications, Scoring, Tear Sheet, History, Stakeholders','SMART IR scoring entry across 5 categories and 4 stages','Announcement review via 680px slide-out; request changes or compile and forward','Bubble chart: portfolio in score × stage space with temporal animation','PA initiates distribution from Publications tab after founder approval'],
-    decs:['D-006','D-007','D-008','D-032','D-033','D-035','D-041'] },
-  { id:'F06', name:'Subscription tiers & billing', track:'as', status:'verified', w:4,
-    desc:'Three-tier plan system with feature gating, plan badges, and PDF download.',
-    stories:['Essentials ($249/mo): updates, announcements, stakeholder management, send prior','Insights ($399/mo): adds SMART IR dashboard and tear sheet PDF download','Intelligence ($599/mo): adds quarterly reports and priority PA support','Plan badge on PA client list and founder profile; upgrade prompt for Essentials at SMART IR'],
-    decs:['D-012'] },
-  { id:'F07', name:'Client lifecycle', track:'as', status:'verified', w:3,
-    desc:'Self-service founder signup, onboarding wizard, and admin PA-assignment confirmation flow.',
-    stories:['Founders sign up at /signup without admin pre-creation (4 steps)','Signup queues client record for PA assignment confirmation','Admin confirms PA from New Signups queue on the admin dashboard','Admin can archive, reassign PA, or change plan for any client'],
-    decs:['D-005','D-009'] },
-  { id:'F08', name:'AngelSpan admin suite', track:'as', status:'verified', w:9,
-    desc:'Full admin operations: client and user management, billing oversight, audit log, and feedback queue.',
-    stories:['Dashboard KPIs: active clients, MRR, pending assignments, failed payments, unreviewed feedback','User management: invite/deactivate PAs; reset credentials or suspend founders','Billing screen: MRR by plan, per-client status, invoice history, coupon management','Audit log: all platform actions with actor, action, target, and timestamp'],
-    decs:['D-012','D-013','D-040'] },
-  { id:'F09', name:'Legacy Funds admin', track:'lf', status:'built', w:7,
-    desc:'LF Admin control plane: fund creation and management, GP/Champion assignment, LP application queue.',
-    stories:['Create funds with name, sponsor, theme, target raise, and QSBS strategy','GPs assigned to funds; Champions assigned to specific portfolio companies','LP application queue with accreditation status management','Fund administrator portal links connect to external cap-table systems per fund'],
-    decs:['D-014','D-015','D-018','D-020','D-036'] },
-  { id:'F10', name:'GP portfolio management', track:'lf', status:'built', w:11,
-    desc:'GP workspace: multi-fund portfolio view, fund filter, bubble chart, Champion management, and LP reporting.',
-    stories:['Portfolio companies with SMART IR scores, stage, and Champion assignment','Fund filter pills for multi-fund GPs to switch context without logging out','Bubble chart: portfolio in score × stage space with 28-month temporal animation','GP composes and distributes quarterly LP reports (narrative + portfolio summary)'],
-    decs:['D-019','D-026','D-027','D-034','D-035','D-038'] },
-  { id:'F11', name:'Founder → fund application', track:'lf', status:'built', w:8,
-    desc:'Founder applies to join a Legacy Fund via eligibility wizard, Champion review, and GP admission decision.',
-    stories:['Intelligence plan required to initiate a fund application','Eligibility wizard gates on stage, sector, geography, and SMART IR score','Champion pool self-selects; first to open an application locks it to them','GP reviews Champion recommendation and grants or denies admission','Application status on founder dashboard with notification toasts'],
-    decs:['D-028','D-029','D-030','D-031','D-042'] },
-  { id:'F12', name:'SMART IR analytics', track:'lf', status:'built', w:9,
-    desc:'SMART IR visual layer: arc chart, trajectory chart, portfolio bubble chart, and annotated copy spec.',
-    stories:['Arc chart: current SMART IR score across 5 Bell Mason categories','Trajectory chart: score progression by quarter and stage','Bubble chart: portfolio in score × stage space with temporal animation','All tooltips and annotations sourced from the canonical copy spec'],
-    decs:['D-033','D-035'] },
-  { id:'F13', name:'LP investor portal', track:'lf', status:'built', w:8,
-    desc:'LP dashboard: fund holdings, portfolio company view with SMART IR, QSBS calculator, and fund admin links.',
-    stories:['Fund holdings with commitment amounts, vintage, and capital call history','Portfolio companies: name, stage, read-only SMART IR and Transparency Tell scores','QSBS Benefit Calculator for modeling after-tax performance advantage','Fund administrator portal links connect to external admin portals per fund'],
-    decs:['D-015','D-016','D-025','D-036','D-038'] },
-  { id:'F14', name:'UAT stabilization', track:'lf', status:'built', w:7,
-    desc:'UAT-round fixes: clean slate accounts, Supabase feedback persistence, PA distribution, Champion reset, E2E designations.',
-    stories:['New founder accounts start with no pre-loaded test data (clean slate)','Feedback submissions persist across sessions via Supabase','PA distribution with correct confirmation and lock-state behavior','Champion logout auto-resets Acme/Heartland demo for repeatable UAT','LF application data persistence across page reloads (C12-E pending)'],
-    decs:['D-011','D-013','D-017','D-043'] },
+const FEATS = [
+  { id:'F01', name:'Authentication & login', track:'as', status:'verified', prompts:2, desc:'Two-brand login, MFA screen, role-based routing, and context switcher for multi-role users.', stories:['Branded login determined by URL — AngelSpan vs Legacy Funds','MFA screen on every login; prototype bypass available','Context switcher for multi-role users — no re-login required','Forgot password and credential reset from login screen'], decs:['D-003','D-004'] },
+  { id:'F02', name:'Founder workspace', track:'as', status:'verified', prompts:5, desc:'Full founder experience: onboarding wizard, dashboard, company profile, stakeholders, monthly updates, and engagement analytics.', stories:['Onboarding wizard: company name, vision/mission, one stakeholder','Dashboard: activity bar, quick-update entry, notifications, stakeholder summary','Company profile: logo, highlight color, vision/mission, team, advisors','Stakeholders: CRUD, sensitive-access flag, CSV import/export','Monthly updates: Submission → PA Review → Approved phases','Engagement analytics by publication and by stakeholder'], decs:['D-005','D-006','D-009','D-010','D-039'] },
+  { id:'F03', name:'Publications engine', track:'as', status:'verified', prompts:4, desc:'Unified lifecycle for all publication types with PA priority queue and artifact state management.', stories:['All publication types share one lifecycle: Draft → Distributed (locked)','Corrections create a superseding document — full history preserved','PA unified priority queue across all clients, filtered by type and urgency','Announcement review slide-out: edit content, select recipients, note founder'], decs:['D-007','D-008'] },
+  { id:'F04', name:'Stakeholder delivery', track:'as', status:'verified', prompts:5, desc:'Magic link stakeholder portal, delivery simulation, and multi-view engagement analytics.', stories:['Stakeholders receive publications via unique magic link — no login required','Stakeholder portal: history, frequency preferences, unsubscribe','Delivery simulation generates mock open events on distribute','Engagement visible by publication (bar chart) and by stakeholder (table)'], decs:['D-004','D-008','D-010'] },
+  { id:'F05', name:'PA analyst workspace', track:'as', status:'verified', prompts:9, desc:'Full PA experience: portfolio management, SMART IR scoring, publication review, tear sheet authoring, and portfolio analytics.', stories:['Unified client list across all assigned clients, tagged by fund','Client detail: 6 tabs — Overview, Publications, Scoring, Tear Sheet, History, Stakeholders','SMART IR scoring entry across 5 categories and 4 stages','Announcement review via slide-out; request changes or forward','Bubble chart: portfolio in score × stage space with temporal animation','PA initiates distribution after founder approval'], decs:['D-006','D-007','D-008','D-032','D-033','D-035','D-041'] },
+  { id:'F06', name:'Subscription & billing', track:'as', status:'verified', prompts:4, desc:'Three-tier plan system with feature gating, plan badges, and PDF download.', stories:['Essentials ($249/mo): updates, announcements, stakeholder management','Insights ($399/mo): adds SMART IR dashboard and tear sheet PDF download','Intelligence ($599/mo): adds quarterly reports and priority PA support','Plan badge on PA client list; upgrade prompt for Essentials at SMART IR'], decs:['D-012'] },
+  { id:'F07', name:'Client lifecycle', track:'as', status:'verified', prompts:3, desc:'Self-service founder signup, onboarding wizard, and admin PA-assignment confirmation flow.', stories:['Founders sign up without admin pre-creation (4-step flow)','Signup queues client record for PA assignment confirmation','Admin confirms PA from New Signups queue','Admin can archive, reassign PA, or change plan for any client'], decs:['D-005','D-009'] },
+  { id:'F08', name:'AngelSpan admin', track:'as', status:'verified', prompts:9, desc:'Full admin operations: client and user management, billing oversight, audit log, and feedback queue.', stories:['Dashboard KPIs: active clients, MRR, pending assignments, failed payments','User management: invite/deactivate PAs; reset or suspend founders','Billing: MRR by plan, per-client status, invoice history','Audit log: all platform actions with actor, action, target, and timestamp'], decs:['D-012','D-013','D-040'] },
+  { id:'F09', name:'Legacy Funds admin', track:'lf', status:'built', prompts:7, desc:'LF Admin control plane: fund creation and management, GP/Champion assignment, LP application queue.', stories:['Create funds with name, sponsor, theme, target raise, and QSBS strategy','GPs assigned to funds; Champions assigned to specific portfolio companies','LP application queue with accreditation status management','Fund administrator portal links per fund'], decs:['D-014','D-015','D-018','D-020','D-036'] },
+  { id:'F10', name:'GP portfolio management', track:'lf', status:'built', prompts:11, desc:'GP workspace: multi-fund portfolio view, fund filter, bubble chart, Champion management, and LP reporting.', stories:['Portfolio companies with SMART IR scores, stage, and Champion assignment','Fund filter pills for multi-fund GPs — no re-login required','Bubble chart: portfolio in score × stage space with temporal animation','GP composes and distributes quarterly LP reports'], decs:['D-019','D-026','D-027','D-034','D-035','D-038'] },
+  { id:'F11', name:'Fund application', track:'lf', status:'built', prompts:8, desc:'Founder applies to join a Legacy Fund via eligibility wizard, Champion review, and GP admission decision.', stories:['Intelligence plan required to initiate a fund application','Eligibility wizard gates on stage, sector, geography, and SMART IR score','Champion pool self-selects; first to open locks the application','GP reviews Champion recommendation and grants or denies admission'], decs:['D-028','D-029','D-030','D-031','D-042'] },
+  { id:'F12', name:'SMART IR analytics', track:'lf', status:'built', prompts:9, desc:'SMART IR visual layer: arc chart, trajectory chart, portfolio bubble chart, and annotated copy spec.', stories:['Arc chart: current SMART IR score across 5 Bell Mason categories','Trajectory chart: score progression by quarter and stage','Bubble chart: portfolio in score × stage space with temporal animation','All tooltips and annotations from the canonical copy spec'], decs:['D-033','D-035'] },
+  { id:'F13', name:'LP investor portal', track:'lf', status:'built', prompts:8, desc:'LP dashboard: fund holdings, portfolio with SMART IR scores, QSBS calculator, and fund admin links.', stories:['Fund holdings with commitment amounts, vintage, and capital call history','Portfolio companies: stage, read-only SMART IR and Transparency Tell scores','QSBS Benefit Calculator for modeling after-tax performance advantage','Fund administrator portal links per fund'], decs:['D-015','D-016','D-025','D-036','D-038'] },
+  { id:'F14', name:'UAT stabilization', track:'lf', status:'built', prompts:7, desc:'Final UAT-round fixes: clean slate accounts, data persistence, PA distribution flow, Champion demo reset.', stories:['New founder accounts start with no pre-loaded test data','Feedback submissions persist across sessions via Supabase','PA distribution with correct confirmation and lock-state behavior','Champion logout auto-resets demo for repeatable UAT'], decs:['D-011','D-013','D-017','D-043'] },
 ];
 
-let openId = null;
+/* Sprint data for line chart — cumulative by sprint */
+const SPRINTS = [
+  { id:'Sprint 1', cf:1,  cd:4  },
+  { id:'Sprint 2', cf:2,  cd:8  },
+  { id:'Sprint 3', cf:3,  cd:10 },
+  { id:'Sprint 4', cf:4,  cd:11 },
+  { id:'Sprint 5', cf:5,  cd:16 },
+  { id:'Sprint 6', cf:6,  cd:17 },
+  { id:'Sprint 7', cf:7,  cd:17 },
+  { id:'Sprint 8', cf:8,  cd:18 },
+  { id:'Sprint 9', cf:9,  cd:23 },
+  { id:'Sprint 10',cf:12, cd:32 },
+  { id:'Sprint 11',cf:13, cd:33 },
+  { id:'Sprint 12',cf:14, cd:38 },
+];
 
-function buildRows(containerId, features) {
-  const container = document.getElementById(containerId);
-  features.forEach(f => {
-    const isLF = f.track === 'lf';
-    const dotColor = isLF ? 'var(--color-lf-pale)' : 'var(--color-primary)';
+const EPICS = [
+  { id:'E01', feats:['F01'], name:'Authentication & login',                       stories:4,  track:'as', status:'done' },
+  { id:'E02', feats:['F02'], name:'Founder workspace',                            stories:6,  track:'as', status:'done' },
+  { id:'E03', feats:['F03'], name:'Publications engine',                          stories:4,  track:'as', status:'done' },
+  { id:'E04', feats:['F04'], name:'Stakeholder delivery',                         stories:4,  track:'as', status:'done' },
+  { id:'E05', feats:['F05'], name:'PA analyst workspace',                         stories:6,  track:'as', status:'done' },
+  { id:'E06', feats:['F06'], name:'Subscription & billing',                       stories:4,  track:'as', status:'done' },
+  { id:'E07', feats:['F07'], name:'Client lifecycle',                             stories:4,  track:'as', status:'done' },
+  { id:'E08', feats:['F08'], name:'AngelSpan admin',                              stories:4,  track:'as', status:'done' },
+  { id:'E09', feats:['F09'], name:'Legacy Funds admin',                           stories:5,  track:'lf', status:'done' },
+  { id:'E10', feats:['F10','F11','F12'], name:'GP portal · Fund application · SMART IR analytics', stories:13, track:'lf', status:'done' },
+  { id:'E11', feats:['F13'], name:'LP investor portal',                           stories:5,  track:'lf', status:'done' },
+  { id:'E12', feats:['F14'], name:'UAT stabilization',                            stories:4,  track:'lf', status:'active' },
+];
 
-    const row = document.createElement('div');
-    row.className = 'feat-row' + (isLF ? ' lf-row' : '');
-    row.dataset.id = f.id;
-    row.innerHTML = `
-      <div class="status-dot ${f.status === 'verified' ? 'sd-verified' : 'sd-built'}"></div>
-      <div class="feat-id">${f.id}</div>
-      <div class="feat-name">${f.name}</div>
-      <div class="feat-meta">${f.w} prompts · ${f.decs.length} decisions</div>
-      <div class="feat-caret">›</div>
-    `;
+/* ── state ── */
+let activeFilter = null;
+let activeFeatId = null;
+let lineHoverI  = -1;
 
-    const detail = document.createElement('div');
-    detail.className = 'feat-detail';
+/* ── DONUT CHART ── */
+function drawDonut(){
+  const canvas = document.getElementById('c-donut');
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  const S = 130;
+  canvas.width = S*dpr; canvas.height = S*dpr;
+  canvas.style.width = S+'px'; canvas.style.height = S+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,S,S);
 
-    const stories = f.stories.map(s =>
-      `<div class="story-li"><div class="s-dot" style="background:${dotColor}"></div><span>${s}</span></div>`
-    ).join('');
+  const cx=S/2, cy=S/2, R=54, r=34;
+  const segs=[
+    { v:11, color:'#15803D', id:'done' },
+    { v:1,  color:'#B45309', id:'active' },
+  ];
+  const total=12;
+  const gap=0.04;
+  let angle = -Math.PI/2;
 
-    const decs = f.decs.map(id => {
-      const d = DECS[id] || { t: 'Decision details pending', c: 'as' };
-      return `<div class="dec-li"><span class="dec-code dc-${d.c}">${id}</span><span>${d.t}</span></div>`;
-    }).join('');
+  segs.forEach(seg=>{
+    const sweep = (seg.v/total)*2*Math.PI - gap;
+    const isActive = !activeFilter || activeFilter===seg.id;
+    const outerR = (activeFilter===seg.id) ? R+4 : R;
+    ctx.beginPath();
+    ctx.arc(cx,cy,outerR, angle+gap/2, angle+gap/2+sweep);
+    ctx.arc(cx,cy,r,      angle+gap/2+sweep, angle+gap/2, true);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.globalAlpha = isActive ? 1 : 0.35;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    angle += sweep+gap;
+  });
 
-    detail.innerHTML = `
-      <div class="det-desc">${f.desc}</div>
-      <div class="det-cols">
-        <div><div class="det-head">User stories</div>${stories}</div>
-        <div><div class="det-head">Architecture decisions</div>${decs}</div>
-      </div>
-    `;
+  // center
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle = cv('--text');
+  ctx.font = `700 22px -apple-system,sans-serif`;
+  ctx.fillText('12', cx, cy-8);
+  ctx.font = `400 10px -apple-system,sans-serif`;
+  ctx.fillStyle = cv('--text-3');
+  ctx.fillText('epics', cx, cy+9);
+}
 
-    row.addEventListener('click', () => {
-      const isOpen = openId === f.id;
-      document.querySelectorAll('.feat-row').forEach(r => r.classList.remove('open'));
-      document.querySelectorAll('.feat-detail').forEach(d => d.classList.remove('open'));
-      if (!isOpen) {
-        row.classList.add('open');
-        detail.classList.add('open');
-        openId = f.id;
-      } else {
-        openId = null;
-      }
-    });
+function donutFilter(f){
+  activeFilter = (activeFilter===f) ? null : f;
+  drawDonut();
+  updateLegendActive();
+  updateScopeFilter();
+}
 
-    container.appendChild(row);
-    container.appendChild(detail);
+document.getElementById('c-donut').addEventListener('click', e=>{
+  const canvas = document.getElementById('c-donut');
+  const rect = canvas.getBoundingClientRect();
+  const S = 130;
+  const x = (e.clientX - rect.left) - S/2;
+  const y = (e.clientY - rect.top)  - S/2;
+  const dist = Math.sqrt(x*x+y*y);
+  if(dist < 32 || dist > 60) return;
+  let a = Math.atan2(y,x) + Math.PI/2;
+  if(a<0) a+=2*Math.PI;
+  donutFilter(a < (11/12)*2*Math.PI ? 'done' : 'active');
+});
+
+document.querySelectorAll('.dleg-row').forEach(el=>{
+  el.addEventListener('click',()=> donutFilter(el.dataset.f));
+});
+
+function updateLegendActive(){
+  document.querySelectorAll('.dleg-row').forEach(el=>{
+    el.classList.toggle('active', activeFilter===el.dataset.f);
   });
 }
 
-buildRows('as-list', FEATURES.filter(f => f.track === 'as'));
-buildRows('lf-list', FEATURES.filter(f => f.track === 'lf'));
+/* ── LINE CHART ── */
+const lineWrap = document.querySelector('.line-wrap');
+let linePts_f=[], linePts_d=[], lineW=0, lineH=120;
+const PAD={t:10,r:14,b:24,l:10};
+
+function drawLine(){
+  const canvas = document.getElementById('c-line');
+  const dpr = Math.min(window.devicePixelRatio||1,2);
+  lineW = lineWrap.offsetWidth || 300;
+  canvas.width  = lineW*dpr; canvas.height = lineH*dpr;
+  canvas.style.width  = lineW+'px';
+  canvas.style.height = lineH+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,lineW,lineH);
+
+  const cw = lineW-PAD.l-PAD.r;
+  const ch = lineH-PAD.t-PAD.b;
+  const n  = SPRINTS.length;
+
+  linePts_f = SPRINTS.map((s,i)=>({ x:PAD.l+i*(cw/(n-1)), y:PAD.t+ch*(1-s.cf/14) }));
+  linePts_d = SPRINTS.map((s,i)=>({ x:PAD.l+i*(cw/(n-1)), y:PAD.t+ch*(1-s.cd/38) }));
+
+  // grid
+  ctx.strokeStyle = cv('--border');
+  ctx.lineWidth = 0.5;
+  [.25,.5,.75,1].forEach(pct=>{
+    const y = PAD.t+ch*(1-pct);
+    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(PAD.l+cw,y); ctx.stroke();
+  });
+
+  // decisions area+line
+  ctx.beginPath();
+  ctx.moveTo(linePts_d[0].x, PAD.t+ch);
+  linePts_d.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(linePts_d[n-1].x, PAD.t+ch);
+  ctx.closePath();
+  ctx.fillStyle='rgba(124,58,237,.07)'; ctx.fill();
+
+  ctx.beginPath();
+  linePts_d.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+  ctx.strokeStyle='#7C3AED'; ctx.lineWidth=1.5; ctx.lineJoin='round';
+  ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+
+  // features area+line
+  ctx.beginPath();
+  ctx.moveTo(linePts_f[0].x, PAD.t+ch);
+  linePts_f.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(linePts_f[n-1].x, PAD.t+ch);
+  ctx.closePath();
+  ctx.fillStyle='rgba(0,74,109,.09)'; ctx.fill();
+
+  ctx.beginPath();
+  linePts_f.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+  ctx.strokeStyle='#004A6D'; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.stroke();
+
+  // feature dots
+  linePts_f.forEach(p=>{
+    ctx.beginPath(); ctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+    ctx.fillStyle='#004A6D'; ctx.fill();
+  });
+
+  // current marker (last point)
+  const last=linePts_f[n-1];
+  ctx.beginPath(); ctx.arc(last.x,last.y,4,0,Math.PI*2);
+  ctx.fillStyle='#B45309'; ctx.fill();
+
+  // hover line
+  if(lineHoverI>=0 && lineHoverI<n){
+    const px=linePts_f[lineHoverI].x;
+    ctx.beginPath(); ctx.moveTo(px,PAD.t); ctx.lineTo(px,PAD.t+ch);
+    ctx.strokeStyle=cv('--border'); ctx.lineWidth=1; ctx.setLineDash([2,2]); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // highlight dots
+    [linePts_f[lineHoverI], linePts_d[lineHoverI]].forEach((p,i)=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle=i?'#7C3AED':'#004A6D'; ctx.fill();
+    });
+  }
+
+  // x labels
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillStyle=cv('--text-3');
+  ctx.font=`9px -apple-system,sans-serif`;
+  [0,2,4,6,8,9,11].forEach(i=>{
+    ctx.fillText(i===11?'Now':`S${i+1}`, linePts_f[i].x, PAD.t+ch+4);
+  });
+}
+
+const lineCanvas = document.getElementById('c-line');
+const lineTip    = document.getElementById('line-tip');
+
+lineCanvas.addEventListener('mousemove', e=>{
+  if(!linePts_f.length) return;
+  const rect = lineCanvas.getBoundingClientRect();
+  const scaleX = lineCanvas.offsetWidth / (lineCanvas.width / (window.devicePixelRatio||1));
+  const mx = (e.clientX-rect.left);
+  const n = SPRINTS.length;
+  const cw = lineW-PAD.l-PAD.r;
+  const step = cw/(n-1);
+  const i = Math.round((mx-PAD.l)/step);
+  const ci = Math.max(0,Math.min(n-1,i));
+  if(ci!==lineHoverI){ lineHoverI=ci; drawLine(); }
+
+  const s = SPRINTS[ci];
+  lineTip.textContent = `${s.id} · ${s.cf} feature${s.cf!==1?'s':''} · ${s.cd} decisions`;
+  const tipX = Math.min(linePts_f[ci].x+6, lineW-lineTip.offsetWidth-8);
+  lineTip.style.left = tipX+'px';
+  lineTip.style.top  = '4px';
+  lineTip.style.display='block';
+});
+lineCanvas.addEventListener('mouseleave',()=>{
+  lineHoverI=-1; drawLine(); lineTip.style.display='none';
+});
+
+/* ── BAR CHART ── */
+function buildBars(){
+  const svg = document.getElementById('svg-bars');
+  const bars=[
+    { label:'AngelSpan',  val:16, color:'#004A6D' },
+    { label:'Legacy Funds',val:17, color:'#5B21B6' },
+    { label:'Process',     val:5,  color:'#15803D' },
+  ];
+  const W=200, bH=14, gap=22, top=0;
+  svg.setAttribute('viewBox',`0 0 ${W} ${bars.length*(bH+gap)+top}`);
+  svg.setAttribute('height', bars.length*(bH+gap)+top);
+
+  bars.forEach((b,i)=>{
+    const y = top+i*(bH+gap);
+    const pct = b.val/38;
+    const bW  = pct*(W-30);
+    const ns  = 'http://www.w3.org/2000/svg';
+
+    const lbl = document.createElementNS(ns,'text');
+    lbl.setAttribute('x','0'); lbl.setAttribute('y',y+bH-3);
+    lbl.setAttribute('font-size','10'); lbl.setAttribute('fill','var(--text-3)');
+    lbl.setAttribute('font-family','var(--font)'); lbl.setAttribute('font-weight','600');
+    lbl.textContent = b.label; svg.appendChild(lbl);
+
+    // shift bar down to after label would be above; re-layout
+    const track = document.createElementNS(ns,'rect');
+    track.setAttribute('x','0'); track.setAttribute('y',y+bH+2);
+    track.setAttribute('width',W-30); track.setAttribute('height',bH);
+    track.setAttribute('rx','2'); track.setAttribute('fill','var(--border)');
+    svg.appendChild(track);
+
+    const fill = document.createElementNS(ns,'rect');
+    fill.setAttribute('x','0'); fill.setAttribute('y',y+bH+2);
+    fill.setAttribute('width',bW); fill.setAttribute('height',bH);
+    fill.setAttribute('rx','2'); fill.setAttribute('fill',b.color);
+    svg.appendChild(fill);
+
+    const val = document.createElementNS(ns,'text');
+    val.setAttribute('x',W-26); val.setAttribute('y',y+bH+2+bH-2);
+    val.setAttribute('font-size','13'); val.setAttribute('font-weight','700');
+    val.setAttribute('fill','var(--text)'); val.setAttribute('font-family','var(--font)');
+    val.textContent = b.val; svg.appendChild(val);
+  });
+
+  // fix viewBox height to account for dual-row per bar
+  svg.setAttribute('viewBox',`0 0 ${W} ${bars.length*(bH*2+gap)+4}`);
+}
+
+/* ── SCOPE MAP ── */
+function decTag(id){
+  const d=DECS[id]||{t:id,c:'a'};
+  const cls=d.c==='l'?'dc-l':d.c==='p'?'dc-p':'dc-a';
+  return `<a class="dec-code ${cls}" href="${GH}" target="_blank" title="${d.t}">${id}</a>`;
+}
+
+function openDetail(f){
+  const detail=document.getElementById('sm-detail');
+  const dc=f.track==='as'?'var(--navy)':'var(--lf)';
+  const statBadge=f.status==='verified'
+    ?`<span class="badge b-green">Verified E2E</span>`
+    :`<span class="badge b-amber">Built · E2E pending</span>`;
+  const stories=f.stories.map(s=>`<div class="story-li"><div class="s-dot" style="background:${dc}"></div><span>${s}</span></div>`).join('');
+  const decs=f.decs.map(id=>`<div class="dec-li">${decTag(id)}<span>${DECS[id]?.t||id}</span></div>`).join('');
+  detail.innerHTML=`
+    <div class="fd-inner">
+      <div class="fd-top">
+        <div>
+          <div class="fd-name">${f.name}</div>
+          <div class="fd-meta">
+            <span class="mono" style="font-size:10px;color:var(--text-3);">${f.id}</span>
+            ${statBadge}
+            <span style="font-size:11px;color:var(--text-3);">${f.prompts} build prompts &nbsp;·&nbsp; ${f.decs.length} decisions</span>
+          </div>
+        </div>
+        <button class="fd-close" onclick="closeDetail()">Close ×</button>
+      </div>
+      <div class="fd-desc">${f.desc}</div>
+      <div class="fd-cols">
+        <div><div class="fd-col-head">User stories</div>${stories}</div>
+        <div><div class="fd-col-head">Architecture decisions</div>${decs}</div>
+      </div>
+    </div>`;
+  detail.classList.add('open');
+  setTimeout(()=>detail.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+
+function closeDetail(){
+  document.getElementById('sm-detail').classList.remove('open');
+  document.getElementById('sm-detail').innerHTML='';
+  document.querySelectorAll('.sm-block').forEach(b=>b.classList.remove('sel'));
+  activeFeatId=null;
+}
+
+function updateScopeFilter(){
+  document.querySelectorAll('.sm-block').forEach(block=>{
+    const f=FEATS.find(f=>f.id===block.dataset.id);
+    if(!f) return;
+    if(!activeFilter){ block.classList.remove('dim'); return; }
+    const match=(activeFilter==='done'&&f.id!=='F14')||(activeFilter==='active'&&f.id==='F14');
+    block.classList.toggle('dim',!match);
+  });
+}
+
+function buildScopeMap(rowId,track){
+  const row=document.getElementById(rowId);
+  const feats=FEATS.filter(f=>f.track===track);
+  const total=feats.reduce((s,f)=>s+f.prompts,0);
+  const bidCls=track==='as'?'sm-bid-as':'sm-bid-lf';
+  const blkCls=track==='as'?'sm-block-as':'sm-block-lf';
+
+  feats.forEach(f=>{
+    const pct=(f.prompts/total*100).toFixed(2);
+    const narrow=f.prompts/total<0.07;
+    const statCls=f.status==='verified'?'sm-stat-v':'sm-stat-b';
+    const statLbl=f.status==='verified'?'Verified':'Built';
+
+    const block=document.createElement('div');
+    block.className=`sm-block ${blkCls}${narrow?' narrow':''}`;
+    block.style.flexBasis=pct+'%';
+    block.dataset.id=f.id;
+    block.title=`${f.name} (${f.prompts} prompts)`;
+
+    block.innerHTML=`
+      <span class="sm-bid ${bidCls}">${f.id}</span>
+      <div class="sm-bname"><span>${f.name}</span></div>
+      <div class="sm-bfoot">
+        <span class="sm-pcount">${f.prompts}p</span>
+        <span class="sm-stat ${statCls}">${statLbl}</span>
+      </div>`;
+
+    block.addEventListener('click',()=>{
+      if(activeFeatId===f.id){ closeDetail(); return; }
+      document.querySelectorAll('.sm-block').forEach(b=>b.classList.remove('sel'));
+      block.classList.add('sel');
+      activeFeatId=f.id;
+      openDetail(f);
+    });
+    row.appendChild(block);
+  });
+}
+
+function buildEpicTable(){
+  const tbody = document.getElementById('epic-table-body');
+  EPICS.forEach(ep=>{
+    const isAS = ep.track==='as';
+    const isDone = ep.status==='done';
+    const row = document.createElement('div');
+    row.className = 'et-row' + (ep.status==='active' ? ' et-active' : '');
+
+    const icHtml = isDone
+      ? `<div class="sp-ic si-done">✓</div>`
+      : `<div class="sp-ic si-act">→</div>`;
+
+    const trackHtml = isAS
+      ? `<span class="badge b-neu" style="font-size:9px;border-color:var(--navy);color:var(--navy);background:rgba(0,74,109,.07);">AS</span>`
+      : `<span class="badge b-neu" style="font-size:9px;border-color:var(--lf);color:var(--lf);background:rgba(91,33,182,.07);">LF</span>`;
+
+    const stHtml = isDone
+      ? `<span class="sp-tag st-done" style="font-size:10px;">Done</span>`
+      : `<span class="sp-tag st-vrf" style="font-size:10px;">Active</span>`;
+
+    const featNames = ep.feats.map(fid=>{
+      const f = FEATS.find(x=>x.id===fid);
+      return f ? f.name : fid;
+    });
+    const subLine = ep.feats.length > 1
+      ? `<div class="et-sub">${ep.feats.join(' · ')}</div>`
+      : '';
+
+    row.innerHTML = `
+      <div class="et-ic">${icHtml}</div>
+      <div class="et-id"><span class="et-id-badge">${ep.id}</span></div>
+      <div class="et-name">
+        <div class="et-main">${featNames.join(' &middot; ')}</div>
+        ${subLine}
+      </div>
+      <div class="et-track">${trackHtml}</div>
+      <div class="et-stories">${ep.stories}</div>
+      <div class="et-status">${stHtml}</div>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+/* ── init ── */
+drawDonut();
+buildBars();
+buildScopeMap('sm-as','as');
+buildScopeMap('sm-lf','lf');
+buildEpicTable();
+
+// line chart needs layout to be complete
+requestAnimationFrame(()=>{ drawLine(); });
+window.addEventListener('resize',()=>{ drawLine(); });
 </script>
 </body>
 </html>

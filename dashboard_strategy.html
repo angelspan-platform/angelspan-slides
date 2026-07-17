@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — Prototype Methodology & Handoff Strategy</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --c-navy:       #004A6D;
+  --c-blue:       #0179B5;
+  --c-sky:        #50ADDB;
+  --c-lf:         #5B21B6;
+  --c-bg:         #FAFAF8;
+  --c-surface:    #F4F1EC;
+  --c-border:     #E0DBD3;
+  --c-text:       #1C1C1C;
+  --c-text-2:     #4A4A4A;
+  --c-text-3:     #888;
+  --c-green:      #166534;
+  --c-green-bg:   #F0FDF4;
+  --c-green-bd:   #BBF7D0;
+  --c-amber:      #92400E;
+  --c-amber-bg:   #FFFBEB;
+  --c-amber-bd:   #FDE68A;
+  --c-red:        #991B1B;
+  --c-red-bg:     #FEF2F2;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica Neue, Arial, sans-serif;
+  --mono: 'SFMono-Regular', 'SF Mono', 'Fira Code', Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A;
+    --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870;
+  }
+}
+:root[data-theme="light"] { --c-bg:#FAFAF8; --c-surface:#F4F1EC; --c-border:#E0DBD3; --c-text:#1C1C1C; --c-text-2:#4A4A4A; --c-text-3:#888; }
+:root[data-theme="dark"]  { --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A; --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870; }
+
+body { font-family: var(--font); background: var(--c-bg); color: var(--c-text); font-size: 15px; line-height: 1.72; }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
+
+/* Sidebar */
+.toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--c-border); background: var(--c-surface); }
+.toc-brand { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--c-sky); margin-bottom: 4px; }
+.toc-title { font-size: 12px; font-weight: 600; color: var(--c-text-2); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+.toc-group { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin: 18px 0 5px; }
+.toc nav a { display: block; font-size: 12px; color: var(--c-text-2); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+.toc nav a:hover, .toc nav a.on { color: var(--c-navy); border-left-color: var(--c-navy); padding-left: 8px; }
+
+/* Content */
+.content { padding: 56px 68px 100px; max-width: 880px; }
+.eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--c-sky); margin-bottom: 12px; }
+h1 { font-size: 30px; font-weight: 700; color: var(--c-navy); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 10px; text-wrap: balance; }
+.subtitle { font-size: 16px; color: var(--c-text-2); margin-bottom: 8px; line-height: 1.5; }
+.meta { font-size: 12px; color: var(--c-text-3); padding-bottom: 40px; border-bottom: 2px solid var(--c-navy); margin-bottom: 56px; }
+
+/* Sections */
+.sec { margin-top: 60px; scroll-margin-top: 20px; }
+.sec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--c-text-3); margin-bottom: 4px; }
+.sec h2 { font-size: 21px; font-weight: 700; color: var(--c-navy); border-bottom: 1px solid var(--c-border); padding-bottom: 12px; margin-bottom: 22px; letter-spacing: -.01em; }
+.sec h3 { font-size: 14px; font-weight: 700; color: var(--c-text); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: .04em; }
+p { color: var(--c-text-2); margin-bottom: 16px; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--c-text); font-weight: 600; }
+
+/* Callouts */
+.box { border-left: 3px solid; padding: 16px 20px; border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 14px; line-height: 1.65; }
+.box .lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; display: block; margin-bottom: 7px; }
+.box.blue  { border-color: var(--c-blue); background: rgba(1,121,181,.07); color: var(--c-text-2); }
+.box.blue .lbl { color: var(--c-blue); }
+.box.green { border-color: #16A34A; background: var(--c-green-bg); color: var(--c-green); }
+.box.green .lbl { color: var(--c-green); }
+.box.amber { border-color: #D97706; background: var(--c-amber-bg); color: var(--c-amber); }
+.box.amber .lbl { color: var(--c-amber); }
+.box.navy  { border-color: var(--c-navy); background: rgba(0,74,109,.05); color: var(--c-text-2); }
+.box.navy .lbl { color: var(--c-navy); }
+
+/* Workflow steps */
+.workflow { border: 1px solid var(--c-border); border-radius: 4px; overflow: hidden; margin: 24px 0; }
+.wf-step { display: grid; grid-template-columns: 48px 1fr; border-bottom: 1px solid var(--c-border); }
+.wf-step:last-child { border-bottom: none; }
+.wf-step:nth-child(even) { background: var(--c-surface); }
+.wf-num { background: var(--c-navy); color: rgba(255,255,255,.85); font-size: 12px; font-weight: 700; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; flex-shrink: 0; }
+.wf-body { padding: 14px 20px; }
+.wf-title { font-size: 14px; font-weight: 700; color: var(--c-text); margin-bottom: 5px; }
+.wf-desc { font-size: 13px; color: var(--c-text-2); line-height: 1.6; }
+.wf-note { display: inline-block; font-size: 11px; color: var(--c-blue); background: rgba(1,121,181,.07); border: 1px solid rgba(1,121,181,.2); padding: 2px 9px; border-radius: 2px; margin-top: 8px; font-weight: 500; }
+
+/* Hierarchy */
+.hier { border: 1px solid var(--c-border); border-radius: 4px; overflow: hidden; margin: 20px 0; }
+.hr { display: flex; gap: 0; border-bottom: 1px solid var(--c-border); }
+.hr:last-child { border-bottom: none; }
+.hr:nth-child(even) { background: var(--c-surface); }
+.hr-bar { width: 4px; flex-shrink: 0; }
+.hr-body { padding: 13px 18px; flex: 1; }
+.hr-name { font-size: 14px; font-weight: 700; color: var(--c-text); margin-bottom: 3px; }
+.hr-sub { font-size: 13px; color: var(--c-text-2); line-height: 1.5; margin-bottom: 4px; }
+.hr-ex { font-family: var(--mono); font-size: 11px; color: var(--c-text-3); }
+.pid { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 2px; margin-right: 6px; }
+.pid-e { background: rgba(0,74,109,.08); color: var(--c-navy); border: 1px solid rgba(0,74,109,.2); }
+.pid-f { background: rgba(1,121,181,.08); color: var(--c-blue); border: 1px solid rgba(1,121,181,.2); }
+.pid-s { background: rgba(80,173,219,.1); color: #0369A1; border: 1px solid rgba(80,173,219,.3); }
+.pid-d { background: var(--c-surface); color: var(--c-text-3); border: 1px solid var(--c-border); }
+
+/* Dashboard evolution */
+.stages { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--c-border); border-radius: 4px; overflow: hidden; margin: 24px 0; }
+.st { padding: 18px 14px; border-right: 1px solid var(--c-border); position: relative; }
+.st:last-child { border-right: none; }
+.st.now { background: rgba(0,74,109,.05); }
+.st-n { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin-bottom: 6px; }
+.st-name { font-size: 13px; font-weight: 700; color: var(--c-text); margin-bottom: 5px; line-height: 1.3; }
+.st-when { font-size: 11px; color: var(--c-text-3); margin-bottom: 10px; }
+.st-desc { font-size: 12px; color: var(--c-text-2); line-height: 1.55; }
+.st-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 7px; border-radius: 2px; }
+.b-now  { background: rgba(0,74,109,.1); color: var(--c-navy); border: 1px solid rgba(0,74,109,.2); }
+.b-skip { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 18px 0; }
+thead th { background: var(--c-navy); color: rgba(255,255,255,.85); text-align: left; padding: 10px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+tbody tr { border-bottom: 1px solid var(--c-border); }
+tbody tr:nth-child(even) { background: var(--c-surface); }
+tbody td { padding: 11px 14px; color: var(--c-text-2); vertical-align: top; }
+tbody td:first-child { font-weight: 600; color: var(--c-text); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* Stress table */
+.stress-hd { display: grid; grid-template-columns: 1.1fr 1fr 1fr; background: var(--c-navy); border-radius: 4px 4px 0 0; }
+.stress-hd div { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.75); padding: 10px 14px; }
+.stress-body { border: 1px solid var(--c-border); border-top: none; border-radius: 0 0 4px 4px; overflow: hidden; margin-bottom: 28px; }
+.sr { display: grid; grid-template-columns: 1.1fr 1fr 1fr; border-bottom: 1px solid var(--c-border); }
+.sr:last-child { border-bottom: none; }
+.sr:nth-child(even) { background: var(--c-surface); }
+.sc { padding: 12px 14px; font-size: 13px; color: var(--c-text-2); border-right: 1px solid var(--c-border); line-height: 1.55; }
+.sc:last-child { border-right: none; }
+.sc strong { font-size: 12px; color: var(--c-text); display: block; margin-bottom: 3px; }
+.sev { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 1px 6px; border-radius: 2px; display: inline-block; margin-top: 5px; }
+.sev-h { background: var(--c-red-bg); color: var(--c-red); border: 1px solid #FECACA; }
+.sev-m { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
+.sev-l { background: var(--c-green-bg); color: var(--c-green); border: 1px solid var(--c-green-bd); }
+
+/* Tag */
+.tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 2px 7px; border-radius: 2px; margin-right: 3px; }
+.t-now { background: rgba(0,74,109,.08); color: var(--c-navy); border: 1px solid rgba(0,74,109,.2); }
+.t-s3  { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
+.t-s4  { background: rgba(91,33,182,.07); color: var(--c-lf); border: 1px solid rgba(91,33,182,.2); }
+
+/* Recs */
+.recs { list-style: none; margin: 20px 0; }
+.recs li { display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--c-border); align-items: flex-start; }
+.recs li:last-child { border-bottom: none; }
+.rn { font-size: 13px; font-weight: 700; color: var(--c-sky); min-width: 22px; padding-top: 2px; }
+.rb strong { display: block; font-size: 14px; color: var(--c-text); margin-bottom: 4px; }
+.rb span { font-size: 13px; color: var(--c-text-2); line-height: 1.65; }
+
+/* Closing rule */
+.closing { border-top: 2px solid var(--c-navy); margin-top: 68px; padding-top: 28px; }
+.closing p { font-size: 14px; color: var(--c-text-2); line-height: 1.8; }
+
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .content { padding: 32px 24px 64px; }
+  .stages { grid-template-columns: 1fr 1fr; }
+  .stress-hd, .sr { grid-template-columns: 1fr; }
+  .stress-hd div:not(:first-child) { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-brand">AngelSpan</div>
+  <div class="toc-title">Prototype Methodology &amp; Handoff Strategy</div>
+  <nav>
+    <div class="toc-group">The Approach</div>
+    <a href="#methodology">Build Methodology</a>
+    <a href="#accountability">The Accountability Layer</a>
+    <div class="toc-group">Structure</div>
+    <a href="#hierarchy">Work Hierarchy</a>
+    <a href="#durable">Durable vs. Disposable</a>
+    <div class="toc-group">Handoff</div>
+    <a href="#handoff">What the Dev Team Gets</a>
+    <a href="#dashboard">Dashboard Evolution</a>
+    <div class="toc-group">Stress Test</div>
+    <a href="#st1">Stage 1</a>
+    <a href="#st2">Stage 2</a>
+    <a href="#st3">Stage 3</a>
+    <a href="#st4">Stage 4</a>
+    <div class="toc-group">Next Steps</div>
+    <a href="#recs">Recommendations</a>
+  </nav>
+</nav>
+
+<main class="content">
+
+  <div class="eyebrow">AngelSpan · Internal Document</div>
+  <h1>Prototype Methodology &amp; Handoff Strategy</h1>
+  <p class="subtitle">How the AngelSpan prototype was built, why the process was structured the way it was, and what that structure gives the development team at handoff.</p>
+  <p class="meta">July 2026 &nbsp;·&nbsp; Owner: Adam McKinstrie &nbsp;·&nbsp; Prepared for engineering handoff</p>
+
+
+  <!-- Methodology -->
+  <section class="sec" id="methodology">
+    <div class="sec-label">The Approach</div>
+    <h2>Build Methodology</h2>
+
+    <p>The prototype was built using a structured, human-in-the-loop process across three tools: Claude (specification and decision-making), Lovable (AI-powered prototype builder), and GitHub (version control and documentation). The process ran in repeating cycles — one cycle per prompt — from the first feature through Cluster 12.</p>
+
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-num">1</div>
+        <div class="wf-body">
+          <div class="wf-title">Session setup</div>
+          <div class="wf-desc">Each working session began by reading SESSION.md to re-establish current state — what had been built, which decisions were in effect, and what was next. This was the memory continuity mechanism across sessions, compensating for the fact that no AI tool retains context between sessions by default.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">2</div>
+        <div class="wf-body">
+          <div class="wf-title">Prompt drafting</div>
+          <div class="wf-desc">Claude drafted each Lovable prompt from the master spec for the cluster being built, the relevant decision records, the design system, and shared agent context files. Claude reviewed each draft from five perspectives simultaneously — product manager, UX designer, frontend lead, backend lead, and technical architect — before finalizing. This multi-role review was designed to catch conflicts and specification gaps before anything was sent to the build tool.</div>
+          <div class="wf-note">Parallels recognized practice: cross-functional review at the point where decisions are still being shaped, not after they've been embedded in code</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">3</div>
+        <div class="wf-body">
+          <div class="wf-title">Human review and approval</div>
+          <div class="wf-desc">Adam reviewed each drafted prompt before it was sent — reading for correctness, challenging assumptions, and approving or requesting changes. <strong>No prompt was sent to Lovable without explicit human review and approval.</strong> This is the primary accountability checkpoint in the process: the moment where a human confirmed that the specification being sent matched intended product behavior.</div>
+          <div class="wf-note">Parallels recognized practice: human accountability is more important, not less, in AI-assisted delivery — AI compresses the feedback loop that traditional development allows</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">4</div>
+        <div class="wf-body">
+          <div class="wf-title">Delivery to Lovable</div>
+          <div class="wf-desc">Approved prompts were submitted to Lovable.ai. Lovable interpreted the prompt and made code changes to the prototype, automatically committing them to the main branch on GitHub.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">5</div>
+        <div class="wf-body">
+          <div class="wf-title">Verification</div>
+          <div class="wf-desc">After Lovable completed the build, Adam walked through the prototype at angelspan-bridge-flow.lovable.app to verify that the implementation matched what the prompt specified. Screens, flows, data behavior — checked against the intent of the specification.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">6</div>
+        <div class="wf-body">
+          <div class="wf-title">Correction or advance</div>
+          <div class="wf-desc">If verification revealed a misinterpretation, partial execution, or bug, a correction prompt was written and the cycle repeated from step 2. If verification passed, the session advanced to the next prompt. Correction prompts are not signs of failure — they are the record of where specification needed more precision, and where the build tool made assumptions that had to be overridden. The C8 cluster, for example, required five correction passes; those passes document where the hardest product questions were and how they were resolved.</div>
+          <div class="wf-note">Parallels recognized practice: restoring the clarification feedback loop that AI-only delivery collapses</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">7</div>
+        <div class="wf-body">
+          <div class="wf-title">Decision capture</div>
+          <div class="wf-desc">Whenever a non-trivial choice was made — during drafting, during human review, or after verification — a decision record was written and added to decisions/. This ensured that rationale was captured at the moment it was made, not reconstructed later. 38 decisions were logged across the full build.</div>
+          <div class="wf-note">Parallels recognized practice: decisions made implicitly become untraceable — capturing them at the moment they're made is the only reliable method</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Accountability -->
+  <section class="sec" id="accountability">
+    <div class="sec-label">The Accountability Layer</div>
+    <h2>Why the Decision Log Exists</h2>
+
+    <p>A well-recognized risk in AI-assisted development is that AI does not simply accelerate code — it accelerates decisions. Requirements get interpreted quickly, designs are generated fast, and code follows at speed. Each step involves choices that shape how the system behaves. When those choices happen without an explicit capture mechanism, they become embedded in the codebase without anyone having examined them. The system works as built; the problem is that what it was built on may include assumptions that were never surfaced.</p>
+
+    <p>The decision log is the direct response to that risk. Every record in decisions/ has four sections:</p>
+
+    <ul style="list-style:none; border:1px solid var(--c-border); border-radius:4px; overflow:hidden; margin:16px 0;">
+      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:14px; color:var(--c-text-2);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Context</strong> What problem or question prompted the decision — why it needed to be made at all.</li>
+      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:14px; color:var(--c-text-2); background:var(--c-surface);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Options considered</strong> What alternatives were evaluated, described plainly enough to understand the trade-offs.</li>
+      <li style="padding:12px 18px; border-bottom:1px solid var(--c-border); font-size:14px; color:var(--c-text-2);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Choice</strong> What was selected and, where relevant, how it works in the prototype.</li>
+      <li style="padding:12px 18px; font-size:14px; color:var(--c-text-2); background:var(--c-surface);"><strong style="color:var(--c-text); display:inline-block; min-width:140px;">Consequences</strong> What the choice enables, what it constrains, what remains open.</li>
+    </ul>
+
+    <div class="box navy">
+      <span class="lbl">The critical distinction</span>
+      Decision records capture <strong>intent</strong>, not implementation. The prototype's src/ folder captures implementation. When the two diverge — when Lovable built something that does not perfectly match the decision record — the decision record is what is correct. This is also the correct precedence for the development team: master specs and decision records define what the system is supposed to do; Lovable's code shows one way it was approximated.
+    </div>
+
+    <p>For the development team, the decision log is the fastest path to understanding why the system works the way it does — not just what it does. When you encounter a reference like "see D-003" in a specification, that reference explains the reasoning behind a product behavior, not just its mechanics. Reading D-003 before designing the production authentication system will save more time than reading the prototype's auth code.</p>
+  </section>
+
+
+  <!-- Hierarchy -->
+  <section class="sec" id="hierarchy">
+    <div class="sec-label">Structure</div>
+    <h2>Work Hierarchy</h2>
+
+    <p>The prototype uses "clusters" as the top-level organizing unit. As the project moves to production and a development team joins, more precise shared language reduces coordination friction. The hierarchy below aligns the prototype's existing structure with standard product development terminology:</p>
+
+    <div class="hier">
+      <div class="hr" style="background:rgba(0,74,109,.04);">
+        <div class="hr-bar" style="background:var(--c-navy);"></div>
+        <div class="hr-body">
+          <div class="hr-name"><span class="pid pid-e">E-01</span>Epic</div>
+          <div class="hr-sub">A bounded body of work with a coherent user outcome. Replaces "cluster." The 12 clusters (C0–C11) become E-01–E-12.</div>
+          <div class="hr-ex">E-01 · Authentication &nbsp;·&nbsp; E-05 · Client Lifecycle &nbsp;·&nbsp; E-08 · Legacy Funds GP</div>
+        </div>
+      </div>
+      <div class="hr">
+        <div class="hr-bar" style="background:var(--c-blue);"></div>
+        <div class="hr-body">
+          <div class="hr-name"><span class="pid pid-f">F-04</span>Feature</div>
+          <div class="hr-sub">A discrete functional capability within an epic. 14 features across two tracks in the prototype.</div>
+          <div class="hr-ex">F-04 · SMART IR Score Entry &nbsp;·&nbsp; F-09 · LP Investor Portal</div>
+        </div>
+      </div>
+      <div class="hr">
+        <div class="hr-bar" style="background:var(--c-sky);"></div>
+        <div class="hr-body">
+          <div class="hr-name"><span class="pid pid-s">S-</span>User Story</div>
+          <div class="hr-sub">An implementable unit of value from one persona's perspective. Documented per feature in the dashboard and specifications.</div>
+          <div class="hr-ex">As a PA, I can enter BMD scores by category and stage…</div>
+        </div>
+      </div>
+      <div class="hr" style="background:var(--c-surface);">
+        <div class="hr-bar" style="background:var(--c-border);"></div>
+        <div class="hr-body">
+          <div class="hr-name"><span class="pid pid-d">D-014</span>Decision</div>
+          <div class="hr-sub">An architectural or product choice, captured at the moment it was made. 38 logged across the full prototype build. These are the most durable artifact from this phase.</div>
+          <div class="hr-ex">D-014 · Legacy Fund entity structure &nbsp;·&nbsp; D-033 · Bubble chart temporal animation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box blue">
+      <span class="lbl">Terminology action</span>
+      Rename "Cluster" → "Epic" throughout the dashboard, SESSION.md, and decision files. Introduce E-01–E-12 IDs. This takes less than an hour and prevents the informal naming from becoming entrenched as the development team joins.
+    </div>
+  </section>
+
+
+  <!-- Durable vs Disposable -->
+  <section class="sec" id="durable">
+    <div class="sec-label">For the Development Team</div>
+    <h2>Durable vs. Disposable</h2>
+
+    <p>The most important frame for the development team to hold: the prototype was built to prove user experience and product decisions — not architecture. Every screen and flow at angelspan-bridge-flow.lovable.app represents a validated product decision. The underlying technical implementation was chosen for prototype velocity and is fully disposable.</p>
+
+    <p><strong>Treat src/ as a high-fidelity wireframe, not as a starting point for production code.</strong></p>
+
+    <h3>Carry forward</h3>
+    <table>
+      <thead><tr><th>What</th><th>Where</th><th>Why it's durable</th></tr></thead>
+      <tbody>
+        <tr><td>Decision records</td><td>decisions/D-001 through D-038</td><td>Capture intent and rationale. The why behind every product choice. Production equivalent must produce the same outcomes, not the same code.</td></tr>
+        <tr><td>Master specifications</td><td>specifications/C0 through C11 master spec files</td><td>Authoritative product behavior. When a Lovable prompt and the master spec conflict, the master spec is correct.</td></tr>
+        <tr><td>Design system</td><td>design-system/DESIGN_SYSTEM.md</td><td>Dual-brand token spec, typography, spacing, component patterns, accessibility rules. The visual language for everything a user sees.</td></tr>
+        <tr><td>Role and access model</td><td>D-002, D-003, D-032</td><td>Ten roles across two brand contexts. Scoped role-entity assignments. Full compatibility matrix. This is a product architecture decision, not a code implementation.</td></tr>
+        <tr><td>Dual-brand strategy</td><td>D-001, design-system/</td><td>One design system, two color schemes. Brand switching via a single root CSS class. Component code does not change between brand contexts.</td></tr>
+        <tr><td>TypeScript data files (as spec input)</td><td>src/lib/lf-data.ts, admin-data.ts, etc.</td><td>These are annotated product specifications in executable form. They show what entities exist, what relationships hold, what state machines operate, and what calculations are performed. Use as input to data model design — not as schemas to migrate.</td></tr>
+        <tr><td>UAT round 1 feedback</td><td>feedback/UAT-round-1.md</td><td>What real testers found. Known issues that must be resolved before or during the production build.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Discard</h3>
+    <table>
+      <thead><tr><th>Prototype artifact</th><th>Production target</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Supabase Auth (email/password + TOTP stub)</td><td>Azure AD B2C or Auth0</td><td>Production identity provider not yet finalized. See open decisions.</td></tr>
+        <tr><td>MFA "Skip" bypass</td><td>MFA required, no bypass</td><td>Every prototype session has an active skip backdoor. This is a hard pre-production correction.</td></tr>
+        <tr><td>Client-side role switching</td><td>API-level RBAC on every endpoint</td><td>Prototype role switcher is purely cosmetic — it changes UI rendering only, not what data the backend returns.</td></tr>
+        <tr><td>TypeScript in-memory data stores</td><td>MS SQL Server + Azure CosmosDB</td><td>Not database schemas. Convenience structures that reflect product decisions. Not normalized relational models.</td></tr>
+        <tr><td>All business logic in React (client-side)</td><td>.NET 8+ REST API</td><td>The prototype has no server. All eligibility checks, SMART IR calculations, plan enforcement, and billing validation run in the browser. In production, all business logic must live in the API layer.</td></tr>
+        <tr><td>window.print() for tear sheet PDFs</td><td>Server-side PDF generation</td><td>Print-to-PDF requires human initiation and produces inconsistent output. Production tear sheets must be generated server-side and attached to distribution emails automatically.</td></tr>
+        <tr><td>Toast notifications only</td><td>SendGrid (full email delivery)</td><td>No email is sent anywhere in the prototype. All notification events simulate via transient toast messages in the same tab.</td></tr>
+        <tr><td>wrangler.jsonc at project root</td><td>Not applicable</td><td>Cloudflare Workers config auto-added by Lovable during Supabase integration. Not a deliberate decision. Investigate and remove before production deployment.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- Handoff package -->
+  <section class="sec" id="handoff">
+    <div class="sec-label">Engineering Handoff</div>
+    <h2>What the Development Team Gets</h2>
+
+    <p>The durable output of the prototype phase is the decision log, the specifications, and the design system — not the code. The table below maps each artifact to its purpose for the incoming development team.</p>
+
+    <table>
+      <thead><tr><th>Artifact</th><th>Location</th><th>Start here to…</th></tr></thead>
+      <tbody>
+        <tr><td>Project state overview</td><td>SESSION.md</td><td>Get oriented fast — what exists, what's deferred, what's flagged</td></tr>
+        <tr><td>Business and platform context</td><td>context/reference/angelspan_memo_draft.md</td><td>Understand the business, market, and why this product exists</td></tr>
+        <tr><td>Shared platform context</td><td>decisions/agents/_shared_context.md</td><td>Get a structured summary of roles, tech stack, phase structure, and key terminology in one document</td></tr>
+        <tr><td>Feature inventory</td><td>specifications/requirements.md</td><td>See the full feature scope in one place</td></tr>
+        <tr><td>Workflow specifications</td><td>specifications/C0–C11 master spec files</td><td>Understand how each functional area is supposed to work</td></tr>
+        <tr><td>Design system</td><td>design-system/DESIGN_SYSTEM.md</td><td>Understand the visual language, dual-brand strategy, and component patterns</td></tr>
+        <tr><td>Decision log</td><td>decisions/D-001 through D-038</td><td>Understand why things work the way they do</td></tr>
+        <tr><td>Working prototype</td><td>angelspan-bridge-flow.lovable.app</td><td>See the UX in action — 13 test credentials in SESSION.md</td></tr>
+        <tr><td>UAT feedback</td><td>feedback/UAT-round-1.md</td><td>Know what testers flagged in round 1</td></tr>
+        <tr><td>SMART IR methodology</td><td>context/reference/smartir_methodology.md</td><td>Understand the scoring system being automated — critical for Phase 2</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box green">
+      <span class="lbl">What this process gives the development team that a typical prototype handoff does not</span>
+      In a typical AI-assisted prototype build, the output is a working demo and a vague handover conversation. The decisions that shaped the product are distributed across chat threads, memory, and the developer's head — none of it traceable. This build was structured so the inverse is true: the decisions are explicit, numbered, and cross-referenced. A developer picking up D-021 (Legacy Fund eligibility cap) gets the full rationale for the $800K threshold, the §1244 protection logic, and the references to canonical specs. They do not have to reconstruct reasoning from code behavior. This is the primary value this methodology creates for the handoff.
+    </div>
+
+    <h3>Open decisions requiring resolution before production</h3>
+    <p>These items are acceptable at prototype stage but must be resolved before production development begins:</p>
+    <table>
+      <thead><tr><th>Item</th><th>Decision ref</th><th>What needs resolving</th></tr></thead>
+      <tbody>
+        <tr><td>Target Raise editability</td><td>D-038</td><td>Whether a fund's Target Raise can be edited after creation. Options and recommendation documented in decisions/D-038-capital-tracking-model.md.</td></tr>
+        <tr><td>Identity provider</td><td>D-003</td><td>Azure AD B2C vs. Auth0. Product decisions are implementation-agnostic, but the dev team needs this resolved early in Phase 0.</td></tr>
+        <tr><td>Stripe path</td><td>D-012</td><td>Patch current integration vs. adopt Stripe Billing fully. The legacy platform has known Stripe bugs. Explicit direction needed before Phase 1 billing work.</td></tr>
+        <tr><td>Architecture model</td><td>—</td><td>Monolith vs. modular services. The prototype provides no signal on this. Requires a scoping conversation with the development team.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Known pre-production corrections</h3>
+    <table>
+      <thead><tr><th>Issue</th><th>Decision ref</th><th>Required correction</th></tr></thead>
+      <tbody>
+        <tr><td>LF Admin Champions screen</td><td>D-027</td><td>Currently retains Champion management UI. Must be corrected to GP-owned. LF Admin is read-only oversight only.</td></tr>
+        <tr><td>Founder SMART IR component</td><td>D-035</td><td>/app/founder/smartir not yet using shared &lt;CompanySmartIRDetail&gt;. Production build must use the shared component from day one.</td></tr>
+        <tr><td>LP fundsReceived toggle</td><td>—</td><td>Toggle buried in edit modal. This is a routine recurring GP action — must be an inline row toggle accessible directly from the LP list.</td></tr>
+        <tr><td>GP Fund Activity "Distributed" tile</td><td>—</td><td>Shows $0 in prototype. Needs proper calculation in production.</td></tr>
+        <tr><td>PA stakeholder access enforcement</td><td>D-008</td><td>Currently enforced only at UI layer. Must be enforced at API level in production.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- Dashboard evolution -->
+  <section class="sec" id="dashboard">
+    <div class="sec-label">Visibility Layer</div>
+    <h2>Dashboard Evolution</h2>
+
+    <p>The build dashboard exists to make the project's status, decisions, and open items visible to stakeholders who are not in every working session. Its appropriate form changes as the team grows. The stages below reflect a pragmatic progression — each stage is triggered by a real change in team size or infrastructure capability, not by a fixed timeline.</p>
+
+    <div class="stages">
+      <div class="st now">
+        <div class="st-badge b-now">Now</div>
+        <div class="st-n">Stage 1</div>
+        <div class="st-name">Static HTML</div>
+        <div class="st-when">Now → engineering handoff</div>
+        <div class="st-desc">Data baked into HTML. One PM, one repo, GitHub Pages. Zero infrastructure cost. Manual update cadence. Decisions visible; attribution via git history.</div>
+      </div>
+      <div class="st" style="background:var(--c-surface);">
+        <div class="st-badge b-skip">Skip</div>
+        <div class="st-n">Stage 2</div>
+        <div class="st-name">JSON Shell</div>
+        <div class="st-when">Not recommended</div>
+        <div class="st-desc">Data in a separate JSON file; HTML renders it. Adds complexity without eliminating manual updates. Useful life too short to justify. Go directly to Stage 3.</div>
+      </div>
+      <div class="st">
+        <div class="st-n">Stage 3</div>
+        <div class="st-name">CMS-Backed</div>
+        <div class="st-when">When team &gt; 3 contributors</div>
+        <div class="st-desc">Epics, features, decisions live in Notion or Confluence. Dashboard fetches live data. Non-technical contributors can update. Attribution and sign-off become trackable fields.</div>
+      </div>
+      <div class="st" style="background:rgba(91,33,182,.04);">
+        <div class="st-n">Stage 4</div>
+        <div class="st-name">Platform Native</div>
+        <div class="st-when">Post-platform launch</div>
+        <div class="st-desc">Dashboard module inside the built platform, pulling from the same database that powers PA workflows and SMART IR scoring. Full integration, no separate tool.</div>
+      </div>
+    </div>
+
+    <h3>Stress test: Stage 1</h3>
+    <div class="stress-hd"><div>Assumption</div><div>Failure mode</div><div>Mitigation</div></div>
+    <div class="stress-body">
+      <div class="sr">
+        <div class="sc"><strong>Single editor</strong>One PM keeps the HTML current.<div class="sev sev-h">High</div></div>
+        <div class="sc">Dashboard drifts from reality during active sprints. Stale data erodes trust with the development team and external stakeholders before handoff.</div>
+        <div class="sc">Establish a weekly update cadence. Timestamp is visible on the page. Claude Code can update the file from session notes in under 2 minutes.</div>
+      </div>
+      <div class="sr">
+        <div class="sc"><strong>No attribution</strong>No record of who changed status or when.<div class="sev sev-m">Medium</div></div>
+        <div class="sc">Once a second contributor joins, accountability for status accuracy becomes unclear.</div>
+        <div class="sc">Git commit history provides a paper trail. Acceptable at Stage 1. Define attribution schema before Stage 3 migration.</div>
+      </div>
+      <div class="sr">
+        <div class="sc"><strong>Two-repo publish step</strong>HTML must be manually copied to the public angelspan-slides repo.<div class="sev sev-m">Friction</div></div>
+        <div class="sc">Updated file in the private repo but stale version on the live site — silent version mismatch.</div>
+        <div class="sc">Documented in SLIDES_WORKFLOW.md. Permanent fix: grant the private repo's PAT write access to the public slides repo.</div>
+      </div>
+    </div>
+
+    <h3>Stress test: Stage 3 (CMS)</h3>
+    <div class="stress-hd"><div>Assumption</div><div>Failure mode</div><div>Mitigation</div></div>
+    <div class="stress-body">
+      <div class="sr">
+        <div class="sc"><strong>One source of truth</strong>CMS replaces GitHub markdown.<div class="sev sev-h">High complexity</div></div>
+        <div class="sc">Tool sprawl: 38 decisions in GitHub, epics in SESSION.md, features in Lovable prompts. Triple migration required. Sync drift is likely if both systems coexist.</div>
+        <div class="sc">Establish the CMS as the destination before migrating. Archive, don't delete, GitHub files. Assign a migration lead and a hard cutover date.</div>
+      </div>
+      <div class="sr">
+        <div class="sc"><strong>Retroactive attribution</strong>Who made each decision can be reconstructed.<div class="sev sev-m">Medium</div></div>
+        <div class="sc">38 decisions lack formal attribution. Reconstructed records are approximations, not contemporaneous records.</div>
+        <div class="sc">Flag retroactive entries as "reconstructed." Begin formal attribution from D-039 onward. Git history and session notes are the source.</div>
+      </div>
+      <div class="sr">
+        <div class="sc"><strong>Full team adoption</strong>All contributors use the CMS for decisions.<div class="sev sev-m">Medium</div></div>
+        <div class="sc">Partial adoption is more dangerous than no adoption — partial data implies completeness it doesn't have.</div>
+        <div class="sc">Designate a data steward. Lock decision editing to the CMS at cutover. GitHub markdown becomes read-only archive.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Recs -->
+  <section class="sec" id="recs">
+    <div class="sec-label">Next Steps</div>
+    <h2>Recommendations</h2>
+
+    <ul class="recs">
+      <li>
+        <div class="rn">1</div>
+        <div class="rb">
+          <strong>Rename clusters to epics</strong>
+          <span>Update the dashboard, SESSION.md, and decision files. Introduce E-01–E-12 IDs. Under an hour of work; prevents the informal naming from becoming permanent as the development team joins.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rn">2</div>
+        <div class="rb">
+          <strong>Add GitHub deep-links to every decision in the dashboard</strong>
+          <span>Each D-ID maps to a known file in decisions/. Clicking a decision ID in the dashboard should open that file directly. This is the single change that most immediately demonstrates the traceability this methodology was built to provide.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rn">3</div>
+        <div class="rb">
+          <strong>Resolve the four open decisions before production Phase 0</strong>
+          <span>Target Raise editability (D-038), identity provider, Stripe path, and architecture model are all unresolved. The development team will need direction on each before the relevant phase begins — earlier resolution reduces scope ambiguity.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rn">4</div>
+        <div class="rb">
+          <strong>Deliver the five pre-production corrections in Phase 0</strong>
+          <span>LF Admin Champions screen (D-027), Founder SMART IR component (D-035), LP fundsReceived toggle, GP Distributed tile, and PA API enforcement (D-008) are all known issues that the prototype accepted but production cannot. Log these as the first five items in the production backlog.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rn">5</div>
+        <div class="rb">
+          <strong>Begin capturing decision schema fields from D-039 forward</strong>
+          <span>Add proposed_by, date, type, decided_by, status, and supersedes to new decision records. Retroactive for D-001–D-038 is best-effort. Forward tracking from D-039 is sufficient to establish the pattern before the development team joins.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rn">6</div>
+        <div class="rb">
+          <strong>Add budget tracking only when real data exists</strong>
+          <span>A budget section with placeholder forecasts implies rigor it does not have. Log actual hours and assign a PM rate before budget appears in the dashboard or any investor-facing document.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rn">7</div>
+        <div class="rb">
+          <strong>Name the PM module as a scoped item in the engineering handoff SOW</strong>
+          <span>Without an explicit line item, the Stage 4 dashboard will be deprioritized in a resource-constrained build. A minimal read-only version consuming existing platform APIs is low-cost relative to its value for ongoing project visibility.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+
+  <div class="closing">
+    <p>The prototype answered the hardest product questions — does the information architecture work across nine roles, does the dual-brand strategy hold, does the SMART IR scoring UX communicate what it needs to communicate, is the Legacy Fund application flow coherent — at relatively low cost. It did not answer production engineering questions; those start fresh with the development team. The structured build process — human review at every step, decisions captured at the moment they were made, explicit separation of intent from implementation — means the development team inherits a clear picture of why the product works the way it does, not just that it does.</p>
+  </div>
+
+</main>
+</div>
+
+<script>
+const secs = document.querySelectorAll('.sec[id]');
+const links = document.querySelectorAll('.toc nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.toc nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+secs.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
