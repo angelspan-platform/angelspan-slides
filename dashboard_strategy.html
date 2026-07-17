@@ -178,7 +178,8 @@ tbody tr:last-child td { border-bottom: none; }
 <!-- TOC -->
 <nav class="toc">
   <div class="toc-brand">AngelSpan</div>
-  <div class="toc-title">Prototype Methodology &amp; Handoff Strategy</div>
+  <div class="toc-title">Working Mock — Build Methodology &amp; Handoff Strategy</div>
+  <a href="prototype_dashboard.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--c-text-3);text-decoration:none;margin-bottom:20px;margin-top:-10px;" onmouseover="this.style.color='var(--c-blue)'" onmouseout="this.style.color='var(--c-text-3)'">← Build Tracker</a>
   <nav>
     <div class="toc-group">The Approach</div>
     <a href="#methodology">Build Methodology</a>
@@ -201,10 +202,14 @@ tbody tr:last-child td { border-bottom: none; }
 
 <main class="content">
 
-  <div class="eyebrow">AngelSpan · Internal Document</div>
-  <h1>Prototype Methodology &amp; Handoff Strategy</h1>
-  <p class="subtitle">How the AngelSpan prototype was built, why the process was structured the way it was, and what that structure gives the development team at handoff.</p>
+  <div class="eyebrow">AngelSpan · Build Methodology</div>
+  <h1>Working Mock — Build Methodology &amp; Handoff Strategy</h1>
+  <p class="subtitle">How the Lovable working clickable mock was built, why the process was structured the way it was, and what that structure gives the development team at handoff.</p>
   <p class="meta">July 2026 &nbsp;·&nbsp; Owner: Adam McKinstrie &nbsp;·&nbsp; Prepared for engineering handoff</p>
+  <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:var(--c-amber-bg);border:1px solid var(--c-amber-bd);border-radius:4px;font-size:13px;color:var(--c-text-2);line-height:1.55;margin-top:16px;">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:2px;color:#92400E;"><circle cx="7" cy="7" r="6.5" stroke="currentColor"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <span><strong style="color:var(--c-text);">Throughout this document, "prototype" refers to the Lovable working clickable mock</strong> at <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="color:var(--c-blue);">angelspan-bridge-flow.lovable.app</a> — not the Path 2 prototype, which is a formal dev partner engagement with a real backend, real clients, and real transactions.</span>
+  </div>
 
 
   <!-- Methodology -->
@@ -351,7 +356,7 @@ tbody tr:last-child td { border-bottom: none; }
     <div class="sec-label">For the Development Team</div>
     <h2>Durable vs. Disposable</h2>
 
-    <p>The most important frame for the development team to hold: the prototype was built to prove user experience and product decisions — not architecture. Every screen and flow at angelspan-bridge-flow.lovable.app represents a validated product decision. The underlying technical implementation was chosen for prototype velocity and is fully disposable.</p>
+    <p>The most important frame for the development team to hold: the working clickable mock was built to prove user experience and product decisions — not architecture. Every screen and flow at angelspan-bridge-flow.lovable.app represents a validated product decision. The underlying technical implementation was chosen for build velocity and is fully disposable.</p>
 
     <p><strong>Treat src/ as a high-fidelity wireframe, not as a starting point for production code.</strong></p>
 
@@ -403,7 +408,7 @@ tbody tr:last-child td { border-bottom: none; }
         <tr><td>Workflow specifications</td><td>specifications/C0–C11 master spec files</td><td>Understand how each functional area is supposed to work</td></tr>
         <tr><td>Design system</td><td>design-system/DESIGN_SYSTEM.md</td><td>Understand the visual language, dual-brand strategy, and component patterns</td></tr>
         <tr><td>Decision log</td><td>decisions/D-001 through D-038</td><td>Understand why things work the way they do</td></tr>
-        <tr><td>Working prototype</td><td>angelspan-bridge-flow.lovable.app</td><td>See the UX in action — 13 test credentials in SESSION.md</td></tr>
+        <tr><td>Working clickable mock</td><td>angelspan-bridge-flow.lovable.app</td><td>See the UX in action — 13 test credentials in SESSION.md</td></tr>
         <tr><td>UAT feedback</td><td>feedback/UAT-round-1.md</td><td>Know what testers flagged in round 1</td></tr>
         <tr><td>SMART IR methodology</td><td>context/reference/smartir_methodology.md</td><td>Understand the scoring system being automated — critical for Phase 2</td></tr>
       </tbody>
