@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AngelSpan — Prototype Methodology & Handoff Strategy</title>
+<title>AngelSpan — Working Mock Build Methodology & Handoff Strategy</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -192,9 +192,7 @@ tbody tr:last-child td { border-bottom: none; }
     <a href="#dashboard">Dashboard Evolution</a>
     <div class="toc-group">Stress Test</div>
     <a href="#st1">Stage 1</a>
-    <a href="#st2">Stage 2</a>
     <a href="#st3">Stage 3</a>
-    <a href="#st4">Stage 4</a>
     <div class="toc-group">Next Steps</div>
     <a href="#recs">Recommendations</a>
   </nav>
@@ -206,9 +204,23 @@ tbody tr:last-child td { border-bottom: none; }
   <h1>Working Mock — Build Methodology &amp; Handoff Strategy</h1>
   <p class="subtitle">How the Lovable working clickable mock was built, why the process was structured the way it was, and what that structure gives the development team at handoff.</p>
   <p class="meta">July 2026 &nbsp;·&nbsp; Owner: Adam McKinstrie &nbsp;·&nbsp; Prepared for engineering handoff</p>
-  <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:var(--c-amber-bg);border:1px solid var(--c-amber-bd);border-radius:4px;font-size:13px;color:var(--c-text-2);line-height:1.55;margin-top:16px;">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:2px;color:#92400E;"><circle cx="7" cy="7" r="6.5" stroke="currentColor"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-    <span><strong style="color:var(--c-text);">Throughout this document, "prototype" refers to the Lovable working clickable mock</strong> at <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="color:var(--c-blue);">angelspan-bridge-flow.lovable.app</a> — not the Path 2 prototype, which is a formal dev partner engagement with a real backend, real clients, and real transactions.</span>
+  <div class="box blue" style="margin-top:24px;">
+    <span class="lbl">About this project</span>
+    AngelSpan is an investor-relations SaaS platform for startups. Internally, a <strong>Performance Analyst (PA)</strong> reviews founder updates, enters <strong>SMART IR</strong> scores (a Bell Mason Diagnostic-based scoring system across Product, Market, Team, and Operations), and distributes polished reports to investors and advisors. <strong>Legacy Funds</strong> is a companion venture fund product where General Partners (GPs) manage startup portfolios and Limited Partners (LPs) invest — it uses AngelSpan's SMART IR data for fund-level decisions. Both products are covered by this working mock.
+  </div>
+
+  <div style="margin-top:16px;margin-bottom:0;">
+    <table style="margin:0;">
+      <thead><tr><th>Term</th><th>Meaning in this document</th></tr></thead>
+      <tbody>
+        <tr><td>Working mock</td><td>The Lovable-built clickable prototype at <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="color:var(--c-blue);">angelspan-bridge-flow.lovable.app</a> — simulated flows, no real backend, no real data</td></tr>
+        <tr><td>Path 2</td><td>The planned formal development engagement with a dev partner — real backend, real clients, real transactions. A separate and future initiative, not this working mock.</td></tr>
+        <tr><td>PA</td><td>Performance Analyst — the sole internal AngelSpan employee role; curates startup updates and enters SMART IR scores</td></tr>
+        <tr><td>SMART IR</td><td>Standardized Milestone Achievement &amp; Reporting Transparency for Investor Relations — the scoring and reporting system at the core of the AngelSpan product</td></tr>
+        <tr><td>BMD / Bell Mason</td><td>Bell Mason Diagnostic — the framework SMART IR is built on; scores startups on Product, Market, Team, and Operations across four maturity stages (Concept → Seed → Alpha → Beta)</td></tr>
+        <tr><td>Epic / Cluster</td><td>Interchangeable names for the working mock's top-level work unit. Built across 12 clusters (C0–C11); the dashboard now uses E-01–E-12. Decision files and SESSION.md still use cluster terminology.</td></tr>
+      </tbody>
+    </table>
   </div>
 
 
@@ -231,7 +243,7 @@ tbody tr:last-child td { border-bottom: none; }
         <div class="wf-num">2</div>
         <div class="wf-body">
           <div class="wf-title">Prompt drafting</div>
-          <div class="wf-desc">Claude drafted each Lovable prompt from the master spec for the cluster being built, the relevant decision records, the design system, and shared agent context files. Claude reviewed each draft from five perspectives simultaneously — product manager, UX designer, frontend lead, backend lead, and technical architect — before finalizing. This multi-role review was designed to catch conflicts and specification gaps before anything was sent to the build tool.</div>
+          <div class="wf-desc">Claude drafted each Lovable prompt from the master spec for the epic being built, the relevant decision records, the design system, and shared agent context files. Claude reviewed each draft from five perspectives simultaneously — product manager, UX designer, frontend lead, backend lead, and technical architect — before finalizing. This multi-role review was designed to catch conflicts and specification gaps before anything was sent to the build tool.</div>
           <div class="wf-note">Parallels recognized practice: cross-functional review at the point where decisions are still being shaped, not after they've been embedded in code</div>
         </div>
       </div>
@@ -247,21 +259,21 @@ tbody tr:last-child td { border-bottom: none; }
         <div class="wf-num">4</div>
         <div class="wf-body">
           <div class="wf-title">Delivery to Lovable</div>
-          <div class="wf-desc">Approved prompts were submitted to Lovable.ai. Lovable interpreted the prompt and made code changes to the prototype, automatically committing them to the main branch on GitHub.</div>
+          <div class="wf-desc">Approved prompts were submitted to Lovable.ai. Lovable interpreted the prompt and made code changes to the working mock, automatically committing them to the main branch on GitHub.</div>
         </div>
       </div>
       <div class="wf-step">
         <div class="wf-num">5</div>
         <div class="wf-body">
           <div class="wf-title">Verification</div>
-          <div class="wf-desc">After Lovable completed the build, Adam walked through the prototype at angelspan-bridge-flow.lovable.app to verify that the implementation matched what the prompt specified. Screens, flows, data behavior — checked against the intent of the specification.</div>
+          <div class="wf-desc">After Lovable completed the build, Adam walked through the working mock at angelspan-bridge-flow.lovable.app to verify that the implementation matched what the prompt specified. Screens, flows, data behavior — checked against the intent of the specification.</div>
         </div>
       </div>
       <div class="wf-step">
         <div class="wf-num">6</div>
         <div class="wf-body">
           <div class="wf-title">Correction or advance</div>
-          <div class="wf-desc">If verification revealed a misinterpretation, partial execution, or bug, a correction prompt was written and the cycle repeated from step 2. If verification passed, the session advanced to the next prompt. Correction prompts are not signs of failure — they are the record of where specification needed more precision, and where the build tool made assumptions that had to be overridden. The C8 cluster, for example, required five correction passes; those passes document where the hardest product questions were and how they were resolved.</div>
+          <div class="wf-desc">If verification revealed a misinterpretation, partial execution, or bug, a correction prompt was written and the cycle repeated from step 2. If verification passed, the session advanced to the next prompt. Correction prompts are not signs of failure — they are the record of where specification needed more precision, and where the build tool made assumptions that had to be overridden. E-08 (Client Lifecycle), for example, required five correction passes; those passes document where the hardest product questions were and how they were resolved.</div>
           <div class="wf-note">Parallels recognized practice: restoring the clarification feedback loop that AI-only delivery collapses</div>
         </div>
       </div>
@@ -295,7 +307,7 @@ tbody tr:last-child td { border-bottom: none; }
 
     <div class="box navy">
       <span class="lbl">The critical distinction</span>
-      Decision records capture <strong>intent</strong>, not implementation. The prototype's src/ folder captures implementation. When the two diverge — when Lovable built something that does not perfectly match the decision record — the decision record is what is correct. This is also the correct precedence for the development team: master specs and decision records define what the system is supposed to do; Lovable's code shows one way it was approximated.
+      Decision records capture <strong>intent</strong>, not implementation. The working mock's src/ folder captures implementation. When the two diverge — when Lovable built something that does not perfectly match the decision record — the decision record is what is correct. This is also the correct precedence for the development team: master specs and decision records define what the system is supposed to do; Lovable's code shows one way it was approximated.
     </div>
 
     <p>For the development team, the decision log is the fastest path to understanding why the system works the way it does — not just what it does. When you encounter a reference like "see D-003" in a specification, that reference explains the reasoning behind a product behavior, not just its mechanics. Reading D-003 before designing the production authentication system will save more time than reading the prototype's auth code.</p>
@@ -307,14 +319,14 @@ tbody tr:last-child td { border-bottom: none; }
     <div class="sec-label">Structure</div>
     <h2>Work Hierarchy</h2>
 
-    <p>The prototype uses "clusters" as the top-level organizing unit. As the project moves to production and a development team joins, more precise shared language reduces coordination friction. The hierarchy below aligns the prototype's existing structure with standard product development terminology:</p>
+    <p>The working mock was built using "clusters" as the top-level organizing unit. As the project moves to production, more precise shared language reduces coordination friction. The hierarchy below aligns the working mock's existing structure with standard product development terminology — the dashboard already uses E-01–E-12; the rename is not yet applied to SESSION.md or the decisions/ folder:</p>
 
     <div class="hier">
       <div class="hr" style="background:rgba(0,74,109,.04);">
         <div class="hr-bar" style="background:var(--c-navy);"></div>
         <div class="hr-body">
           <div class="hr-name"><span class="pid pid-e">E-01</span>Epic</div>
-          <div class="hr-sub">A bounded body of work with a coherent user outcome. Replaces "cluster." The 12 clusters (C0–C11) become E-01–E-12.</div>
+          <div class="hr-sub">A bounded body of work with a coherent user outcome. Replaces "cluster." The 12 clusters (C0–C11) are referred to as E-01–E-12 on the dashboard; SESSION.md and decisions/ still use cluster notation.</div>
           <div class="hr-ex">E-01 · Authentication &nbsp;·&nbsp; E-05 · Client Lifecycle &nbsp;·&nbsp; E-08 · Legacy Funds GP</div>
         </div>
       </div>
@@ -345,8 +357,8 @@ tbody tr:last-child td { border-bottom: none; }
     </div>
 
     <div class="box blue">
-      <span class="lbl">Terminology action</span>
-      Rename "Cluster" → "Epic" throughout the dashboard, SESSION.md, and decision files. Introduce E-01–E-12 IDs. This takes less than an hour and prevents the informal naming from becoming entrenched as the development team joins.
+      <span class="lbl">Rename status</span>
+      The build dashboard already uses E-01–E-12. The remaining rename — SESSION.md and the decisions/ folder — takes less than an hour and should be completed before the development team begins reading those files, to avoid the informal cluster naming becoming entrenched.
     </div>
   </section>
 
@@ -379,10 +391,10 @@ tbody tr:last-child td { border-bottom: none; }
       <thead><tr><th>Prototype artifact</th><th>Production target</th><th>Note</th></tr></thead>
       <tbody>
         <tr><td>Supabase Auth (email/password + TOTP stub)</td><td>Azure AD B2C or Auth0</td><td>Production identity provider not yet finalized. See open decisions.</td></tr>
-        <tr><td>MFA "Skip" bypass</td><td>MFA required, no bypass</td><td>Every prototype session has an active skip backdoor. This is a hard pre-production correction.</td></tr>
+        <tr><td>MFA "Skip" bypass</td><td>MFA required, no bypass</td><td>Every working mock session has an active skip backdoor. This is a hard pre-production correction.</td></tr>
         <tr><td>Client-side role switching</td><td>API-level RBAC on every endpoint</td><td>Prototype role switcher is purely cosmetic — it changes UI rendering only, not what data the backend returns.</td></tr>
         <tr><td>TypeScript in-memory data stores</td><td>MS SQL Server + Azure CosmosDB</td><td>Not database schemas. Convenience structures that reflect product decisions. Not normalized relational models.</td></tr>
-        <tr><td>All business logic in React (client-side)</td><td>.NET 8+ REST API</td><td>The prototype has no server. All eligibility checks, SMART IR calculations, plan enforcement, and billing validation run in the browser. In production, all business logic must live in the API layer.</td></tr>
+        <tr><td>All business logic in React (client-side)</td><td>.NET 8+ REST API</td><td>The working mock has no server. All eligibility checks, SMART IR calculations, plan enforcement, and billing validation run in the browser. In production, all business logic must live in the API layer.</td></tr>
         <tr><td>window.print() for tear sheet PDFs</td><td>Server-side PDF generation</td><td>Print-to-PDF requires human initiation and produces inconsistent output. Production tear sheets must be generated server-side and attached to distribution emails automatically.</td></tr>
         <tr><td>Toast notifications only</td><td>SendGrid (full email delivery)</td><td>No email is sent anywhere in the prototype. All notification events simulate via transient toast messages in the same tab.</td></tr>
         <tr><td>wrangler.jsonc at project root</td><td>Not applicable</td><td>Cloudflare Workers config auto-added by Lovable during Supabase integration. Not a deliberate decision. Investigate and remove before production deployment.</td></tr>
@@ -415,12 +427,12 @@ tbody tr:last-child td { border-bottom: none; }
     </table>
 
     <div class="box green">
-      <span class="lbl">What this process gives the development team that a typical prototype handoff does not</span>
-      In a typical AI-assisted prototype build, the output is a working demo and a vague handover conversation. The decisions that shaped the product are distributed across chat threads, memory, and the developer's head — none of it traceable. This build was structured so the inverse is true: the decisions are explicit, numbered, and cross-referenced. A developer picking up D-021 (Legacy Fund eligibility cap) gets the full rationale for the $800K threshold, the §1244 protection logic, and the references to canonical specs. They do not have to reconstruct reasoning from code behavior. This is the primary value this methodology creates for the handoff.
+      <span class="lbl">What this process gives the development team that a typical handoff does not</span>
+      In a typical AI-assisted build, the output is a working demo and a vague handover conversation. The decisions that shaped the product are distributed across chat threads, memory, and the original developer's head — none of it traceable. This build was structured so the inverse is true: the decisions are explicit, numbered, and cross-referenced. A developer picking up any D-ID gets the full rationale for the product behavior behind it — the question that prompted it, the options considered, the choice made, and what it constrains going forward. They do not have to reconstruct reasoning from code behavior. This is the primary value this methodology creates for the handoff.
     </div>
 
     <h3>Open decisions requiring resolution before production</h3>
-    <p>These items are acceptable at prototype stage but must be resolved before production development begins:</p>
+    <p>These items are acceptable in the working mock but must be resolved before production development begins:</p>
     <table>
       <thead><tr><th>Item</th><th>Decision ref</th><th>What needs resolving</th></tr></thead>
       <tbody>
@@ -481,7 +493,7 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
 
-    <h3>Stress test: Stage 1</h3>
+    <h3 id="st1">Stress test: Stage 1</h3>
     <div class="stress-hd"><div>Assumption</div><div>Failure mode</div><div>Mitigation</div></div>
     <div class="stress-body">
       <div class="sr">
@@ -501,7 +513,7 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
 
-    <h3>Stress test: Stage 3 (CMS)</h3>
+    <h3 id="st3">Stress test: Stage 3 (CMS)</h3>
     <div class="stress-hd"><div>Assumption</div><div>Failure mode</div><div>Mitigation</div></div>
     <div class="stress-body">
       <div class="sr">
@@ -532,8 +544,8 @@ tbody tr:last-child td { border-bottom: none; }
       <li>
         <div class="rn">1</div>
         <div class="rb">
-          <strong>Rename clusters to epics</strong>
-          <span>Update the dashboard, SESSION.md, and decision files. Introduce E-01–E-12 IDs. Under an hour of work; prevents the informal naming from becoming permanent as the development team joins.</span>
+          <strong>Complete the cluster → epic rename in SESSION.md and decisions/</strong>
+          <span>The dashboard already uses E-01–E-12. Apply the same rename to SESSION.md and all decision files before the development team begins reading them. Under an hour of work; prevents the informal cluster naming from becoming entrenched in the documentation the dev team will actually live in.</span>
         </div>
       </li>
       <li>
@@ -583,7 +595,7 @@ tbody tr:last-child td { border-bottom: none; }
 
 
   <div class="closing">
-    <p>The prototype answered the hardest product questions — does the information architecture work across nine roles, does the dual-brand strategy hold, does the SMART IR scoring UX communicate what it needs to communicate, is the Legacy Fund application flow coherent — at relatively low cost. It did not answer production engineering questions; those start fresh with the development team. The structured build process — human review at every step, decisions captured at the moment they were made, explicit separation of intent from implementation — means the development team inherits a clear picture of why the product works the way it does, not just that it does.</p>
+    <p>The working mock answered the hardest product questions — does the information architecture work across ten roles spanning two brand contexts, does the dual-brand strategy hold, does the SMART IR scoring UX communicate what it needs to communicate, is the Legacy Fund application flow coherent — at relatively low cost. It did not answer production engineering questions; those start fresh with the development team. The structured build process — human review at every step, decisions captured at the moment they were made, explicit separation of intent from implementation — means the development team inherits a clear picture of why the product works the way it does, not just that it does.</p>
   </div>
 
 </main>
