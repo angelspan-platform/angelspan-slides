@@ -11,15 +11,15 @@
 :root {
   /* AngelSpan brand */
   --navy:#004A6D; --blue:#0179B5; --sky:#50ADDB;
-  /* Legacy Funds brand (Midnight Navy + Steel Blue + Cloud tint) */
+  /* Legacy Funds brand */
   --lf:#1B3D5F; --lf-l:#2E6EA6; --lf-bg:#E8F0F7; --lf-bd:#A8C8E0;
-  /* Semantic — success / warning / error per design system */
+  /* Semantic */
   --green:#2A6B3C; --green-bg:#D4EDDA; --green-bd:#A8D5B8;
   --amber:#FF8000; --amber-bg:#FFF3E0; --amber-bd:#FFCC90;
   --red:#CF1F3F;   --red-bg:#FEE8EC;   --red-bd:#F4B3BF;
   /* Surfaces */
   --bg:#FAFAF8; --surface:#F4F1EC; --border:#E0DBD3; --raised:#ffffff;
-  /* Typography — Mine Shaft / Scorpion Gray / Raven Gray */
+  /* Typography */
   --text:#303030; --text-2:#606060; --text-3:#909090;
   /* Fonts */
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
@@ -49,33 +49,66 @@ a:hover{text-decoration:underline;}
 .b-neu{background:var(--surface);color:var(--text-3);border:1px solid var(--border);}
 .mono{font-family:var(--mono);}
 
-/* ── Shell ── */
-.page{max-width:1120px;margin:0 auto;padding:0 48px;}
+/* ── Layout ── */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
 
-/* ── Header ── */
-.hdr{padding-top:32px;}
-.hdr-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;}
-.hdr-brand{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
-.brand-mark{width:30px;height:30px;background:var(--navy);border-radius:4px;display:flex;align-items:center;justify-content:center;}
-.brand-mark span{color:rgba(255,255,255,.9);font-size:11px;font-weight:800;letter-spacing:-.02em;}
-.brand-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);}
-.brand-sep{color:var(--border);}
-.brand-ctx{font-size:12px;color:var(--text-3);}
-h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margin-bottom:4px;}
-.hdr-sub{font-size:13px;color:var(--text-2);margin-bottom:8px;}
-.hdr-meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:12px;color:var(--text-3);}
-.live-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:3px 9px;font-size:11px;}
+/* ── Sidenav ── */
+.sidenav{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.sn-brand{padding:30px 22px 18px;}
+.sn-mark{width:28px;height:28px;background:var(--navy);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+.sn-mark span{color:rgba(255,255,255,.9);font-size:10px;font-weight:800;letter-spacing:-.02em;}
+.sn-wordmark{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.sn-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);}
+.sn-ctx{font-size:11px;color:var(--text-3);line-height:1.5;}
+.sn-div{height:1px;background:var(--border);margin:6px 0;}
+.sn-status{padding:10px 22px 6px;}
+.live-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text-2);}
 .live-dot{width:6px;height:6px;border-radius:2px;background:var(--amber);animation:pulse 2s infinite;flex-shrink:0;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.sn-cta{padding:6px 22px 12px;}
 .btn{display:inline-block;font-size:12px;font-weight:600;padding:8px 16px;border-radius:3px;text-decoration:none;white-space:nowrap;transition:background .1s,color .1s;}
-.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary{background:var(--navy);color:#fff;width:100%;text-align:center;}
 .btn-primary:hover{background:var(--blue);text-decoration:none;color:#fff;}
+.sn-group{padding:14px 22px 4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--text-3);}
+.sn-link{display:flex;align-items:center;gap:9px;padding:7px 22px;text-decoration:none;color:var(--text-2);font-size:12px;transition:background .08s;}
+.sn-link:hover{background:rgba(0,74,109,.05);color:var(--text);text-decoration:none;}
+.sn-link-icon{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+.qi-p{background:var(--navy);color:#fff;}
+.qi-s{background:rgba(80,173,219,.12);color:var(--blue);border:1px solid rgba(80,173,219,.3);}
+.qi-gh{background:var(--raised);color:var(--text-2);border:1px solid var(--border);}
+.qi-doc{background:rgba(42,107,60,.1);color:var(--green);border:1px solid rgba(42,107,60,.2);}
+.sn-link-text{flex:1;}
+.sn-link-name{font-size:12px;font-weight:500;line-height:1.25;}
+.sn-link-sub{font-size:10px;color:var(--text-3);line-height:1.25;margin-top:1px;}
+.sn-link-arr{font-size:11px;color:var(--text-3);flex-shrink:0;}
+.sn-cred{padding:10px 22px 12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3);}
+.sn-cred-m{font-family:var(--mono);font-size:11px;color:var(--text-2);}
+.sn-dom{padding-bottom:8px;}
+.dom-row{display:flex;align-items:center;gap:9px;padding:6px 22px;}
+.dom-stripe{width:3px;height:22px;border-radius:2px;flex-shrink:0;}
+.dom-info{flex:1;}
+.dom-name{font-size:11px;color:var(--text-2);margin-bottom:3px;}
+.dom-bar{height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
+.dom-fill{height:100%;border-radius:2px;}
+.dom-n{font-size:13px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;min-width:20px;text-align:right;}
+.sn-footer{margin-top:auto;padding:14px 22px;border-top:1px solid var(--border);font-size:10px;color:var(--text-3);line-height:1.6;}
+
+/* ── Main content ── */
+.main{padding:48px 60px 80px;min-width:0;}
+
+/* ── Section hierarchy ── */
+.sec{margin-top:56px;scroll-margin-top:20px;}
+.sec:first-child{margin-top:0;}
+.sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-3);margin-bottom:5px;}
+.sec h2{font-size:20px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:24px;letter-spacing:-.015em;}
+
+/* ── Callout strip ── */
+.callout-mock{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:4px;font-size:12px;color:var(--text-2);line-height:1.5;margin-bottom:48px;}
 
 /* ── Milestone bar ── */
-.milestones{margin-top:24px;}
 .ms-track{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr 36px 1fr;align-items:center;}
 .ms-node{text-align:center;}
-.ms-circle{width:28px;height:28px;border-radius:4px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.ms-circle{width:26px;height:26px;border-radius:3px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
 .ms-done{background:var(--green);color:#fff;}
 .ms-active{background:var(--amber);color:#fff;box-shadow:0 0 0 4px var(--amber-bg);}
 .ms-pending{background:var(--surface);color:var(--text-3);border:2px solid var(--border);}
@@ -86,49 +119,31 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
 .ms-line.active{background:linear-gradient(to right,var(--green),var(--amber));}
 .ms-line.ahead{background:var(--border);}
 
-/* ── Context strip ── */
-.ctx-strip{margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--text-2);display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;}
-.ctx-body{display:flex;flex-direction:column;gap:6px;flex:1;}
-.ctx-distinction{font-size:11px;color:var(--text-3);padding:6px 10px;background:var(--raised);border:1px solid var(--border);border-radius:3px;line-height:1.6;}
-/* guide card */
-.guide-card{background:var(--raised);border:1px solid var(--border);border-radius:4px;margin-bottom:14px;overflow:hidden;}
-/* single always-visible bar: URL · password · guide button */
+/* ── Access guide card ── */
+.guide-card{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:20px;}
 .guide-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:10px;flex-wrap:wrap;}
 .gb-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--text-2);}
 .gb-divider{width:1px;height:13px;background:var(--border);flex-shrink:0;}
 .gs-code{font-family:var(--mono);font-size:11px;background:var(--surface);border:1px solid var(--border);padding:1px 5px;border-radius:2px;color:var(--text-2);}
-/* the button IS the toggle */
 .gb-guide-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--blue);background:rgba(1,121,181,.07);border:1px solid rgba(1,121,181,.22);border-radius:3px;padding:5px 11px;cursor:pointer;font-family:var(--font);transition:background .1s,border-color .1s;white-space:nowrap;flex-shrink:0;}
 .gb-guide-btn:hover,.gb-guide-btn[aria-expanded="true"]{background:rgba(1,121,181,.14);border-color:rgba(1,121,181,.4);}
 .gb-dot{width:6px;height:6px;border-radius:2px;background:var(--blue);flex-shrink:0;}
 .gb-arrow{font-size:10px;transition:transform .15s;display:inline-block;}
 .gb-arrow.open{transform:rotate(180deg);}
-/* collapsible detail */
 .guide-body{display:none;padding:16px 18px 18px;border-top:1px solid var(--border);}
 .guide-body.open{display:block;}
 .guide-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
 .guide-step{display:flex;flex-direction:column;gap:5px;}
-.gs-num{width:20px;height:20px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.gs-num{width:20px;height:20px;border-radius:3px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .gs-label{font-size:12px;font-weight:600;color:var(--text);}
 .gs-detail{font-size:11px;color:var(--text-2);line-height:1.55;}
 .guide-note{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);}
 .gn-col-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:8px;}
 .gn-row{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--text-2);line-height:1.5;padding:3px 0;}
 .gn-dot{width:6px;height:6px;border-radius:2px;flex-shrink:0;margin-top:4px;}
-@media(max-width:640px){.guide-steps{grid-template-columns:1fr 1fr;}.guide-note{grid-template-columns:1fr;}.guide-bar{flex-direction:column;align-items:flex-start;}}
-.ctx-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);padding:2px 8px;border-radius:2px;background:var(--raised);border:1px solid var(--border);flex-shrink:0;}
-
-/* ── Body ── */
-.body{margin-top:18px;padding-bottom:60px;display:grid;grid-template-columns:1fr 248px;gap:18px;align-items:start;}
-
-/* ── Cards ── */
-.card{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:14px;}
-.card:last-child{margin-bottom:0;}
-.card-head{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
-.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);}
 
 /* ── Chart row ── */
-.chart-row{display:grid;grid-template-columns:1fr 1.55fr 1fr;gap:14px;margin-bottom:14px;}
+.chart-row{display:grid;grid-template-columns:1fr 1.55fr 1fr;gap:14px;}
 .cc{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;}
 .cc-head{padding:11px 14px 0;}
 .cc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);margin-bottom:2px;}
@@ -161,9 +176,8 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
 .bar-svg{width:100%;overflow:visible;}
 
 /* ── Scope map ── */
-.sm-legend{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--text-3);flex-wrap:wrap;}
+.sm-legend{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--text-3);flex-wrap:wrap;margin-bottom:16px;}
 .sm-leg-dot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:3px;vertical-align:middle;}
-.sm-body{padding:14px 16px 0;}
 .sm-track-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--text-3);margin-bottom:5px;}
 .sm-row{display:flex;overflow-x:auto;gap:2px;border-radius:3px;margin-bottom:12px;}
 .sm-block{
@@ -192,7 +206,7 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
 .sm-block.narrow .sm-bfoot{display:none;}
 
 /* Detail panel */
-.sm-detail{display:none;border-top:1px solid var(--border);margin:0 -16px;background:var(--surface);}
+.sm-detail{display:none;border-top:1px solid var(--border);margin-top:4px;background:var(--surface);border-radius:4px;}
 .sm-detail.open{display:block;}
 .fd-inner{padding:16px 16px 18px;}
 .fd-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
@@ -215,8 +229,9 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
 .dec-code:hover{opacity:.6;text-decoration:none;}
 
 /* ── Epic table ── */
-.et-hdr{display:grid;grid-template-columns:32px 38px 1fr 44px 52px 84px;padding:5px 14px 5px 0;border-bottom:1px solid var(--border);background:var(--surface);}
-.et-hdr>div{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);padding-left:8px;}
+.epic-table{border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.et-hdr{display:grid;grid-template-columns:32px 38px 1fr 44px 52px 84px;padding:8px 14px 8px 0;background:var(--navy);}
+.et-hdr>div{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.7);padding-left:8px;}
 .et-hdr>div:first-child{padding-left:12px;}
 .et-hdr>div:last-child{text-align:right;padding-right:12px;}
 .et-row{display:grid;grid-template-columns:32px 38px 1fr 44px 52px 84px;align-items:center;border-bottom:1px solid var(--border);transition:background .08s;}
@@ -232,8 +247,11 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
 .et-track{padding:9px 6px;}
 .et-stories{padding:9px 6px;font-size:12px;font-weight:700;color:var(--text-2);font-variant-numeric:tabular-nums;text-align:right;}
 .et-status{padding:9px 12px 9px 6px;text-align:right;}
-/* ── Sprint sub-tasks (E12) ── */
-.sprint-hdr{display:grid;grid-template-columns:36px 1fr 100px 96px;padding:5px 14px 5px 0;border-bottom:1px solid var(--border);background:var(--surface);}
+
+/* E12 sub-tasks */
+.e12-section{margin-top:24px;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.e12-label{padding:8px 14px;background:var(--navy);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.7);}
+.sprint-hdr{display:grid;grid-template-columns:36px 1fr 100px 96px;padding:7px 14px 7px 0;border-bottom:1px solid var(--border);background:var(--surface);}
 .sprint-hdr>div{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);padding-left:10px;}
 .sprint-hdr>div:first-child{padding-left:14px;}
 .sprint-hdr>div:last-child{text-align:right;padding-right:14px;}
@@ -257,403 +275,108 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
 .st-rdy{background:var(--surface);color:var(--text-3);border:1px solid var(--border);}
 .st-blk{background:var(--red-bg);color:var(--red);}
 
-/* ── Attention ── */
-.attn-row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:flex-start;}
+/* ── Attention items ── */
+.attn-list{border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.attn-row{display:flex;gap:12px;padding:16px;border-bottom:1px solid var(--border);align-items:flex-start;}
 .attn-row:last-child{border-bottom:none;}
 .attn-sev{width:3px;align-self:stretch;border-radius:2px;flex-shrink:0;}
 .sev-r{background:var(--red);}
 .sev-a{background:var(--amber);}
-.attn-ttl{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
-.attn-dsc{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:6px;}
-
-/* ── Sidebar ── */
-.sidebar{display:flex;flex-direction:column;gap:14px;}
-.side-card{background:var(--raised);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
-.side-head{padding:9px 14px;border-bottom:1px solid var(--border);background:var(--surface);}
-.side-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);}
-.qa-item{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .08s;}
-.qa-item:last-of-type{border-bottom:none;}
-.qa-item:hover{background:var(--surface);text-decoration:none;}
-.qa-icon{width:26px;height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
-.qi-p{background:var(--navy);color:#fff;}
-.qi-s{background:rgba(80,173,219,.12);color:var(--blue);border:1px solid rgba(80,173,219,.3);}
-.qi-gh{background:var(--surface);color:var(--text-2);border:1px solid var(--border);}
-.qi-doc{background:rgba(42,107,60,.1);color:var(--green);border:1px solid rgba(42,107,60,.2);}
-.qa-text{flex:1;}
-.qa-name{font-size:12px;font-weight:600;color:var(--text);}
-.qa-sub{font-size:10px;color:var(--text-3);margin-top:1px;}
-.cred-sec{padding:9px 14px;background:var(--surface);border-top:1px solid var(--border);font-size:11px;color:var(--text-3);}
-.cred-m{font-family:var(--mono);font-size:12px;color:var(--text-2);}
-.dom-row{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--border);}
-.dom-row:last-of-type{border-bottom:none;}
-.dom-stripe{width:3px;height:26px;border-radius:2px;flex-shrink:0;}
-.dom-info{flex:1;}
-.dom-name{font-size:12px;color:var(--text-2);margin-bottom:4px;}
-.dom-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
-.dom-fill{height:100%;border-radius:2px;}
-.dom-n{font-size:15px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;min-width:20px;text-align:right;}
-.gh-note{padding:9px 14px;font-size:11px;color:var(--text-3);line-height:1.6;border-top:1px solid var(--border);}
-
-/* ── Footer ── */
-.footer{border-top:1px solid var(--border);padding:14px 48px 36px;max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);}
+.attn-ttl{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.attn-dsc{font-size:12px;color:var(--text-2);line-height:1.65;margin-bottom:8px;}
 
 /* ── Responsive ── */
-@media(max-width:640px){
-  .page,.footer{padding-left:18px;padding-right:18px;}
-  .body{grid-template-columns:1fr;}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .sidenav{position:static;height:auto;}
+  .main{padding:32px 24px 60px;}
   .chart-row{grid-template-columns:1fr;}
   .fd-cols{grid-template-columns:1fr;}
-  .hdr-inner{flex-direction:column;}
-  .ms-track{grid-template-columns:1fr;gap:4px;}
-  .ms-line{display:none;}
+  .guide-steps{grid-template-columns:1fr 1fr;}
+  .guide-note{grid-template-columns:1fr;}
   .sprint-row{grid-template-columns:36px 1fr 80px;}
   .sr-own{display:none;}
-  .footer{flex-direction:column;gap:6px;}
-  .sm-body{padding:12px 12px 0;}
-  .sm-detail{margin:0 -12px;}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="page hdr">
-  <div class="hdr-inner">
-    <div>
-      <div class="hdr-brand">
-        <div class="brand-mark"><span>AS</span></div>
-        <span class="brand-name">AngelSpan</span>
-        <span class="brand-sep">·</span>
-        <span class="brand-ctx">Working Mock — Build Tracker</span>
-      </div>
-      <h1>Working Mock Build Tracker</h1>
-      <p class="hdr-sub">AngelSpan IR + Legacy Funds &nbsp;·&nbsp; built with Lovable &nbsp;·&nbsp; 12 epics</p>
-      <div class="hdr-meta">
-        <div class="live-chip"><div class="live-dot"></div>Phase 3 of 4 — UAT &amp; Stabilization</div>
-        <span class="badge b-red" style="font-size:10px;">1 task blocking handoff</span>
-        <span style="font-size:11px;color:var(--text-3);">Updated Jul 15, 2026</span>
-      </div>
-    </div>
-    <div style="flex-shrink:0;margin-top:4px;">
-      <a class="btn btn-primary" href="https://angelspan-bridge-flow.lovable.app" target="_blank">Open working mock ↗</a>
-    </div>
-  </div>
-</div>
+<div class="layout">
 
-<!-- MILESTONE BAR -->
-<div class="page milestones">
-  <div class="ms-track">
-    <div class="ms-node">
-      <div class="ms-circle ms-done">✓</div>
-      <div class="ms-label">Specification</div>
-      <div class="ms-who">Adam + Claude</div>
-    </div>
-    <div class="ms-line done"></div>
-    <div class="ms-node">
-      <div class="ms-circle ms-done">✓</div>
-      <div class="ms-label">Prototype Build</div>
-      <div class="ms-who">Lovable · 12 epics</div>
-    </div>
-    <div class="ms-line active"></div>
-    <div class="ms-node">
-      <div class="ms-circle ms-active">3</div>
-      <div class="ms-label">UAT &amp; Stabilization</div>
-      <div class="ms-who">Adam + internal testers</div>
-    </div>
-    <div class="ms-line ahead"></div>
-    <div class="ms-node">
-      <div class="ms-circle ms-pending">4</div>
-      <div class="ms-label">Engineering Handoff</div>
-      <div class="ms-who">Dev partner · TBD</div>
-    </div>
-  </div>
-</div>
+<!-- LEFT SIDENAV -->
+<nav class="sidenav">
 
-
-<!-- MOCK DISTINCTION CALLOUT -->
-<div class="page" style="margin-top:14px;">
-  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:4px;font-size:12px;color:var(--text-2);line-height:1.5;">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;color:var(--amber);"><circle cx="7" cy="7" r="6.5" stroke="currentColor"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-    <span><strong style="color:var(--amber);">Working clickable mock</strong> — all flows are simulated with no real backend. This is not the Path 2 prototype, which would involve a dev partner engagement with real clients, real data, and real transactions.</span>
-  </div>
-</div>
-
-<!-- BODY -->
-<div class="page body">
-<div id="main-col">
-
-  <!-- ACCESS GUIDE -->
-  <div class="guide-card">
-    <div class="guide-bar">
-      <div class="gb-left">
-        <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="font-weight:600;color:var(--blue);font-size:12px;">angelspan-bridge-flow.lovable.app ↗</a>
-        <div class="gb-divider"></div>
-        <span>Password: <span class="gs-code">demo1234</span></span>
-        <div class="gb-divider"></div>
-        <span style="font-size:11px;color:var(--text-3);">MFA: click "Skip — prototype only"</span>
-      </div>
-      <button class="gb-guide-btn" onclick="toggleGuide()" id="gb-guide-btn" aria-expanded="false">
-        <span class="gb-dot"></span>
-        In-mock testing guide
-        <span class="gb-arrow" id="guide-toggle">▾</span>
-      </button>
+  <div class="sn-brand">
+    <div class="sn-wordmark">
+      <div class="sn-mark"><span>AS</span></div>
+      <span class="sn-name">AngelSpan</span>
     </div>
-    <div class="guide-body" id="guide-body">
-      <div class="guide-steps">
-        <div class="guide-step">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">1</div><div class="gs-label">Open the mock</div></div>
-          <div class="gs-detail">Visit <a href="https://angelspan-bridge-flow.lovable.app" target="_blank">angelspan-bridge-flow.lovable.app ↗</a></div>
-          <div class="gs-detail" style="margin-top:5px;">Password: <span class="gs-code">demo1234</span></div>
-        </div>
-        <div class="guide-step">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">2</div><div class="gs-label">Bypass MFA</div></div>
-          <div class="gs-detail">At the MFA screen, click <strong>"Skip — prototype only"</strong> to proceed without a real authentication code.</div>
-        </div>
-        <div class="guide-step">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">3</div><div class="gs-label">Choose a track</div></div>
-          <div class="gs-detail"><strong>AngelSpan</strong> — log in as Founder, Performance Analyst, or Admin to explore IR workflows.</div>
-          <div class="gs-detail" style="margin-top:4px;"><strong>Legacy Funds</strong> — log in as GP, LP, or Champion to explore fund management.</div>
-        </div>
-        <div class="guide-step">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">4</div><div class="gs-label">Switch roles</div></div>
-          <div class="gs-detail">Multi-role users (e.g. a Founder who is also an LP) can switch context from the top navigation without logging out.</div>
-        </div>
-      </div>
-      <div class="guide-note">
-        <div>
-          <div class="gn-col-head">What works in the mock</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>End-to-end clickable flows for all 14 features</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>Role-based navigation and access control</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>Simulated data across dashboards, scoring, and reports</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>UAT feedback form on every screen</div>
-        </div>
-        <div>
-          <div class="gn-col-head">What is simulated (not real)</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>Client signups and subscription payments (Stripe)</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>SMART IR score calculations and Bell Mason scoring</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>Stakeholder email delivery and magic links</div>
-          <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>GP/LP fund connections and capital transactions</div>
-        </div>
-      </div>
-    </div>
+    <div class="sn-ctx">Working Mock — Build Tracker</div>
   </div>
 
-  <!-- CHART ROW -->
-  <div class="chart-row">
+  <div class="sn-div"></div>
 
-    <!-- Donut: build verification -->
-    <div class="cc">
-      <div class="cc-head">
-        <div class="cc-title">Epics</div>
-        <div class="cc-hint">Click to filter scope map</div>
-      </div>
-      <div class="cc-body">
-        <div class="donut-wrap">
-          <canvas id="c-donut" style="cursor:pointer;"></canvas>
-        </div>
-      </div>
-      <div class="cc-foot">
-        <div class="dleg">
-          <div class="dleg-row" id="dleg-done" data-f="done">
-            <span class="dleg-dot" style="background:var(--green);"></span>
-            <span class="dleg-lbl">Epics complete</span>
-            <span class="dleg-n" style="color:var(--green);">11</span>
-          </div>
-          <div class="dleg-row" id="dleg-active" data-f="active">
-            <span class="dleg-dot" style="background:var(--amber);"></span>
-            <span class="dleg-lbl">Active · UAT</span>
-            <span class="dleg-n" style="color:var(--amber);">1</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Line: build velocity -->
-    <div class="cc">
-      <div class="cc-head">
-        <div class="cc-title">Cumulative build progress</div>
-        <div class="cc-hint">Cumulative features + decisions · hover for values</div>
-      </div>
-      <div class="cc-body" style="padding-bottom:4px;">
-        <div class="line-wrap">
-          <canvas id="c-line"></canvas>
-          <div id="line-tip" class="chart-tooltip" style="display:none;"></div>
-        </div>
-      </div>
-      <div class="cc-foot" style="padding-top:6px;">
-        <div class="line-leg">
-          <span class="ll-item"><span class="ll-swatch" style="background:var(--navy);"></span>Features (14)</span>
-          <span class="ll-item"><span class="ll-swatch" style="background:var(--lf-l);height:1.5px;"></span>Decisions (38)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bar: decision coverage -->
-    <div class="cc">
-      <div class="cc-head">
-        <div class="cc-title">Decisions logged</div>
-        <div class="cc-hint">Architecture choices for the dev team</div>
-      </div>
-      <div class="cc-body" style="align-items:flex-start;">
-        <div class="bar-total">38</div>
-        <div class="bar-tot-lbl">decisions across 3 domains</div>
-        <svg id="svg-bars" class="bar-svg" style="overflow:visible;"></svg>
-      </div>
-      <div class="cc-foot">
-        <div style="font-size:10px;color:var(--text-3);">
-          <a href="https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions" target="_blank">Browse decisions/ on GitHub ↗</a>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /chart-row -->
-
-  <!-- SCOPE MAP -->
-  <div class="card">
-    <div class="card-head">
-      <span class="card-title">Project scope map</span>
-      <span class="sm-legend">
-        <span><span class="sm-leg-dot" style="background:var(--green);"></span>Verified E2E</span>
-        <span><span class="sm-leg-dot" style="background:var(--amber);"></span>Built · E2E pending</span>
-        <span style="color:var(--text-3);">Block width = build complexity &nbsp;·&nbsp; Click any block to drill in</span>
-      </span>
-    </div>
-    <div class="sm-body">
-      <div class="sm-track-lbl">AngelSpan — 8 features · 41 build prompts · all verified end-to-end</div>
-      <div class="sm-row" id="sm-as"></div>
-      <div class="sm-track-lbl">Legacy Funds — 6 features · 50 build prompts · built, E2E verification pending</div>
-      <div class="sm-row" id="sm-lf"></div>
-      <div class="sm-detail" id="sm-detail"></div>
-      <div style="height:14px;"></div>
-    </div>
+  <div class="sn-status">
+    <div class="live-chip"><div class="live-dot"></div>Phase 3 of 4 — UAT &amp; Stabilization</div>
+  </div>
+  <div class="sn-cta">
+    <a class="btn btn-primary" href="https://angelspan-bridge-flow.lovable.app" target="_blank">Open working mock ↗</a>
   </div>
 
-  <!-- EPICS -->
-  <div class="card">
-    <div class="card-head">
-      <span class="card-title">All epics — 12 completed</span>
-      <span style="font-size:11px;color:var(--text-3);">63 user stories · 38 decisions</span>
+  <div class="sn-div"></div>
+
+  <div class="sn-group">Quick access</div>
+
+  <a class="sn-link" href="path2_prototype_validate.html">
+    <div class="sn-link-icon qi-s">P2</div>
+    <div class="sn-link-text">
+      <div class="sn-link-name">Path 2 — Validate first</div>
+      <div class="sn-link-sub">Funding path analysis</div>
     </div>
-    <div class="et-hdr">
-      <div></div><div>Epic</div><div>Feature(s) delivered</div><div>Track</div><div style="text-align:right;">Stories</div><div>Status</div>
+    <span class="sn-link-arr">→</span>
+  </a>
+  <a class="sn-link" href="path1_full_build.html">
+    <div class="sn-link-icon qi-s">P1</div>
+    <div class="sn-link-text">
+      <div class="sn-link-name">Path 1 — Full build</div>
+      <div class="sn-link-sub">Full platform scope</div>
     </div>
-    <div id="epic-table-body"></div>
-    <!-- E12 sub-tasks -->
-    <div style="border-top:1px solid var(--border);background:var(--surface);padding:6px 14px 4px;">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);margin-bottom:2px;">E12 active tasks</div>
+    <span class="sn-link-arr">→</span>
+  </a>
+  <a class="sn-link" href="dashboard_strategy.html">
+    <div class="sn-link-icon qi-s">DS</div>
+    <div class="sn-link-text">
+      <div class="sn-link-name">Build methodology</div>
+      <div class="sn-link-sub">Process &amp; handoff strategy</div>
     </div>
-    <div class="sprint-hdr" style="border-top:none;">
-      <div></div><div>Task</div><div>Owner</div><div>Status</div>
+    <span class="sn-link-arr">→</span>
+  </a>
+  <a class="sn-link" href="https://github.com/angelspan-platform/angelspan-platform" target="_blank">
+    <div class="sn-link-icon qi-gh">GH</div>
+    <div class="sn-link-text">
+      <div class="sn-link-name">GitHub repository</div>
+      <div class="sn-link-sub">Specs, decisions, source</div>
     </div>
-    <div class="sprint-row">
-      <div class="sr-icw"><div class="sp-ic si-done">✓</div></div>
-      <div class="sr-tw"><div class="sr-name">Clean-slate founder accounts</div><div class="sr-id">Task A</div></div>
-      <div class="sr-own">Adam + Lovable</div>
-      <div class="sr-st"><span class="sp-tag st-done">Verified</span></div>
+    <span class="sn-link-arr">↗</span>
+  </a>
+  <a class="sn-link" href="https://docs.google.com/document/d/10DR3-uz90S8FfMLpEqqElgK4csjuOncVRAnm-62KC2E/edit?usp=drive_link" target="_blank">
+    <div class="sn-link-icon qi-doc">DOC</div>
+    <div class="sn-link-text">
+      <div class="sn-link-name">Prototype assumptions</div>
+      <div class="sn-link-sub">Design decisions · Google Doc</div>
     </div>
-    <div class="sprint-row">
-      <div class="sr-icw"><div class="sp-ic si-done">✓</div></div>
-      <div class="sr-tw"><div class="sr-name">Feedback data persistence</div><div class="sr-id">Task B</div></div>
-      <div class="sr-own">Adam + Lovable</div>
-      <div class="sr-st"><span class="sp-tag st-done">Verified</span></div>
-    </div>
-    <div class="sprint-row">
-      <div class="sr-icw"><div class="sp-ic si-act">→</div></div>
-      <div class="sr-tw"><div class="sr-name">PA ↔ Founder review loop</div><div class="sr-id">Task C</div></div>
-      <div class="sr-own">Adam + Lovable</div>
-      <div class="sr-st"><span class="sp-tag st-vrf">Verifying</span></div>
-    </div>
-    <div class="sprint-row">
-      <div class="sr-icw"><div class="sp-ic si-rdy">○</div></div>
-      <div class="sr-tw"><div class="sr-name">Champion logout UAT reset</div><div class="sr-id">Task D</div></div>
-      <div class="sr-own">Adam</div>
-      <div class="sr-st"><span class="sp-tag st-rdy">Ready to send</span></div>
-    </div>
-    <div class="sprint-row">
-      <div class="sr-icw"><div class="sp-ic si-blk">!</div></div>
-      <div class="sr-tw"><div class="sr-name">Fund application session persistence</div><div class="sr-id">Task E · blocking handoff</div></div>
-      <div class="sr-own">Adam</div>
-      <div class="sr-st"><span class="sp-tag st-blk">Blocked</span></div>
-    </div>
+    <span class="sn-link-arr">↗</span>
+  </a>
+
+  <div class="sn-cred">
+    Test password &nbsp;<span class="sn-cred-m">demo1234</span>
+    <div style="font-size:10px;margin-top:2px;">MFA: click "Skip — prototype only"</div>
   </div>
 
-  <!-- ATTENTION -->
-  <div class="card">
-    <div class="card-head">
-      <span class="card-title">Needs attention before handoff</span>
-      <span class="badge b-amber">3 items</span>
-    </div>
-    <div class="attn-row">
-      <div class="attn-sev sev-r"></div>
-      <div>
-        <div class="attn-ttl">Fund application data doesn't survive page reload</div>
-        <div class="attn-dsc">The Lovable build prompt for this fix has not been drafted. The fix strategy is documented — this prompt needs to be written and sent before the prototype is handoff-ready.</div>
-        <span class="badge b-red">Blocking handoff</span>
-      </div>
-    </div>
-    <div class="attn-row">
-      <div class="attn-sev sev-a"></div>
-      <div>
-        <div class="attn-ttl">5 decision IDs missing from the log — gaps at D-021 through D-024 and D-037</div>
-        <div class="attn-dsc">Before handoff: confirm whether these decisions were never written, captured under different IDs, or superseded. A gap in the decision log means the dev team is missing reasoning they'll need.</div>
-        <span class="badge b-amber">Action required</span>
-      </div>
-    </div>
-    <div class="attn-row">
-      <div class="attn-sev sev-a"></div>
-      <div>
-        <div class="attn-ttl">Legacy Funds end-to-end verification not started</div>
-        <div class="attn-dsc">All 6 Legacy Funds features are built and running in the prototype but haven't been walked end-to-end. UAT round 2 should trace the full flow: fund creation → GP assignment → founder application → Champion review → LP dashboard.</div>
-        <span class="badge b-amber">Action required</span>
-      </div>
-    </div>
-  </div>
+  <div class="sn-div"></div>
 
-</div><!-- /main-col -->
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-
-  <div class="side-card">
-    <div class="side-head"><div class="side-title">Quick access</div></div>
-    <a class="qa-item" href="https://angelspan-bridge-flow.lovable.app" target="_blank">
-      <div class="qa-icon qi-p">AS</div>
-      <div class="qa-text"><div class="qa-name">Open working mock</div><div class="qa-sub">angelspan-bridge-flow.lovable.app</div></div>
-      <span style="color:var(--text-3);font-size:12px;">↗</span>
-    </a>
-    <a class="qa-item" href="path2_prototype_validate.html">
-      <div class="qa-icon qi-s">P2</div>
-      <div class="qa-text"><div class="qa-name">Path 2 — Validate first</div><div class="qa-sub">Funding path analysis</div></div>
-      <span style="color:var(--text-3);font-size:12px;">→</span>
-    </a>
-    <a class="qa-item" href="path1_full_build.html">
-      <div class="qa-icon qi-s">P1</div>
-      <div class="qa-text"><div class="qa-name">Path 1 — Full build</div><div class="qa-sub">Full platform scope</div></div>
-      <span style="color:var(--text-3);font-size:12px;">→</span>
-    </a>
-    <a class="qa-item" href="dashboard_strategy.html">
-      <div class="qa-icon qi-s">DS</div>
-      <div class="qa-text"><div class="qa-name">Build methodology</div><div class="qa-sub">Prototype process & handoff strategy</div></div>
-      <span style="color:var(--text-3);font-size:12px;">→</span>
-    </a>
-    <a class="qa-item" href="https://github.com/angelspan-platform/angelspan-platform" target="_blank">
-      <div class="qa-icon qi-gh">GH</div>
-      <div class="qa-text"><div class="qa-name">GitHub repository</div><div class="qa-sub">Specs, decisions, source</div></div>
-      <span style="color:var(--text-3);font-size:12px;">↗</span>
-    </a>
-    <a class="qa-item" href="https://docs.google.com/document/d/10DR3-uz90S8FfMLpEqqElgK4csjuOncVRAnm-62KC2E/edit?usp=drive_link" target="_blank">
-      <div class="qa-icon qi-doc">DOC</div>
-      <div class="qa-text"><div class="qa-name">Prototype assumptions</div><div class="qa-sub">Google Doc · design decisions</div></div>
-      <span style="color:var(--text-3);font-size:12px;">↗</span>
-    </a>
-    <div class="cred-sec">
-      Test password &nbsp;<span class="cred-m">demo1234</span>
-      <div style="font-size:10px;margin-top:2px;">MFA: click "Skip — prototype only"</div>
-    </div>
-  </div>
-
-  <div class="side-card">
-    <div class="side-head"><div class="side-title">Decisions by domain</div></div>
+  <div class="sn-group">Decisions by domain</div>
+  <div class="sn-dom">
     <div class="dom-row">
       <div class="dom-stripe" style="background:var(--navy);"></div>
       <div class="dom-info">
@@ -678,16 +401,295 @@ h1{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.015em;margi
       </div>
       <div class="dom-n">5</div>
     </div>
-    <div class="gh-note">Click any decision badge in a feature to browse the <a href="https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions" target="_blank">decisions/ folder ↗</a></div>
+    <div style="padding:6px 22px 2px;font-size:10px;color:var(--text-3);">
+      Click any decision badge in a feature to browse the <a href="https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions" target="_blank">decisions/ folder ↗</a>
+    </div>
   </div>
 
-</div><!-- /sidebar -->
-</div><!-- /body -->
+  <div class="sn-footer">
+    Spec: Claude &nbsp;·&nbsp; Build: Lovable<br>
+    <a href="mailto:adam@angelspan.com">adam@angelspan.com</a> &nbsp;·&nbsp; Updated Jul 17, 2026
+  </div>
 
-<div class="footer">
-  <span>AngelSpan investor-relations + Legacy Funds V-TAMP &nbsp;·&nbsp; Working Mock — Build Tracker</span>
-  <span>Spec: Claude &nbsp;·&nbsp; Build: Lovable &nbsp;·&nbsp; <a href="mailto:adam@angelspan.com">adam@angelspan.com</a></span>
-</div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- Working mock callout -->
+  <div class="callout-mock">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;color:var(--amber);"><circle cx="7" cy="7" r="6.5" stroke="currentColor"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <span><strong style="color:var(--amber);">Working clickable mock</strong> — all flows are simulated with no real backend. This is not the Path 2 prototype, which would involve a dev partner engagement with real clients, real data, and real transactions.</span>
+  </div>
+
+  <!-- SECTION: Phase tracker -->
+  <div class="sec">
+    <div class="sec-label">Current phase</div>
+    <h2>Phase tracker</h2>
+
+    <div class="ms-track">
+      <div class="ms-node">
+        <div class="ms-circle ms-done">✓</div>
+        <div class="ms-label">Specification</div>
+        <div class="ms-who">Adam + Claude</div>
+      </div>
+      <div class="ms-line done"></div>
+      <div class="ms-node">
+        <div class="ms-circle ms-done">✓</div>
+        <div class="ms-label">Prototype Build</div>
+        <div class="ms-who">Lovable · 12 epics</div>
+      </div>
+      <div class="ms-line active"></div>
+      <div class="ms-node">
+        <div class="ms-circle ms-active">3</div>
+        <div class="ms-label">UAT &amp; Stabilization</div>
+        <div class="ms-who">Adam + internal testers</div>
+      </div>
+      <div class="ms-line ahead"></div>
+      <div class="ms-node">
+        <div class="ms-circle ms-pending">4</div>
+        <div class="ms-label">Engineering Handoff</div>
+        <div class="ms-who">Dev partner · TBD</div>
+      </div>
+    </div>
+
+    <!-- Access guide -->
+    <div class="guide-card">
+      <div class="guide-bar">
+        <div class="gb-left">
+          <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="font-weight:600;color:var(--blue);font-size:12px;">angelspan-bridge-flow.lovable.app ↗</a>
+          <div class="gb-divider"></div>
+          <span>Password: <span class="gs-code">demo1234</span></span>
+          <div class="gb-divider"></div>
+          <span style="font-size:11px;color:var(--text-3);">MFA: click "Skip — prototype only"</span>
+        </div>
+        <button class="gb-guide-btn" onclick="toggleGuide()" id="gb-guide-btn" aria-expanded="false">
+          <span class="gb-dot"></span>
+          In-mock testing guide
+          <span class="gb-arrow" id="guide-toggle">▾</span>
+        </button>
+      </div>
+      <div class="guide-body" id="guide-body">
+        <div class="guide-steps">
+          <div class="guide-step">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">1</div><div class="gs-label">Open the mock</div></div>
+            <div class="gs-detail">Visit <a href="https://angelspan-bridge-flow.lovable.app" target="_blank">angelspan-bridge-flow.lovable.app ↗</a></div>
+            <div class="gs-detail" style="margin-top:5px;">Password: <span class="gs-code">demo1234</span></div>
+          </div>
+          <div class="guide-step">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">2</div><div class="gs-label">Bypass MFA</div></div>
+            <div class="gs-detail">At the MFA screen, click <strong>"Skip — prototype only"</strong> to proceed without a real authentication code.</div>
+          </div>
+          <div class="guide-step">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">3</div><div class="gs-label">Choose a track</div></div>
+            <div class="gs-detail"><strong>AngelSpan</strong> — log in as Founder, Performance Analyst, or Admin to explore IR workflows.</div>
+            <div class="gs-detail" style="margin-top:4px;"><strong>Legacy Funds</strong> — log in as GP, LP, or Champion to explore fund management.</div>
+          </div>
+          <div class="guide-step">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div class="gs-num">4</div><div class="gs-label">Switch roles</div></div>
+            <div class="gs-detail">Multi-role users (e.g. a Founder who is also an LP) can switch context from the top navigation without logging out.</div>
+          </div>
+        </div>
+        <div class="guide-note">
+          <div>
+            <div class="gn-col-head">What works in the mock</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>End-to-end clickable flows for all 14 features</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>Role-based navigation and access control</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>Simulated data across dashboards, scoring, and reports</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--green);"></div>UAT feedback form on every screen</div>
+          </div>
+          <div>
+            <div class="gn-col-head">What is simulated (not real)</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>Client signups and subscription payments (Stripe)</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>SMART IR score calculations and Bell Mason scoring</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>Stakeholder email delivery and magic links</div>
+            <div class="gn-row"><div class="gn-dot" style="background:var(--amber);"></div>GP/LP fund connections and capital transactions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: Build progress -->
+  <div class="sec">
+    <div class="sec-label">Build progress</div>
+    <h2>12 epics &nbsp;·&nbsp; 63 stories &nbsp;·&nbsp; 38 decisions</h2>
+
+    <div class="chart-row">
+
+      <!-- Donut: epic completion -->
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-title">Epics</div>
+          <div class="cc-hint">Click to filter scope map</div>
+        </div>
+        <div class="cc-body">
+          <div class="donut-wrap">
+            <canvas id="c-donut" style="cursor:pointer;"></canvas>
+          </div>
+        </div>
+        <div class="cc-foot">
+          <div class="dleg">
+            <div class="dleg-row" id="dleg-done" data-f="done">
+              <span class="dleg-dot" style="background:var(--green);"></span>
+              <span class="dleg-lbl">Epics complete</span>
+              <span class="dleg-n" style="color:var(--green);">11</span>
+            </div>
+            <div class="dleg-row" id="dleg-active" data-f="active">
+              <span class="dleg-dot" style="background:var(--amber);"></span>
+              <span class="dleg-lbl">Active · UAT</span>
+              <span class="dleg-n" style="color:var(--amber);">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line: cumulative build progress -->
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-title">Cumulative build progress</div>
+          <div class="cc-hint">Cumulative features + decisions · hover for values</div>
+        </div>
+        <div class="cc-body" style="padding-bottom:4px;">
+          <div class="line-wrap">
+            <canvas id="c-line"></canvas>
+            <div id="line-tip" class="chart-tooltip" style="display:none;"></div>
+          </div>
+        </div>
+        <div class="cc-foot" style="padding-top:6px;">
+          <div class="line-leg">
+            <span class="ll-item"><span class="ll-swatch" style="background:var(--navy);"></span>Features (14)</span>
+            <span class="ll-item"><span class="ll-swatch" style="background:var(--lf-l);height:1.5px;"></span>Decisions (38)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar: decision coverage -->
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-title">Decisions logged</div>
+          <div class="cc-hint">Architecture choices for the dev team</div>
+        </div>
+        <div class="cc-body" style="align-items:flex-start;">
+          <div class="bar-total">38</div>
+          <div class="bar-tot-lbl">decisions across 3 domains</div>
+          <svg id="svg-bars" class="bar-svg" style="overflow:visible;"></svg>
+        </div>
+        <div class="cc-foot">
+          <div style="font-size:10px;color:var(--text-3);">
+            <a href="https://github.com/angelspan-platform/angelspan-platform/tree/main/decisions" target="_blank">Browse decisions/ on GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION: Project scope -->
+  <div class="sec">
+    <div class="sec-label">Feature scope</div>
+    <h2>Project scope map</h2>
+
+    <div class="sm-legend">
+      <span><span class="sm-leg-dot" style="background:var(--green);"></span>Verified E2E</span>
+      <span><span class="sm-leg-dot" style="background:var(--amber);"></span>Built · E2E pending</span>
+      <span>Block width = build complexity &nbsp;·&nbsp; Click any block to drill in</span>
+    </div>
+
+    <div class="sm-track-lbl">AngelSpan — 8 features · 41 build prompts · all verified end-to-end</div>
+    <div class="sm-row" id="sm-as"></div>
+
+    <div class="sm-track-lbl">Legacy Funds — 6 features · 50 build prompts · built, E2E verification pending</div>
+    <div class="sm-row" id="sm-lf"></div>
+
+    <div class="sm-detail" id="sm-detail"></div>
+  </div>
+
+  <!-- SECTION: Epics -->
+  <div class="sec">
+    <div class="sec-label">Work log</div>
+    <h2>All epics</h2>
+
+    <div class="epic-table">
+      <div class="et-hdr">
+        <div></div><div>Epic</div><div>Feature(s) delivered</div><div>Track</div><div style="text-align:right;">Stories</div><div>Status</div>
+      </div>
+      <div id="epic-table-body"></div>
+    </div>
+
+    <div class="e12-section">
+      <div class="e12-label">E12 active tasks</div>
+      <div class="sprint-hdr">
+        <div></div><div>Task</div><div>Owner</div><div>Status</div>
+      </div>
+      <div class="sprint-row">
+        <div class="sr-icw"><div class="sp-ic si-done">✓</div></div>
+        <div class="sr-tw"><div class="sr-name">Clean-slate founder accounts</div><div class="sr-id">Task A</div></div>
+        <div class="sr-own">Adam + Lovable</div>
+        <div class="sr-st"><span class="sp-tag st-done">Verified</span></div>
+      </div>
+      <div class="sprint-row">
+        <div class="sr-icw"><div class="sp-ic si-done">✓</div></div>
+        <div class="sr-tw"><div class="sr-name">Feedback data persistence</div><div class="sr-id">Task B</div></div>
+        <div class="sr-own">Adam + Lovable</div>
+        <div class="sr-st"><span class="sp-tag st-done">Verified</span></div>
+      </div>
+      <div class="sprint-row">
+        <div class="sr-icw"><div class="sp-ic si-act">→</div></div>
+        <div class="sr-tw"><div class="sr-name">PA ↔ Founder review loop</div><div class="sr-id">Task C</div></div>
+        <div class="sr-own">Adam + Lovable</div>
+        <div class="sr-st"><span class="sp-tag st-vrf">Verifying</span></div>
+      </div>
+      <div class="sprint-row">
+        <div class="sr-icw"><div class="sp-ic si-rdy">○</div></div>
+        <div class="sr-tw"><div class="sr-name">Champion logout UAT reset</div><div class="sr-id">Task D</div></div>
+        <div class="sr-own">Adam</div>
+        <div class="sr-st"><span class="sp-tag st-rdy">Ready to send</span></div>
+      </div>
+      <div class="sprint-row">
+        <div class="sr-icw"><div class="sp-ic si-blk">!</div></div>
+        <div class="sr-tw"><div class="sr-name">Fund application session persistence</div><div class="sr-id">Task E · blocking handoff</div></div>
+        <div class="sr-own">Adam</div>
+        <div class="sr-st"><span class="sp-tag st-blk">Blocked</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: Before handoff -->
+  <div class="sec">
+    <div class="sec-label">Before handoff</div>
+    <h2>Needs attention &nbsp;<span class="badge b-amber" style="font-size:11px;vertical-align:middle;">3 items</span></h2>
+
+    <div class="attn-list">
+      <div class="attn-row">
+        <div class="attn-sev sev-r"></div>
+        <div>
+          <div class="attn-ttl">Fund application data doesn't survive page reload</div>
+          <div class="attn-dsc">The Lovable build prompt for this fix has not been drafted. The fix strategy is documented — this prompt needs to be written and sent before the working mock is handoff-ready.</div>
+          <span class="badge b-red">Blocking handoff</span>
+        </div>
+      </div>
+      <div class="attn-row">
+        <div class="attn-sev sev-a"></div>
+        <div>
+          <div class="attn-ttl">5 decision IDs missing from the log — gaps at D-021 through D-024 and D-037</div>
+          <div class="attn-dsc">Before handoff: confirm whether these decisions were never written, captured under different IDs, or superseded. A gap in the decision log means the dev team is missing reasoning they'll need.</div>
+          <span class="badge b-amber">Action required</span>
+        </div>
+      </div>
+      <div class="attn-row">
+        <div class="attn-sev sev-a"></div>
+        <div>
+          <div class="attn-ttl">Legacy Funds end-to-end verification not started</div>
+          <div class="attn-dsc">All 6 Legacy Funds features are built and running in the working mock but haven't been walked end-to-end. UAT round 2 should trace the full flow: fund creation → GP assignment → founder application → Champion review → LP dashboard.</div>
+          <span class="badge b-amber">Action required</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div><!-- /layout -->
 
 <script>
 /* ── helpers ── */
@@ -1011,7 +1013,6 @@ function buildBars(){
     lbl.setAttribute('font-family','var(--font)'); lbl.setAttribute('font-weight','600');
     lbl.textContent = b.label; svg.appendChild(lbl);
 
-    // shift bar down to after label would be above; re-layout
     const track = document.createElementNS(ns,'rect');
     track.setAttribute('x','0'); track.setAttribute('y',y+bH+2);
     track.setAttribute('width',W-30); track.setAttribute('height',bH);
@@ -1031,7 +1032,6 @@ function buildBars(){
     val.textContent = b.val; svg.appendChild(val);
   });
 
-  // fix viewBox height to account for dual-row per bar
   svg.setAttribute('viewBox',`0 0 ${W} ${bars.length*(bH*2+gap)+4}`);
 }
 
