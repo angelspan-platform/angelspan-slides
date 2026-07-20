@@ -674,7 +674,7 @@ a:hover{text-decoration:underline;}
         <div class="attn-sev sev-a"></div>
         <div>
           <div class="attn-ttl">Legacy Funds end-to-end: partially verified, one contradiction found</div>
-          <div class="attn-dsc">Walked LF Admin (Funds/GPs/Applications), and the Founder → Champion → Founder loop live — all render correctly against seed data, and the page-reload persistence bug above was confirmed live in the process. New finding: the LP "My Investments" screen still builds a full capital-calls table (quarterly calls, Funded/Pending status), directly contradicting D-037/D-038 (no capital calls, ever). Needs a correction prompt. Formal UAT round 2 sign-off on the full fund creation → GP assignment → founder application → Champion review → LP dashboard chain still outstanding.</div>
+          <div class="attn-dsc">Walked LF Admin (Funds/GPs/Applications), and the Founder → Champion → Founder loop live — all render correctly against seed data, and the page-reload persistence bug above was confirmed live in the process. Found the LP "My Investments" screen still builds a full capital-calls table (quarterly calls, Funded/Pending status), directly contradicting D-037/D-038 (no capital calls, ever) — this is the same class of error already fixed on the GP side. Correction prompt drafted (<a href="https://github.com/angelspan-platform/angelspan-platform/blob/main/specifications/C11-lovable-prompt-A4-correction.md" target="_blank">C11 Prompt A4</a>), not yet sent. Formal UAT round 2 sign-off on the full fund creation → GP assignment → founder application → Champion review → LP dashboard chain still outstanding.</div>
           <span class="badge b-amber">Action required</span>
         </div>
       </div>
