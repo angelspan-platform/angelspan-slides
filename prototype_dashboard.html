@@ -37,7 +37,7 @@
 :root[data-theme="dark"]{--bg:#0F1219;--surface:#181C26;--border:#252B3A;--text:#E4E8F0;--text-2:#94A0B3;--text-3:#4E5870;--raised:#1D2130;--green-bg:rgba(42,107,60,.15);--green-bd:rgba(42,107,60,.35);--amber-bg:rgba(255,128,0,.13);--amber-bd:rgba(255,128,0,.32);--red-bg:rgba(207,31,63,.13);--red-bd:rgba(207,31,63,.32);--lf-bg:rgba(27,61,95,.18);--lf-bd:rgba(27,61,95,.4);}
 
 html { font-size: clamp(14px, 0.5vw + 11px, 18px); }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;min-width:0;}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:0.875rem;line-height:1.5;}
 a{color:var(--blue);text-decoration:none;}
 a:hover{text-decoration:underline;}
@@ -297,6 +297,19 @@ a:hover{text-decoration:underline;}
   .guide-note{grid-template-columns:1fr;}
   .sprint-row{grid-template-columns:36px 1fr 80px;}
   .sr-own{display:none;}
+  .et-hdr,.et-row{grid-template-columns:28px 38px 1fr 76px;}
+  .et-track,.et-stories{display:none;}
+  .et-hdr>div:nth-child(4),.et-hdr>div:nth-child(5){display:none;}
+  .ms-who{display:none;}
+  .ms-label{font-size:0.5833rem;}
+  .dleg-lbl{overflow-wrap:break-word;}
+}
+
+@media(max-width:520px){
+  .sn-link-sub,.sn-cred,.sn-footer{display:none;}
+  .chart-row{gap:10px;}
+  .et-hdr,.et-row{grid-template-columns:24px 34px 1fr 60px;}
+  .ms-track{grid-template-columns:1fr 20px 1fr 20px 1fr 20px 1fr;}
 }
 </style>
 </head>
@@ -328,6 +341,14 @@ a:hover{text-decoration:underline;}
 
   <div class="sn-group">Quick access</div>
 
+  <a class="sn-link" href="path3_harden_stabilize.html">
+    <div class="sn-link-icon qi-s">P3</div>
+    <div class="sn-link-text">
+      <div class="sn-link-name">Path 3 — Harden + Stabilize</div>
+      <div class="sn-link-sub">Current agreed direction</div>
+    </div>
+    <span class="sn-link-arr">→</span>
+  </a>
   <a class="sn-link" href="path2_prototype_validate.html">
     <div class="sn-link-icon qi-s">P2</div>
     <div class="sn-link-text">
@@ -514,7 +535,7 @@ a:hover{text-decoration:underline;}
   <!-- SECTION: Build progress -->
   <div class="sec">
     <div class="sec-label">Build progress</div>
-    <h2>12 epics &nbsp;·&nbsp; 63 stories &nbsp;·&nbsp; 43 decisions</h2>
+    <h2>12 epics &nbsp;·&nbsp; 63 stories &nbsp;·&nbsp; 38 decisions</h2>
 
     <div class="chart-row">
 
@@ -560,7 +581,7 @@ a:hover{text-decoration:underline;}
         <div class="cc-foot" style="padding-top:6px;">
           <div class="line-leg">
             <span class="ll-item"><span class="ll-swatch" style="background:var(--navy);"></span>Features (14)</span>
-            <span class="ll-item"><span class="ll-swatch" style="background:var(--lf-l);height:1.5px;"></span>Decisions (43)</span>
+            <span class="ll-item"><span class="ll-swatch" style="background:var(--lf-l);height:1.5px;"></span>Decisions (38)</span>
           </div>
         </div>
       </div>
@@ -572,7 +593,7 @@ a:hover{text-decoration:underline;}
           <div class="cc-hint">Architecture choices for the dev team</div>
         </div>
         <div class="cc-body" style="align-items:flex-start;">
-          <div class="bar-total">43</div>
+          <div class="bar-total">38</div>
           <div class="bar-tot-lbl">decisions across 3 domains</div>
           <svg id="svg-bars" class="bar-svg" style="overflow:visible;"></svg>
         </div>
@@ -648,10 +669,10 @@ a:hover{text-decoration:underline;}
         <div class="sr-st"><span class="sp-tag st-rdy">Ready to send</span></div>
       </div>
       <div class="sprint-row">
-        <div class="sr-icw"><div class="sp-ic si-rdy">○</div></div>
+        <div class="sr-icw"><div class="sp-ic si-blk">!</div></div>
         <div class="sr-tw"><div class="sr-name">Fund application session persistence</div><div class="sr-id">Task E · blocking handoff</div></div>
         <div class="sr-own">Adam</div>
-        <div class="sr-st"><span class="sp-tag st-rdy">Ready to send</span></div>
+        <div class="sr-st"><span class="sp-tag st-blk">Blocked</span></div>
       </div>
     </div>
   </div>
@@ -659,22 +680,30 @@ a:hover{text-decoration:underline;}
   <!-- SECTION: Before handoff -->
   <div class="sec">
     <div class="sec-label">Before handoff</div>
-    <h2>Needs attention &nbsp;<span class="badge b-amber" style="font-size:0.6667rem;vertical-align:middle;">2 items</span></h2>
+    <h2>Needs attention &nbsp;<span class="badge b-amber" style="font-size:0.6667rem;vertical-align:middle;">3 items</span></h2>
 
     <div class="attn-list">
       <div class="attn-row">
         <div class="attn-sev sev-r"></div>
         <div>
           <div class="attn-ttl">Fund application data doesn't survive page reload</div>
-          <div class="attn-dsc">Lovable prompt drafted (<a href="https://github.com/angelspan-platform/angelspan-platform/blob/main/specifications/C12-lovable-prompt-E-lf-app-persistence.md" target="_blank">C12 Prompt E</a>) — moves the application/decision store to Supabase. Not yet sent to Lovable or verified in the working mock; still blocking handoff until it ships.</div>
+          <div class="attn-dsc">The Lovable build prompt for this fix has not been drafted. The fix strategy is documented — this prompt needs to be written and sent before the working mock is handoff-ready.</div>
           <span class="badge b-red">Blocking handoff</span>
         </div>
       </div>
       <div class="attn-row">
         <div class="attn-sev sev-a"></div>
         <div>
-          <div class="attn-ttl">Legacy Funds end-to-end: partially verified, one contradiction found</div>
-          <div class="attn-dsc">Walked LF Admin (Funds/GPs/Applications), and the Founder → Champion → Founder loop live — all render correctly against seed data, and the page-reload persistence bug above was confirmed live in the process. Found the LP "My Investments" screen still builds a full capital-calls table (quarterly calls, Funded/Pending status), directly contradicting D-037/D-038 (no capital calls, ever) — this is the same class of error already fixed on the GP side. Correction prompt drafted (<a href="https://github.com/angelspan-platform/angelspan-platform/blob/main/specifications/C11-lovable-prompt-A4-correction.md" target="_blank">C11 Prompt A4</a>), not yet sent. Formal UAT round 2 sign-off on the full fund creation → GP assignment → founder application → Champion review → LP dashboard chain still outstanding.</div>
+          <div class="attn-ttl">5 decision IDs missing from the log — gaps at D-021 through D-024 and D-037</div>
+          <div class="attn-dsc">Before handoff: confirm whether these decisions were never written, captured under different IDs, or superseded. A gap in the decision log means the dev team is missing reasoning they'll need.</div>
+          <span class="badge b-amber">Action required</span>
+        </div>
+      </div>
+      <div class="attn-row">
+        <div class="attn-sev sev-a"></div>
+        <div>
+          <div class="attn-ttl">Legacy Funds end-to-end verification not started</div>
+          <div class="attn-dsc">All 6 Legacy Funds features are built and running in the working mock but haven't been walked end-to-end. UAT round 2 should trace the full flow: fund creation → GP assignment → founder application → Champion review → LP dashboard.</div>
           <span class="badge b-amber">Action required</span>
         </div>
       </div>
@@ -718,10 +747,6 @@ const DECS = {
   'D-018':{ t:'Multiple GPs per fund', c:'l' },
   'D-019':{ t:'Champion workflow', c:'l' },
   'D-020':{ t:'Fund formation application (deferred)', c:'l' },
-  'D-021':{ t:'LF founder eligibility — $800K raise cap', c:'l' },
-  'D-022':{ t:'LP management is GP-owned, not self-service', c:'l' },
-  'D-023':{ t:'GP session identity (prototype)', c:'l' },
-  'D-024':{ t:'GP-to-LP quarterly reports (prototype scope)', c:'l' },
   'D-025':{ t:'LP management scope', c:'l' },
   'D-026':{ t:'GP-to-LP reporting via platform', c:'l' },
   'D-027':{ t:'Champion management scope', c:'l' },
@@ -734,7 +759,6 @@ const DECS = {
   'D-034':{ t:'GP dashboard fund filter', c:'l' },
   'D-035':{ t:'Shared company detail components', c:'a' },
   'D-036':{ t:'Fund administrator portal links', c:'l' },
-  'D-037':{ t:'No capital calls in Legacy Funds', c:'l' },
   'D-038':{ t:'Capital tracking model for Legacy Funds', c:'l' },
   'D-039':{ t:'Clean slate for new founder accounts', c:'a' },
   'D-040':{ t:'Feedback Supabase persistence fix', c:'p' },
@@ -753,10 +777,10 @@ const FEATS = [
   { id:'F07', name:'Client lifecycle', track:'as', status:'verified', prompts:3, desc:'Self-service founder signup, onboarding wizard, and admin PA-assignment confirmation flow.', stories:['Founders sign up without admin pre-creation (4-step flow)','Signup queues client record for PA assignment confirmation','Admin confirms PA from New Signups queue','Admin can archive, reassign PA, or change plan for any client'], decs:['D-005','D-009'] },
   { id:'F08', name:'AngelSpan admin', track:'as', status:'verified', prompts:9, desc:'Full admin operations: client and user management, billing oversight, audit log, and feedback queue.', stories:['Dashboard KPIs: active clients, MRR, pending assignments, failed payments','User management: invite/deactivate PAs; reset or suspend founders','Billing: MRR by plan, per-client status, invoice history','Audit log: all platform actions with actor, action, target, and timestamp'], decs:['D-012','D-013','D-040'] },
   { id:'F09', name:'Legacy Funds admin', track:'lf', status:'built', prompts:7, desc:'LF Admin control plane: fund creation and management, GP/Champion assignment, LP application queue.', stories:['Create funds with name, sponsor, theme, target raise, and QSBS strategy','GPs assigned to funds; Champions assigned to specific portfolio companies','LP application queue with accreditation status management','Fund administrator portal links per fund'], decs:['D-014','D-015','D-018','D-020','D-036'] },
-  { id:'F10', name:'GP portfolio management', track:'lf', status:'built', prompts:11, desc:'GP workspace: multi-fund portfolio view, fund filter, bubble chart, Champion management, and LP reporting.', stories:['Portfolio companies with SMART IR scores, stage, and Champion assignment','Fund filter pills for multi-fund GPs — no re-login required','Bubble chart: portfolio in score × stage space with temporal animation','GP composes and distributes quarterly LP reports'], decs:['D-019','D-022','D-023','D-024','D-026','D-027','D-034','D-035','D-037','D-038'] },
-  { id:'F11', name:'Fund application', track:'lf', status:'built', prompts:8, desc:'Founder applies to join a Legacy Fund via eligibility wizard, Champion review, and GP admission decision.', stories:['Intelligence plan required to initiate a fund application','Eligibility wizard gates on stage, sector, geography, and SMART IR score','Champion pool self-selects; first to open locks the application','GP reviews Champion recommendation and grants or denies admission'], decs:['D-021','D-028','D-029','D-030','D-031','D-042'] },
+  { id:'F10', name:'GP portfolio management', track:'lf', status:'built', prompts:11, desc:'GP workspace: multi-fund portfolio view, fund filter, bubble chart, Champion management, and LP reporting.', stories:['Portfolio companies with SMART IR scores, stage, and Champion assignment','Fund filter pills for multi-fund GPs — no re-login required','Bubble chart: portfolio in score × stage space with temporal animation','GP composes and distributes quarterly LP reports'], decs:['D-019','D-026','D-027','D-034','D-035','D-038'] },
+  { id:'F11', name:'Fund application', track:'lf', status:'built', prompts:8, desc:'Founder applies to join a Legacy Fund via eligibility wizard, Champion review, and GP admission decision.', stories:['Intelligence plan required to initiate a fund application','Eligibility wizard gates on stage, sector, geography, and SMART IR score','Champion pool self-selects; first to open locks the application','GP reviews Champion recommendation and grants or denies admission'], decs:['D-028','D-029','D-030','D-031','D-042'] },
   { id:'F12', name:'SMART IR analytics', track:'lf', status:'built', prompts:9, desc:'SMART IR visual layer: arc chart, trajectory chart, portfolio bubble chart, and annotated copy spec.', stories:['Arc chart: current SMART IR score across 5 Bell Mason categories','Trajectory chart: score progression by quarter and stage','Bubble chart: portfolio in score × stage space with temporal animation','All tooltips and annotations from the canonical copy spec'], decs:['D-033','D-035'] },
-  { id:'F13', name:'LP investor portal', track:'lf', status:'built', prompts:8, desc:'LP dashboard: fund holdings, portfolio with SMART IR scores, QSBS calculator, and fund admin links.', stories:['Fund holdings with commitment amounts, vintage, and funds-received status','Portfolio companies: stage, read-only SMART IR and Transparency Tell scores','QSBS Benefit Calculator for modeling after-tax performance advantage','Fund administrator portal links per fund'], decs:['D-015','D-016','D-025','D-036','D-037','D-038'] },
+  { id:'F13', name:'LP investor portal', track:'lf', status:'built', prompts:8, desc:'LP dashboard: fund holdings, portfolio with SMART IR scores, QSBS calculator, and fund admin links.', stories:['Fund holdings with commitment amounts, vintage, and capital call history','Portfolio companies: stage, read-only SMART IR and Transparency Tell scores','QSBS Benefit Calculator for modeling after-tax performance advantage','Fund administrator portal links per fund'], decs:['D-015','D-016','D-025','D-036','D-038'] },
   { id:'F14', name:'UAT stabilization', track:'lf', status:'built', prompts:7, desc:'Final UAT-round fixes: clean slate accounts, data persistence, PA distribution flow, Champion demo reset.', stories:['New founder accounts start with no pre-loaded test data','Feedback submissions persist across sessions via Supabase','PA distribution with correct confirmation and lock-state behavior','Champion logout auto-resets demo for repeatable UAT'], decs:['D-011','D-013','D-017','D-043'] },
 ];
 
@@ -773,7 +797,7 @@ const SPRINTS = [
   { id:'Sprint 9', cf:9,  cd:23 },
   { id:'Sprint 10',cf:12, cd:32 },
   { id:'Sprint 11',cf:13, cd:33 },
-  { id:'Sprint 12',cf:14, cd:43 },
+  { id:'Sprint 12',cf:14, cd:38 },
 ];
 
 const EPICS = [
@@ -892,7 +916,7 @@ function drawLine(){
   const n  = SPRINTS.length;
 
   linePts_f = SPRINTS.map((s,i)=>({ x:PAD.l+i*(cw/(n-1)), y:PAD.t+ch*(1-s.cf/14) }));
-  linePts_d = SPRINTS.map((s,i)=>({ x:PAD.l+i*(cw/(n-1)), y:PAD.t+ch*(1-s.cd/43) }));
+  linePts_d = SPRINTS.map((s,i)=>({ x:PAD.l+i*(cw/(n-1)), y:PAD.t+ch*(1-s.cd/38) }));
 
   // grid
   ctx.strokeStyle = cv('--border');
@@ -992,7 +1016,7 @@ function buildBars(){
   const svg = document.getElementById('svg-bars');
   const bars=[
     { label:'AngelSpan',  val:16, color:'#004A6D' },
-    { label:'Legacy Funds',val:22, color:'#1B3D5F' },
+    { label:'Legacy Funds',val:17, color:'#1B3D5F' },
     { label:'Process',     val:5,  color:'#2A6B3C' },
   ];
   const W=200, bH=14, gap=22, top=0;
@@ -1001,7 +1025,7 @@ function buildBars(){
 
   bars.forEach((b,i)=>{
     const y = top+i*(bH+gap);
-    const pct = b.val/43;
+    const pct = b.val/38;
     const bW  = pct*(W-30);
     const ns  = 'http://www.w3.org/2000/svg';
 

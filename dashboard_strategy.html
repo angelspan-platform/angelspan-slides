@@ -122,7 +122,9 @@ strong { color: var(--c-text); font-weight: 600; }
 .b-skip { background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid var(--c-amber-bd); }
 
 /* Tables */
-table { width: 100%; border-collapse: collapse; font-size: 0.8333rem; margin: 18px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.8333rem; margin: 18px 0; display: block; overflow-x: auto; }
+table td, table th { overflow-wrap: break-word; }
+table th:first-child, table td:first-child { white-space: nowrap; width: 1%; }
 thead th { background: var(--c-navy); color: rgba(255,255,255,.85); text-align: left; padding: 10px 14px; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
 tbody tr { border-bottom: 1px solid var(--c-border); }
 tbody tr:nth-child(even) { background: var(--c-surface); }
@@ -166,10 +168,14 @@ tbody tr:last-child td { border-bottom: none; }
 @media (max-width: 760px) {
   .layout { grid-template-columns: 1fr; }
   .toc { display: none; }
-  .content { padding: 32px 24px 64px; }
+  .content { padding: 32px 24px 64px; max-width: 100%; }
   .stages { grid-template-columns: 1fr 1fr; }
-  .stress-hd, .sr { grid-template-columns: 1fr; }
-  .stress-hd div:not(:first-child) { display: none; }
+  .stress-hd { display: none; }
+  .sr { grid-template-columns: 1fr; }
+  .sr > div { padding: 10px 14px; border-bottom: 1px solid var(--c-border); min-width: 0; overflow-wrap: break-word; }
+  .sr > div:last-child { border-bottom: none; }
+  table { table-layout: auto; font-size: 0.75rem; }
+  .wf-step { grid-template-columns: 36px 1fr; }
 }
 </style>
 </head>
@@ -215,6 +221,7 @@ tbody tr:last-child td { border-bottom: none; }
       <thead><tr><th>Term</th><th>Meaning in this document</th></tr></thead>
       <tbody>
         <tr><td>Working mock</td><td>The Lovable-built clickable prototype at <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="color:var(--c-blue);">angelspan-bridge-flow.lovable.app</a> — simulated flows, no real backend, no real data</td></tr>
+        <tr><td>Path 3</td><td>Harden and stabilize the current production platform (Angular 1 / .NET Core 2.2) — no new features. The agreed near-term direction as of the July 16, 2026 budget call. Not the same as this working mock's own "UAT & Stabilization" build phase below — that refers to the mock, not the production system.</td></tr>
         <tr><td>Path 2</td><td>The planned formal development engagement with a dev partner — real backend, real clients, real transactions. A separate and future initiative, not this working mock.</td></tr>
         <tr><td>PA</td><td>Performance Analyst — the sole internal AngelSpan employee role; curates startup updates and enters SMART IR scores</td></tr>
         <tr><td>SMART IR</td><td>Standardized Milestone Achievement &amp; Reporting Transparency for Investor Relations — the scoring and reporting system at the core of the AngelSpan product</td></tr>
