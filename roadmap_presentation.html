@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — Current State &amp; Path Forward</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-primary: #004A6D;
+    --color-primary-light: #0179B5;
+    --color-primary-pale: #50ADDB;
+    --color-bg: #FAFAF8;
+    --color-surface: #F4F1EC;
+    --color-border: #E0DBD3;
+    --color-text: #303030;
+    --color-text-secondary: #606060;
+    --color-text-disabled: #ADADAD;
+    --color-success: #2A6B3C;
+    --color-warning: #FF8000;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 52px) clamp(20px, 5vw, 56px) 36px; overflow-x: hidden; }
+
+  /* Hero */
+  .hero-eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-primary-pale); margin-bottom: 8px; }
+  .hero h1 { font-size: clamp(23px, 4.5vw, 32px); font-weight: 700; color: var(--color-primary); letter-spacing: -0.015em; margin-bottom: 8px; line-height: 1.15; }
+  .hero p.lead { font-size: clamp(14px, 2.2vw, 16px); color: var(--color-text-secondary); line-height: 1.55; max-width: 680px; }
+  .hero-meta { font-size: 12px; color: var(--color-text-disabled); margin-top: 12px; }
+  .hr-rule { height: 2px; background: var(--color-primary); margin: 24px 0 30px; }
+
+  /* Section shell */
+  .section { margin-bottom: clamp(30px, 5vw, 44px); }
+  .sec-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-bottom: 5px; }
+  .section h2 { font-size: clamp(18px, 3.2vw, 21px); font-weight: 700; color: var(--color-primary); margin-bottom: 14px; letter-spacing: -0.01em; line-height: 1.2; }
+
+  /* Stat row */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 0; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 16px; }
+  .stat-cell { flex: 1 1 25%; min-width: 140px; padding: 15px 18px; border-right: 1px solid var(--color-border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-cell .v { font-size: clamp(19px, 3.5vw, 22px); font-weight: 700; color: var(--color-primary); line-height: 1.1; }
+  .stat-cell .l { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.35; }
+
+  /* Risk callouts */
+  .risk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .risk-card { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-warning); border-radius: 4px; padding: 14px 16px; }
+  .risk-card .tag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-warning); margin-bottom: 5px; }
+  .risk-card p { font-size: 13.5px; color: var(--color-text); line-height: 1.5; }
+
+  /* Funding bar */
+  .fund-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 24px 24px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow-x: auto; }
+  svg.fundbar { width: 100%; height: auto; display: block; min-width: 680px; }
+  .fund-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 13px; color: var(--color-text-secondary); }
+  .fund-legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+  /* Roadmap timeline */
+  .roadmap-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 24px 24px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow-x: auto; }
+  svg.roadmap { width: 100%; height: auto; display: block; min-width: 860px; }
+  .roadmap-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 12.5px; color: var(--color-text-secondary); }
+  .roadmap-legend .sw { display: inline-block; width: 16px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .roadmap-legend .sw.outline { background: none; border: 1.5px dashed #ADADAD; }
+  .roadmap-note { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--color-border); }
+
+  /* Path comparison cards */
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  .path-card { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow: hidden; display: flex; flex-direction: column; }
+  .path-card .ph { padding: 16px 18px 12px; border-bottom: 1px solid var(--color-border); }
+  .path-card .ph .num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-pale); }
+  .path-card .ph h3 { font-size: 17px; font-weight: 700; color: var(--color-primary); margin: 4px 0 6px; }
+  .path-card .ph .sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.45; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 2px; margin-top: 10px; }
+  .badge.now { background: #F4FAF5; color: var(--color-success); border: 1px solid var(--color-success); }
+  .badge.later { background: #FFF8F0; color: var(--color-warning); border: 1px solid var(--color-warning); }
+  .path-card .body { padding: 14px 18px; flex: 1; }
+  .path-card .metric-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--color-border); }
+  .path-card .metric-row:last-child { border-bottom: none; }
+  .path-card .metric-row .k { color: var(--color-text-secondary); }
+  .path-card .metric-row .v { font-weight: 700; color: var(--color-text); }
+  .path-card .pros, .path-card .cons { font-size: 13px; line-height: 1.55; padding: 10px 0 0; }
+  .path-card .pros strong, .path-card .cons strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .path-card .pros strong { color: var(--color-success); }
+  .path-card .cons strong { color: var(--color-warning); }
+  .path-card .cta { display: block; text-align: center; padding: 12px; font-size: 13px; font-weight: 600; color: #fff; background: var(--color-primary); text-decoration: none; }
+  .path-card .cta:hover { background: var(--color-primary-light); }
+  .path-card.selected { border: 2px solid var(--color-success); }
+
+  /* Recommendation */
+  .rec-box { background: #F4FAF5; border: 1px solid var(--color-success); border-radius: 4px; padding: 18px 22px; }
+  .rec-box h3 { font-size: 14px; font-weight: 700; color: var(--color-success); margin-bottom: 8px; }
+  .rec-box p { font-size: 14px; color: var(--color-text); line-height: 1.6; margin-bottom: 9px; }
+  .rec-box p:last-child { margin-bottom: 0; }
+
+  /* Footer links */
+  .foot-links { display: flex; flex-wrap: wrap; gap: 14px; padding-top: 20px; border-top: 1px solid var(--color-border); }
+  .foot-links a { font-size: 13px; color: var(--color-primary-light); text-decoration: none; font-weight: 600; }
+  .foot-links a:hover { text-decoration: underline; }
+  .caveat { font-size: 12px; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.6; margin-top: 18px; }
+
+  @media (max-width: 720px) {
+    .risk-row { grid-template-columns: 1fr; }
+    .path-grid { grid-template-columns: 1fr; }
+    .stat-cell { flex: 1 1 45%; border-right: none; border-bottom: 1px solid var(--color-border); }
+    .stat-cell:nth-last-child(-n+1):nth-child(odd) { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-eyebrow">AngelSpan · Technology Roadmap</div>
+    <h1>Current State &amp; Path Forward</h1>
+    <p class="lead">Where the platform stands today, what the incoming raise actually funds, and the three phases available for moving forward — framed for a business decision, not an engineering one.</p>
+    <div class="hero-meta">Prepared July 2026 · Sources: July 16, 2026 budget call (Joe, Matt, Alec, Adam) and platform documentation</div>
+  </div>
+
+  <div class="hr-rule"></div>
+
+  <!-- CURRENT STATE -->
+  <div class="section">
+    <div class="sec-eyebrow">Where We Are Today</div>
+    <h2>A working business, running on aging technology</h2>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="v">~35</div><div class="l">Paying clients today (has handled 60–80 historically)</div></div>
+      <div class="stat-cell"><div class="v">10 yrs</div><div class="l">Age of the core platform</div></div>
+      <div class="stat-cell"><div class="v">0</div><div class="l">Security updates possible on our two core systems since 2019 / 2022</div></div>
+    </div>
+    <p style="font-size:14px; color:var(--color-text-secondary); line-height:1.55; margin-bottom:14px; max-width:720px;">Two examples show the kind of risk that comes with running on decade-old, unmaintained technology — neither is a fire burning today, but both are the sort of thing that lands without warning on a platform no one is keeping current:</p>
+    <div class="risk-row">
+      <div class="risk-card">
+        <div class="tag">Example — latent fault</div>
+        <p>A billing bug documented in the platform — a card/billing-address mismatch that can block clients from submitting — has sat unaddressed for years. It isn't currently causing problems, but on a system this old, with no one maintaining it, that's fortune rather than safety. It's exactly what hardening is meant to catch before it resurfaces.</p>
+      </div>
+      <div class="risk-card">
+        <div class="tag">Example — vendor deadlines don't wait</div>
+        <p>Microsoft is retiring an older Azure storage type (GPv1) on October 13, 2026. We haven't yet confirmed whether our production storage is affected — but this is the kind of vendor-forced deadline that periodically lands on aging infrastructure, on someone else's schedule, ready or not.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNDING REALITY -->
+  <div class="section">
+    <div class="sec-eyebrow">What's Actually Available</div>
+    <h2>$500k arrives late Aug / early Sept — here's where it goes</h2>
+    <div class="fund-wrap">
+      <svg class="fundbar" viewBox="0 0 800 170" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="30" width="228" height="56" fill="#ADADAD" fill-opacity="0.35"/>
+        <rect x="248" y="30" width="122" height="56" fill="#50ADDB" fill-opacity="0.55"/>
+        <rect x="370" y="30" width="76" height="56" fill="#606060" fill-opacity="0.25"/>
+        <rect x="446" y="30" width="152" height="56" fill="#004A6D"/>
+        <rect x="598" y="30" width="38" height="56" fill="#004A6D" fill-opacity="0.38"/>
+        <rect x="636" y="30" width="144" height="56" fill="none" stroke="#ADADAD" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="134" y="106" font-size="13" text-anchor="middle" fill="#303030" font-weight="600" font-family="Inter">Salaries</text>
+        <text x="134" y="122" font-size="12" text-anchor="middle" fill="#606060" font-family="Inter">~$150k</text>
+        <text x="309" y="106" font-size="13" text-anchor="middle" fill="#303030" font-weight="600" font-family="Inter">Marketing</text>
+        <text x="309" y="122" font-size="12" text-anchor="middle" fill="#606060" font-family="Inter">~$80k</text>
+        <text x="408" y="106" font-size="12" text-anchor="middle" fill="#303030" font-weight="600" font-family="Inter">Debt</text>
+        <text x="408" y="122" font-size="11" text-anchor="middle" fill="#606060" font-family="Inter">~$50k</text>
+        <text x="541" y="106" font-size="14" text-anchor="middle" fill="#004A6D" font-weight="700" font-family="Inter">Technology</text>
+        <text x="541" y="123" font-size="13" text-anchor="middle" fill="#004A6D" font-weight="700" font-family="Inter">~$125k</text>
+        <text x="708" y="106" font-size="13" text-anchor="middle" fill="#909090" font-weight="600" font-family="Inter">Uncommitted / reserve</text>
+        <text x="708" y="122" font-size="12" text-anchor="middle" fill="#909090" font-family="Inter">~$95k — not yet itemized</text>
+        <line x1="446" y1="18" x2="598" y2="18" stroke="#004A6D" stroke-width="2"/>
+        <text x="522" y="12" font-size="12" text-anchor="middle" fill="#004A6D" font-weight="700" font-family="Inter">↓ Hardening — est. ~$100k</text>
+      </svg>
+      <div class="fund-legend">
+        <span><span class="sw" style="background:#ADADAD;"></span>Salaries (3 months, fully loaded — includes health insurance, payroll tax, accounting, and payroll/benefits admin)</span>
+        <span><span class="sw" style="background:#50ADDB;"></span>Marketing retainer</span>
+        <span><span class="sw" style="background:#606060;"></span>Existing debt payoff</span>
+        <span><span class="sw" style="background:#004A6D;"></span>Technology — ~$125k allocated</span>
+        <span><span class="sw" style="background:#004A6D;opacity:0.38;"></span>~$25k held back — the hardening estimate isn't firm</span>
+      </div>
+      <div class="risk-card" style="margin-top:16px; border-left-color: var(--color-text-disabled); background: var(--color-surface);">
+        <div class="tag" style="color: var(--color-text-secondary);">Not shown above</div>
+        <p>Ongoing operating expenses aren't in these four categories at all: website hosting, platform compute/storage, and software subscriptions (Monday.com, Zapier, DocSend, GoDaddy). Individually small, but continuous and additive on top of this one-time breakdown — not yet itemized.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THREE PATHS -->
+  <div class="section">
+    <div class="sec-eyebrow">The Decision</div>
+    <h2>Three ways to spend the technology dollars</h2>
+    <div class="path-grid">
+
+      <div class="path-card selected">
+        <div class="ph">
+          <div class="num">Phase 1</div>
+          <h3>Harden + Stabilize</h3>
+          <div class="sub">Make what we already have trustworthy. No new features.</div>
+          <span class="badge now">Fundable now</span>
+        </div>
+        <div class="body">
+          <div class="metric-row"><span class="k">Est. cost</span><span class="v">~$100k</span></div>
+          <div class="metric-row"><span class="k">Est. done</span><span class="v">~Nov '26</span></div>
+          <div class="metric-row"><span class="k">New capability</span><span class="v">None</span></div>
+          <div class="pros"><strong>Benefit</strong>Aims to reduce the risk of the platform breaking as clients sign up; the one option sized to the estimated tech budget.</div>
+          <div class="cons"><strong>Trade-off</strong>Legacy Fund tools, scoring automation, and dashboards all stay fully manual.</div>
+        </div>
+        <a class="cta" href="phase1_harden_stabilize.html">See full details →</a>
+      </div>
+
+      <div class="path-card">
+        <div class="ph">
+          <div class="num">Phase 2</div>
+          <h3>Prototype + Validate</h3>
+          <div class="sub">Test the model with a small beta group drawn from the hardened base.</div>
+          <span class="badge later">Needs more capital</span>
+        </div>
+        <div class="body">
+          <div class="metric-row"><span class="k">Est. cost</span><span class="v">~$1M total</span></div>
+          <div class="metric-row"><span class="k">Of that</span><span class="v">~$200k to build</span></div>
+          <div class="metric-row"><span class="k">Timing</span><span class="v">Before or alongside Ph. 3</span></div>
+          <div class="pros"><strong>Benefit</strong>Real beta feedback (5–10 clients) before the full build locks in its design — without touching everyone else's service.</div>
+          <div class="cons"><strong>Trade-off</strong>~$1M beyond this raise — may be its own step or the first tranche of Phase 3's $3–5M; ~$800k of it is a buffer covering marketing, SG&amp;A, hiring, infrastructure, and compliance not yet itemized.</div>
+        </div>
+        <a class="cta" href="phase2_prototype_validate.html">See full details →</a>
+      </div>
+
+      <div class="path-card">
+        <div class="ph">
+          <div class="num">Phase 3</div>
+          <h3>Full Platform Build</h3>
+          <div class="sub">Build the complete, enterprise-ready platform at real scale.</div>
+          <span class="badge later">Needs more capital</span>
+        </div>
+        <div class="body">
+          <div class="metric-row"><span class="k">Est. cost</span><span class="v">~$3–5M total</span></div>
+          <div class="metric-row"><span class="k">Tech share</span><span class="v">~40% (~$1.2–2M)</span></div>
+          <div class="metric-row"><span class="k">Timing</span><span class="v">After or alongside Ph. 2</span></div>
+          <div class="pros"><strong>Benefit</strong>One finished, production-ready platform built to run Legacy Funds and AngelSpan at real scale — strongest asset for a future partner.</div>
+          <div class="cons"><strong>Trade-off</strong>Only ~40% of this raise is tech — the rest funds staffing and operations standing up around it. Depends on the largest raise of the three phases.</div>
+        </div>
+        <a class="cta" href="phase3_full_build.html">See full details →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 18-MONTH ROADMAP -->
+  <div class="section">
+    <div class="sec-eyebrow">How This Plays Out</div>
+    <h2>Three committed months, then it depends how capital arrives</h2>
+    <div class="roadmap-wrap">
+      <svg class="roadmap" viewBox="0 0 940 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- ── Step 1: two parallel activities, Aug–Nov ── -->
+        <text x="470" y="18" font-size="11" font-weight="700" fill="#606060" text-anchor="middle" font-family="Inter" letter-spacing="0.06em">RUNNING IN PARALLEL — AUG '26 TO ~NOV '26</text>
+        <rect x="90" y="30" width="340" height="54" rx="4" fill="#004A6D"/>
+        <text x="260" y="63" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" font-family="Inter">Phase 1 — Harden the platform</text>
+        <rect x="510" y="30" width="340" height="54" rx="4" fill="#50ADDB" fill-opacity="0.5"/>
+        <text x="680" y="63" font-size="13" font-weight="600" fill="#004A6D" text-anchor="middle" font-family="Inter">Keep raising capital</text>
+        <text x="260" y="100" font-size="10.5" fill="#FF8000" text-anchor="middle" font-family="Inter">Oct 13 — possible Microsoft cutoff (unconfirmed)</text>
+
+        <!-- ── Convergence to decision point ── -->
+        <line x1="430" y1="84" x2="430" y2="140" stroke="#909090" stroke-width="1.5"/>
+        <line x1="510" y1="84" x2="510" y2="140" stroke="#909090" stroke-width="1.5"/>
+        <line x1="430" y1="140" x2="470" y2="140" stroke="#909090" stroke-width="1.5"/>
+        <line x1="510" y1="140" x2="470" y2="140" stroke="#909090" stroke-width="1.5"/>
+        <line x1="470" y1="140" x2="470" y2="158" stroke="#909090" stroke-width="1.5"/>
+        <polygon points="466,158 470,166 474,158" fill="#909090"/>
+
+        <!-- ── Step 2: the decision diamond ── -->
+        <polygon points="470,160 560,197 470,234 380,197" fill="#FFF8F0" stroke="#004A6D" stroke-width="1.5"/>
+        <text x="470" y="192" font-size="12" font-weight="700" fill="#004A6D" text-anchor="middle" font-family="Inter">How does the</text>
+        <text x="470" y="208" font-size="12" font-weight="700" fill="#004A6D" text-anchor="middle" font-family="Inter">next raise land?</text>
+        <text x="755" y="192" font-size="10.5" fill="#909090" text-anchor="start" font-family="Inter">A Legacy Fund could need the</text>
+        <text x="755" y="205" font-size="10.5" fill="#909090" text-anchor="start" font-family="Inter">platform by ~Q1–Q2 '27</text>
+
+        <!-- ── Step 3: the three-way fork ── -->
+        <line x1="405" y1="216" x2="170" y2="290" stroke="#2A6B3C" stroke-width="1.5"/>
+        <polygon points="166,282 161,293 175,291" fill="#2A6B3C"/>
+        <rect x="180" y="246" width="150" height="18" fill="#FFFFFF"/>
+        <text x="255" y="260" font-size="11.5" font-weight="700" fill="#2A6B3C" text-anchor="middle" font-family="Inter">~$1M arrives first</text>
+
+        <line x1="470" y1="234" x2="470" y2="290" stroke="#0179B5" stroke-width="1.5"/>
+        <polygon points="466,282 470,293 474,282" fill="#0179B5"/>
+        <rect x="385" y="246" width="170" height="18" fill="#FFFFFF"/>
+        <text x="470" y="260" font-size="11.5" font-weight="700" fill="#0179B5" text-anchor="middle" font-family="Inter">$3–5M arrives directly</text>
+
+        <line x1="535" y1="216" x2="770" y2="290" stroke="#909090" stroke-width="1.5"/>
+        <polygon points="765,291 779,292 774,281" fill="#909090"/>
+        <rect x="622" y="246" width="126" height="18" fill="#FFFFFF"/>
+        <text x="685" y="260" font-size="11.5" font-weight="700" fill="#606060" text-anchor="middle" font-family="Inter">Neither, yet</text>
+
+        <!-- ── Bottom row: three outcome boxes ── -->
+        <rect x="30" y="300" width="280" height="86" rx="4" fill="#F4FAF5" stroke="#2A6B3C" stroke-width="1.5"/>
+        <text x="170" y="323" font-size="13" font-weight="700" fill="#2A6B3C" text-anchor="middle" font-family="Inter">Phase 2, then Phase 3</text>
+        <text x="170" y="342" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">Prototype + beta (5–10 clients)</text>
+        <text x="170" y="357" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">now; full build once $3–5M</text>
+        <text x="170" y="372" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">lands</text>
+
+        <rect x="330" y="300" width="280" height="86" rx="4" fill="#EAF4FB" stroke="#0179B5" stroke-width="1.5"/>
+        <text x="470" y="323" font-size="13" font-weight="700" fill="#0179B5" text-anchor="middle" font-family="Inter">Phase 3 begins now</text>
+        <text x="470" y="342" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">Full build starts immediately;</text>
+        <text x="470" y="357" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">Phase 2 beta (5–10 clients)</text>
+        <text x="470" y="372" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">runs alongside it</text>
+
+        <rect x="630" y="300" width="280" height="86" rx="4" fill="#F4F1EC" stroke="#ADADAD" stroke-width="1.5"/>
+        <text x="770" y="323" font-size="13" font-weight="700" fill="#606060" text-anchor="middle" font-family="Inter">Keep operating as-is</text>
+        <text x="770" y="342" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">No new build — and keep</text>
+        <text x="770" y="357" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">raising, on the now-hardened</text>
+        <text x="770" y="372" font-size="11" fill="#303030" text-anchor="middle" font-family="Inter">platform</text>
+      </svg>
+      <p class="roadmap-note">Only the first ~3 months are committed: Phase 1 hardening and a parallel fundraising push, both wrapping up around November. That next raise is targeted at $3–5M total — it could land all at once, or in stages, with an opening ~$1M tranche funding Phase 2 before the rest arrives for Phase 3, rather than Phase 2 needing separate capital on top of that $3–5M. If a more modest ~$1M lands first — as its own raise or as that opening tranche — Phase 2's prototype and beta validation run before the full build. If the full $3–5M raise arrives directly, Phase 3's full build starts immediately and Phase 2's beta validation runs alongside it instead of gating it. If neither has landed, we keep operating on the hardened platform — no new build — and keep raising, rather than spin up a team we can't sustain. Nothing past November is a commitment; it's a branch that resolves on how and when the money arrives.</p>
+    </div>
+  </div>
+
+  <!-- RECOMMENDATION -->
+  <div class="section">
+    <div class="sec-eyebrow">Recommendation</div>
+    <h2>Fund Phase 1 now. Which phase comes next depends on how capital arrives.</h2>
+    <div class="rec-box">
+      <h3>Why this sequencing</h3>
+      <p>Phase 1 is the only one of the three sized to what this raise leaves for technology. It's aimed at the biggest operational risk — the current platform failing under its own weight — without betting on money we don't have yet. Moving on to Phase 2 or 3 would depend on additional fundraising, not this raise.</p>
+      <p>That second raise — targeted at $3–5M total — would be pursued in parallel, starting now rather than after Phase 1 wraps up. How it lands, not just whether it does, determines what happens next: it could arrive all at once, or in stages. If it arrives in stages, an initial ~$1M tranche of that same target funds Phase 2's prototype and beta validation first, with the full build following once the rest of that capital comes in — Phase 2 isn't necessarily capital on top of the $3–5M, it can be the first slice of it. If the full $3–5M arrives directly instead, the full build starts immediately, with Phase 2's beta validation running alongside it rather than as a prerequisite.</p>
+      <p>Neither Phase 2 nor Phase 3 is just a technology budget. Scaling past Phase 1 — onboarding 50–100+ clients and standing up Legacy Funds — also means scaling the team: this can't stay a one-person product/technology/operations operation, and there are real, currently unpriced costs in hiring, compute/storage, cybersecurity, and compliance that any Phase 2 or 3 raise needs to account for.</p>
+      <p>Timing is a factor: a Legacy Fund could need the platform as early as Q1–Q2 2027 — potentially only one to four months after Phase 1 would finish. That's a thin margin, which is the argument for starting the next raise sooner rather than waiting for more clarity. All of these dates and costs are estimates.</p>
+    </div>
+  </div>
+
+  <div class="foot-links">
+    <a href="prototype_dashboard.html">← Back to Build Tracker Dashboard</a>
+    <a href="dashboard_strategy.html">Build Methodology ↗</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 detail ↗</a>
+    <a href="phase2_prototype_validate.html">Phase 2 detail ↗</a>
+    <a href="phase3_full_build.html">Phase 3 detail ↗</a>
+  </div>
+
+  <p class="caveat">All figures are conceptual estimates drawn from the July 16, 2026 budget call and platform planning documents. Exact scope, cost, and timeline for any path require a formal engineering assessment before commitments are made to investors. Technology is allocated ~$125k; the rough estimate to harden the platform is ~$100k, with the remainder held back because that estimate is soft on a system this old. Moving on to Phase 2 or 3 would be funded by additional fundraising, not by this raise. The $95k "uncommitted / reserve" figure is separate — it reflects the gap between the $500k raise and the four named cost categories, and has not been itemized. The salaries figure is fully loaded — it includes health insurance, payroll tax, accounting, and payroll/benefits admin (e.g., Gusto), not just base pay. Ongoing operating expenses (hosting, compute/storage, software subscriptions) sit outside all four categories entirely and would reduce the reserve further once priced. Phase 2's ~$1M and Phase 3's ~$3–5M are both separate from the current $500k raise — but not necessarily separate from each other: the $1M could be the opening tranche of the same $3–5M target rather than capital on top of it. The ~40% tech split for Phase 3 is sourced from 2026 tech-raise planning documents rather than the July 16 call. None of these are priced plans — headcount, infrastructure, cybersecurity, and compliance costs within them are flagged but not yet itemized.</p>
+
+</div>
+</body>
+</html>

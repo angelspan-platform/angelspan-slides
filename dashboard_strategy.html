@@ -221,8 +221,8 @@ tbody tr:last-child td { border-bottom: none; }
       <thead><tr><th>Term</th><th>Meaning in this document</th></tr></thead>
       <tbody>
         <tr><td>Working mock</td><td>The Lovable-built clickable prototype at <a href="https://angelspan-bridge-flow.lovable.app" target="_blank" style="color:var(--c-blue);">angelspan-bridge-flow.lovable.app</a> — simulated flows, no real backend, no real data</td></tr>
-        <tr><td>Path 3</td><td>Harden and stabilize the current production platform (Angular 1 / .NET Core 2.2) — no new features. The agreed near-term direction as of the July 16, 2026 budget call. Not the same as this working mock's own "UAT & Stabilization" build phase below — that refers to the mock, not the production system.</td></tr>
-        <tr><td>Path 2</td><td>The planned formal development engagement with a dev partner — real backend, real clients, real transactions. A separate and future initiative, not this working mock.</td></tr>
+        <tr><td>Phase 1</td><td>Harden and stabilize the current production platform (Angular 1 / .NET Core 2.2) — no new features. The agreed near-term direction as of the July 16, 2026 budget call. Formerly called "Path 3" before the paths were renumbered to match actual sequencing. Not the same as this working mock's own "UAT & Stabilization" build phase below — that refers to the mock, not the production system.</td></tr>
+        <tr><td>Phase 2</td><td>The planned formal development engagement with a dev partner — real backend, real clients, real transactions. A separate and future initiative, not this working mock. Formerly called "Path 2."</td></tr>
         <tr><td>PA</td><td>Performance Analyst — the sole internal AngelSpan employee role; curates startup updates and enters SMART IR scores</td></tr>
         <tr><td>SMART IR</td><td>Standardized Milestone Achievement &amp; Reporting Transparency for Investor Relations — the scoring and reporting system at the core of the AngelSpan product</td></tr>
         <tr><td>BMD / Bell Mason</td><td>Bell Mason Diagnostic — the framework SMART IR is built on; scores startups on Product, Market, Team, and Operations across four maturity stages (Concept → Seed → Alpha → Beta)</td></tr>
@@ -447,7 +447,7 @@ tbody tr:last-child td { border-bottom: none; }
         <tr><td>Target Raise editability</td><td>D-038</td><td>Whether a fund's Target Raise can be edited after creation. Options and recommendation documented in decisions/D-038-capital-tracking-model.md.</td></tr>
         <tr><td>Identity provider</td><td>D-003</td><td>Azure AD B2C vs. Auth0. Product decisions are implementation-agnostic, but the dev team needs this resolved early in Phase 0.</td></tr>
         <tr><td>Stripe path</td><td>D-012</td><td>Patch current integration vs. adopt Stripe Billing fully. The legacy platform has known Stripe bugs. Explicit direction needed before Phase 1 billing work.</td></tr>
-        <tr><td>Architecture model</td><td>—</td><td>Monolith vs. modular services. The prototype provides no signal on this. Requires a scoping conversation with the development team.</td></tr>
+        <tr><td>Architecture model</td><td>—</td><td>Monolith vs. modular services. The prototype provides no signal on this — but decisions/agents/technical_architect.md already has a specific recommendation on file: Modular Monolith with Service Contracts (one .NET 8 app, module boundaries like IdentityModule/ScoringModule/BillingModule, "monolith first, extract if needed"). Not yet formally decided, but not a blank slate either — start the scoping conversation from that recommendation.</td></tr>
       </tbody>
     </table>
 
