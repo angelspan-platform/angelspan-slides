@@ -33,12 +33,10 @@ html { font-size: clamp(14px, 0.5vw + 11px, 18px); }
   --mono: 'SFMono-Regular', 'SF Mono', 'Fira Code', Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A;
-    --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870;
-  }
-}
+/* Auto dark mode disabled — design system defers dark mode until light mode
+   is fully validated (design-system/DESIGN_SYSTEM.md, Open Items). This page
+   stays light-only, matching roadmap_presentation.html and the phase pages.
+   The [data-theme] rules below are inert unless something sets that attribute. */
 :root[data-theme="light"] { --c-bg:#FAFAF8; --c-surface:#F4F1EC; --c-border:#E0DBD3; --c-text:#1C1C1C; --c-text-2:#4A4A4A; --c-text-3:#888; }
 :root[data-theme="dark"]  { --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A; --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870; }
 
