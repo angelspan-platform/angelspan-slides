@@ -14,199 +14,291 @@
     --color-primary-pale: #50ADDB;
     --color-bg: #FAFAF8;
     --color-surface: #F4F1EC;
+    --color-raised: #FFFFFF;
     --color-border: #E0DBD3;
     --color-text: #303030;
     --color-text-secondary: #606060;
     --color-text-disabled: #ADADAD;
     --color-success: #2A6B3C;
+    --color-success-bg: #F4FAF5;
     --color-warning: #FF8000;
+    --color-warning-bg: #FFF8F0;
+    --color-info-bg: #EAF4FB;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
-  html { -webkit-text-size-adjust: 100%; }
-  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); padding: 48px 56px; max-width: 1000px; margin: 0 auto; overflow-x: hidden; }
-  .eyebrow { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-pale); margin-bottom: 8px; }
-  h1 { font-size: 28px; font-weight: 600; color: var(--color-primary); margin-bottom: 4px; letter-spacing: -0.01em; }
-  .subtitle { font-size: 16px; color: var(--color-text-secondary); margin-bottom: 24px; }
-  .funding-note { display: flex; gap: 10px; align-items: flex-start; padding: 14px 18px; background: #F4FAF5; border: 1px solid var(--color-success); border-radius: 4px; margin-bottom: 28px; }
-  .funding-note .icon { font-size: 15px; line-height: 1.5; }
-  .funding-note p { font-size: 14px; color: var(--color-text); line-height: 1.6; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0F1219;
+      --color-surface: #181C26;
+      --color-raised: #1D2130;
+      --color-border: #252B3A;
+      --color-text: #E4E8F0;
+      --color-text-secondary: #94A0B3;
+      --color-text-disabled: #4E5870;
+      --color-success-bg: rgba(42,107,60,.15);
+      --color-warning-bg: rgba(255,128,0,.13);
+      --color-info-bg: rgba(1,121,181,.13);
+    }
+  }
+  html { font-size: clamp(14px, 0.5vw + 11px, 18px); -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); font-size: 0.9167rem; line-height: 1.6; }
+
+  /* Layout */
+  .layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
+  .toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--color-border); background: var(--color-surface); }
+  .toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); margin-bottom: 4px; }
+  .toc-title { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+  .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
+  .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.6667rem; color: var(--color-text-disabled); text-decoration: none; margin-bottom: 20px; margin-top: -10px; }
+  .toc-back:hover { color: var(--color-primary-light); }
+
+  .content { padding: 56px 68px 100px; max-width: 880px; }
+  .eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
+  h1 { font-size: 1.875rem; font-weight: 700; color: var(--color-primary); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 8px; text-wrap: balance; }
+  .subtitle { font-size: 1rem; color: var(--color-text-secondary); margin-bottom: 32px; line-height: 1.5; }
+
+  .sec { margin-top: 48px; scroll-margin-top: 20px; }
+  .sec:first-child { margin-top: 0; }
+  .sec-label { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--color-text-disabled); margin-bottom: 4px; }
+  .sec h2 { font-size: 1.2rem; font-weight: 700; color: var(--color-primary); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; margin-bottom: 18px; letter-spacing: -.01em; }
+
+  .funding-note { display: flex; gap: 10px; align-items: flex-start; padding: 14px 18px; background: var(--color-success-bg); border: 1px solid var(--color-success); border-radius: 4px; margin-bottom: 8px; }
+  .funding-note .icon { font-size: 0.9rem; line-height: 1.5; }
+  .funding-note p { font-size: 0.875rem; color: var(--color-text); line-height: 1.6; }
   .funding-note strong { color: var(--color-success); }
-  .chart-wrap { background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 28px 28px 20px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow-x: auto; }
-  .chart-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 14px; white-space: nowrap; }
-  svg.chart { width: 100%; height: auto; display: block; min-width: 680px; }
-  .bullets { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin-bottom: 20px; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; padding: 4px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-  .bullets li { font-size: 15px; line-height: 1.65; padding: 14px 0 14px 20px; border-bottom: 1px solid var(--color-border); position: relative; color: var(--color-text); }
+  .chart-wrap { background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; padding: 24px 24px 18px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow-x: auto; }
+  .chart-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 14px; white-space: nowrap; }
+  svg.chart { width: 100%; height: auto; display: block; min-width: 640px; }
+  .bullets { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin-bottom: 20px; background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; padding: 4px 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .bullets li { font-size: 0.875rem; line-height: 1.6; padding: 13px 0 13px 20px; border-bottom: 1px solid var(--color-border); position: relative; color: var(--color-text); }
   .bullets li:nth-last-child(-n+2) { border-bottom: none; }
   .bullets li::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 18px; background: var(--color-primary); border-radius: 2px; }
   .scope-box { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-primary-pale); border-radius: 4px; padding: 16px 20px; margin-bottom: 20px; }
-  .scope-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 12px; }
+  .scope-box h3 { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 12px; }
   .scope-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px 24px; }
-  .scope-item { font-size: 14px; color: var(--color-text-secondary); padding: 12px 16px; background: #fff; border: 1px solid var(--color-border); border-top: 3px solid var(--color-primary-pale); border-radius: 4px; line-height: 1.6; }
-  .scope-item strong { display: block; color: var(--color-primary); font-size: 13px; margin-bottom: 6px; }
+  .scope-item { font-size: 0.8333rem; color: var(--color-text-secondary); padding: 12px 16px; background: var(--color-raised); border: 1px solid var(--color-border); border-top: 3px solid var(--color-primary-pale); border-radius: 4px; line-height: 1.6; }
+  .scope-item strong { display: block; color: var(--color-primary); font-size: 0.8rem; margin-bottom: 6px; }
   .tier-box { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-primary); border-radius: 4px; padding: 16px 20px; margin-bottom: 20px; }
-  .tier-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 12px; }
+  .tier-box h3 { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 12px; }
   .tier-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px 24px; }
-  .tier-item { font-size: 14px; color: var(--color-text-secondary); padding: 12px 16px; background: #fff; border: 1px solid var(--color-border); border-top: 3px solid var(--color-border); border-radius: 4px; line-height: 1.6; }
-  .tier-item.tier-selected { border-top: 3px solid var(--color-primary); background: #f7fbfd; }
-  .tier-item strong { display: block; color: var(--color-primary); font-size: 13px; margin-bottom: 6px; }
+  .tier-item { font-size: 0.8333rem; color: var(--color-text-secondary); padding: 12px 16px; background: var(--color-raised); border: 1px solid var(--color-border); border-top: 3px solid var(--color-border); border-radius: 4px; line-height: 1.6; }
+  .tier-item.tier-selected { border-top: 3px solid var(--color-primary); background: var(--color-info-bg); }
+  .tier-item strong { display: block; color: var(--color-primary); font-size: 0.8rem; margin-bottom: 6px; }
   .tier-item .tier-cost { display: block; font-weight: 700; color: var(--color-text); margin-top: 6px; }
   .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
   .pc-box { border-radius: 4px; padding: 18px 20px; border: 1px solid var(--color-border); }
-  .pc-box.pro { background: #F4FAF5; border-left: 3px solid var(--color-success); }
-  .pc-box.con { background: #FFF8F0; border-left: 3px solid var(--color-warning); }
-  .pc-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .pc-box.pro { background: var(--color-success-bg); border-left: 3px solid var(--color-success); }
+  .pc-box.con { background: var(--color-warning-bg); border-left: 3px solid var(--color-warning); }
+  .pc-box h3 { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
   .pc-box.pro h3 { color: var(--color-success); }
   .pc-box.con h3 { color: var(--color-warning); }
   .pc-box ul { list-style: none; }
-  .pc-box li { font-size: 14px; line-height: 1.6; color: var(--color-text); padding: 7px 0 7px 16px; position: relative; }
+  .pc-box li { font-size: 0.8333rem; line-height: 1.6; color: var(--color-text); padding: 7px 0 7px 16px; position: relative; }
   .pc-box li::before { content: "—"; position: absolute; left: 0; color: var(--color-text-secondary); }
   .footer { display: flex; flex-wrap: wrap; row-gap: 18px; border-top: 2px solid var(--color-primary); padding-top: 20px; margin-bottom: 20px; }
   .stat { flex: 1 1 21%; min-width: 150px; padding-right: 20px; border-right: 1px solid var(--color-border); margin-right: 20px; }
   .stat:last-child { border-right: none; margin-right: 0; }
-  .stat-val { font-size: 26px; font-weight: 700; color: var(--color-primary); }
-  .stat-lbl { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; }
-  .caveat { font-size: 13px; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
-  .risk-box { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-warning); border-radius: 4px; padding: 20px 24px; margin-bottom: 16px; }
-  .risk-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-warning); margin-bottom: 6px; }
-  .risk-intro { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 14px; }
-  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
-  .risk-item { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; padding: 10px 12px; background: #fff; border: 1px solid var(--color-border); border-radius: 4px; }
-  .risk-item.risk-trigger { border-color: var(--color-warning); background: #fff8f0; }
-  .risk-label { display: block; font-weight: 700; font-size: 12px; color: var(--color-text); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-  .risk-trigger .risk-label { color: var(--color-warning); }
-  .additive-note { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--color-primary); }
+  .stat-lbl { font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 3px; }
+  .caveat { font-size: 0.8rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .additive-note { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.8333rem; color: var(--color-text-secondary); line-height: 1.7; }
   .additive-note strong { color: var(--color-primary); }
 
-  @media (max-width: 640px) {
-    body { padding: 32px 20px; }
-    h1 { font-size: 23px; }
-    .subtitle { font-size: 14px; margin-bottom: 20px; }
-    .chart-wrap { padding: 20px 16px 14px; }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    .content { padding: 32px 24px 64px; max-width: 100%; }
     .bullets { grid-template-columns: 1fr; padding: 4px 18px; }
     .bullets li:nth-last-child(-n+2) { border-bottom: 1px solid var(--color-border); }
     .bullets li:last-child { border-bottom: none; }
-    .scope-grid, .risk-grid, .tier-grid, .pc-grid { grid-template-columns: 1fr; }
+    .scope-grid, .tier-grid, .pc-grid { grid-template-columns: 1fr; }
     .stat { flex: 1 1 45%; border-right: none; margin-right: 0; padding-right: 0; }
   }
 </style>
 </head>
 <body>
+<div class="layout">
+
+<nav class="toc">
+  <div class="toc-brand">AngelSpan</div>
+  <div class="toc-title">Phase 1 — Harden + Stabilize</div>
+  <a href="prototype_dashboard.html" class="toc-back">← Build Tracker</a>
+  <nav>
+    <div class="toc-group">Overview</div>
+    <a href="#funding">What This Raise Funds</a>
+    <a href="#timeline">Timeline &amp; Cost</a>
+    <div class="toc-group">Scope</div>
+    <a href="#scoping">Ways to Scope This</a>
+    <a href="#fixes">What Gets Fixed</a>
+    <div class="toc-group">Decision</div>
+    <a href="#tradeoffs">Benefits &amp; Trade-offs</a>
+    <a href="#numbers">The Numbers</a>
+  </nav>
+</nav>
+
+<main class="content">
+
   <nav class="back-nav">
     <a href="prototype_dashboard.html">← Build Tracker Dashboard</a>
     <span class="sep">·</span>
     <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
   </nav>
+
   <div class="eyebrow">Phase 1</div>
   <h1>Harden + Stabilize</h1>
   <p class="subtitle">Make the platform we already have trustworthy — no new features</p>
 
-  <div class="funding-note">
-    <span class="icon">✅</span>
-    <p><strong>What this raise can realistically fund.</strong> Of the $500k expected in late Aug / early Sept, roughly $125k is set aside for technology once salaries, marketing, and debt are covered. The rough estimate to harden the platform is ~$100k — an estimate, not a fixed price, on a system this old. Moving on to Phase 2 or 3 would be funded by additional fundraising, not by this raise.</p>
-  </div>
-
-  <div class="chart-wrap">
-    <div class="chart-title">Monthly spend rate — Aug '26–Jun '27</div>
-    <svg class="chart" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-      <line x1="80" y1="240" x2="760" y2="240" stroke="#E0DBD3" stroke-width="1"/>
-      <line x1="80" y1="173" x2="760" y2="173" stroke="#E0DBD3" stroke-width="1"/>
-      <line x1="80" y1="107" x2="760" y2="107" stroke="#E0DBD3" stroke-width="1"/>
-      <line x1="80" y1="40"  x2="760" y2="40"  stroke="#E0DBD3" stroke-width="1"/>
-      <line x1="80" y1="20" x2="80" y2="248" stroke="#E0DBD3" stroke-width="1.5"/>
-      <line x1="80" y1="248" x2="764" y2="248" stroke="#E0DBD3" stroke-width="1.5"/>
-      <text x="72" y="244" font-size="14" fill="#ADADAD" text-anchor="end" font-family="Inter">$0</text>
-      <text x="72" y="177" font-size="14" fill="#ADADAD" text-anchor="end" font-family="Inter">$50k</text>
-      <text x="72" y="111" font-size="14" fill="#ADADAD" text-anchor="end" font-family="Inter">$100k</text>
-      <text x="72" y="44"  font-size="14" fill="#ADADAD" text-anchor="end" font-family="Inter">$150k</text>
-      <text x="12" y="140" font-size="14" fill="#ADADAD" text-anchor="middle" font-family="Inter" transform="rotate(-90,12,140)">$/month</text>
-      <!-- hardening spend ramp Aug-Oct '26, step down through Nov, baseline by Dec '26 -->
-      <polygon points="80,240 140,173 240,173 290,215 353,234 760,234 760,240" fill="#004A6D" fill-opacity="0.09"/>
-      <polyline points="80,240 140,173 240,173 290,215 353,234 760,234" fill="none" stroke="#004A6D" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      <rect x="130" y="144" width="120" height="20" rx="2" fill="#FAFAF8" fill-opacity="0.92"/>
-      <text x="190" y="159" font-size="14" fill="#004A6D" font-weight="600" text-anchor="middle" font-family="Inter">~$50k/mo peak</text>
-      <!-- Azure GPv1 retirement, Oct 13 2026 — real MS date, applicability to us unconfirmed -->
-      <line x1="217" y1="20" x2="217" y2="248" stroke="#FF8000" stroke-width="1.5" stroke-dasharray="3,3"/>
-      <rect x="149" y="48" width="136" height="22" rx="2" fill="#FAFAF8" fill-opacity="0.95"/>
-      <text x="217" y="63" font-size="12" fill="#FF8000" font-weight="700" text-anchor="middle" font-family="Inter">Oct 13 — Microsoft</text>
-      <!-- hardening complete marker, ~Nov '26 -->
-      <line x1="353" y1="40" x2="353" y2="248" stroke="#50ADDB" stroke-width="1.5" stroke-dasharray="5,4"/>
-      <rect x="288" y="48" width="130" height="22" rx="2" fill="#FAFAF8" fill-opacity="0.95"/>
-      <text x="353" y="63" font-size="12" fill="#004A6D" font-weight="700" text-anchor="middle" font-family="Inter">Est. done ~Nov '26</text>
-      <!-- ongoing upkeep after hardening completes -->
-      <rect x="345" y="207" width="170" height="20" rx="2" fill="#FAFAF8" fill-opacity="0.9"/>
-      <text x="430" y="221" font-size="13" fill="#606060" text-anchor="middle" font-family="Inter">ongoing upkeep — cost TBD</text>
-      <!-- contingent continuation: Phase 2/3, gated on 2nd raise or a Fab Five partner -->
-      <polyline points="353,234 490,190 627,150 760,110" fill="none" stroke="#ADADAD" stroke-width="1.5" stroke-dasharray="4,4" stroke-linecap="round"/>
-      <rect x="548" y="115" width="145" height="20" rx="2" fill="#FAFAF8" fill-opacity="0.92"/>
-      <text x="620" y="129" font-size="12" fill="#909090" font-weight="600" text-anchor="middle" font-family="Inter">Phase 2/3 — if funded</text>
-      <text x="80"  y="264" font-size="14" fill="#ADADAD" text-anchor="middle" font-family="Inter">Aug '26</text>
-      <text x="217" y="264" font-size="14" fill="#FF8000" text-anchor="middle" font-weight="600" font-family="Inter">Oct '26</text>
-      <text x="353" y="264" font-size="14" fill="#0179B5" text-anchor="middle" font-weight="600" font-family="Inter">Dec '26</text>
-      <text x="490" y="264" font-size="14" fill="#ADADAD" text-anchor="middle" font-family="Inter">Feb '27</text>
-      <text x="627" y="264" font-size="14" fill="#ADADAD" text-anchor="middle" font-family="Inter">Apr '27</text>
-      <text x="760" y="264" font-size="14" fill="#ADADAD" text-anchor="middle" font-family="Inter">Jun '27</text>
-    </svg>
-  </div>
-
-  <ul class="bullets">
-    <li>Money lands late Aug–early Sep 2026; spend ramps to ~$50k/mo for 2–3 months once the work is staffed up — a fixed, front-loaded effort, not an open-ended build</li>
-    <li>Microsoft is retiring an older Azure storage type on October 13, 2026 — we haven't confirmed our production storage is affected, but it's an example of the vendor deadlines that periodically land on aging infrastructure whether or not we're ready</li>
-    <li>We keep raising money in parallel, not after — the plan is to approach investors now, targeting more capital closing around the same November window</li>
-    <li>No new features ship: no Legacy Fund portal, no automated scoring reports, no fund dashboards — the team keeps handling those the same way it does today</li>
-    <li>Hardening is estimated to wrap up around November — roughly the same time our own math suggests the $500k is largely spent across salaries, marketing, debt, and tech combined</li>
-    <li>The runway is tighter than it looks: a Legacy Fund could realistically need the platform as early as Q1–Q2 2027 — as little as one to four months after this work finishes</li>
-  </ul>
-
-  <div class="tier-box">
-    <h3>Three Ways to Scope This — Still a Decision to Make</h3>
-    <div class="tier-grid">
-      <div class="tier-item"><strong>Basic</strong>Bring the oldest, riskiest software up to date and fix the 9 known bugs. The minimum needed to stop the platform from breaking.<span class="tier-cost">~$40–50k · 4–6 wks</span></div>
-      <div class="tier-item tier-selected"><strong>Standard (this plan)</strong>Basic, plus fixing the email delivery problems that slow down onboarding new clients, and fixing the billing bugs that block signups and can let unpaid accounts through.<span class="tier-cost">~$100k · 2–3 mo</span></div>
-      <div class="tier-item"><strong>Extended</strong>Standard, plus deciding now whether to stay on our current cloud provider or move — worth doing if we already know which cloud a future partner prefers — plus basic backup and activity-logging.<span class="tier-cost">$150k+ · 3+ mo</span></div>
+  <section class="sec" id="funding">
+    <div class="sec-label">Overview</div>
+    <h2>What This Raise Funds</h2>
+    <div class="funding-note">
+      <span class="icon">✅</span>
+      <p><strong>What this raise can realistically fund.</strong> Of the $500k expected in late Aug / early Sept, roughly $125k is set aside for technology once salaries, marketing, and debt are covered. The rough estimate to harden the platform is ~$100k — an estimate, not a fixed price, on a system this old. Moving on to Phase 2 or 3 would be funded by additional fundraising, not by this raise.</p>
     </div>
-  </div>
+  </section>
 
-  <div class="scope-box">
-    <h3>What This Actually Fixes — 3 Areas*</h3>
-    <div class="scope-grid">
-      <div class="scope-item"><strong>1 — Aging software</strong>The two core systems the platform runs on have gone years without a security update from their makers. Bringing them current, plus fixing all 9 known bugs — including a documented billing fault that could block client submissions if it resurfaces.</div>
-      <div class="scope-item"><strong>2 — Email &amp; billing</strong>Today, setting up a new client's email delivery is a manual, multi-day process that regularly derails onboarding. We also can't currently create new products or adjust pricing in our payment system. Both get fixed.</div>
-      <div class="scope-item"><strong>3 — Basic monitoring</strong>Simple alerting so we find out about a problem before a client does. The Extended tier adds real backup/recovery and a record of who changed what.</div>
+  <section class="sec" id="timeline">
+    <div class="sec-label">Overview</div>
+    <h2>Timeline &amp; Cost</h2>
+    <div class="chart-wrap">
+      <div class="chart-title">Monthly spend rate — Aug '26–Jun '27</div>
+      <svg class="chart" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+        <line x1="80" y1="240" x2="760" y2="240" stroke="var(--color-border)" stroke-width="1"/>
+        <line x1="80" y1="173" x2="760" y2="173" stroke="var(--color-border)" stroke-width="1"/>
+        <line x1="80" y1="107" x2="760" y2="107" stroke="var(--color-border)" stroke-width="1"/>
+        <line x1="80" y1="40"  x2="760" y2="40"  stroke="var(--color-border)" stroke-width="1"/>
+        <line x1="80" y1="20" x2="80" y2="248" stroke="var(--color-border)" stroke-width="1.5"/>
+        <line x1="80" y1="248" x2="764" y2="248" stroke="var(--color-border)" stroke-width="1.5"/>
+        <text x="72" y="244" font-size="14" fill="var(--color-text-disabled)" text-anchor="end" font-family="Inter">$0</text>
+        <text x="72" y="177" font-size="14" fill="var(--color-text-disabled)" text-anchor="end" font-family="Inter">$50k</text>
+        <text x="72" y="111" font-size="14" fill="var(--color-text-disabled)" text-anchor="end" font-family="Inter">$100k</text>
+        <text x="72" y="44"  font-size="14" fill="var(--color-text-disabled)" text-anchor="end" font-family="Inter">$150k</text>
+        <text x="12" y="140" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter" transform="rotate(-90,12,140)">$/month</text>
+        <!-- hardening spend ramp Aug-Oct '26, step down through Nov, baseline by Dec '26 -->
+        <polygon points="80,240 140,173 240,173 290,215 353,234 760,234 760,240" fill="var(--color-primary)" fill-opacity="0.09"/>
+        <polyline points="80,240 140,173 240,173 290,215 353,234 760,234" fill="none" stroke="var(--color-primary)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <rect x="130" y="144" width="120" height="20" rx="2" fill="var(--color-raised)" fill-opacity="0.92"/>
+        <text x="190" y="159" font-size="14" fill="var(--color-primary)" font-weight="600" text-anchor="middle" font-family="Inter">~$50k/mo peak</text>
+        <!-- Azure GPv1 retirement, Oct 13 2026 — real MS date, applicability to us unconfirmed -->
+        <line x1="217" y1="20" x2="217" y2="248" stroke="var(--color-warning)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <rect x="149" y="48" width="136" height="22" rx="2" fill="var(--color-raised)" fill-opacity="0.95"/>
+        <text x="217" y="63" font-size="12" fill="var(--color-warning)" font-weight="700" text-anchor="middle" font-family="Inter">Oct 13 — Microsoft</text>
+        <!-- hardening complete marker, ~Nov '26 -->
+        <line x1="353" y1="40" x2="353" y2="248" stroke="var(--color-primary-pale)" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <rect x="288" y="48" width="130" height="22" rx="2" fill="var(--color-raised)" fill-opacity="0.95"/>
+        <text x="353" y="63" font-size="12" fill="var(--color-primary)" font-weight="700" text-anchor="middle" font-family="Inter">Est. done ~Nov '26</text>
+        <!-- ongoing upkeep after hardening completes -->
+        <rect x="345" y="207" width="170" height="20" rx="2" fill="var(--color-raised)" fill-opacity="0.9"/>
+        <text x="430" y="221" font-size="13" fill="var(--color-text-secondary)" text-anchor="middle" font-family="Inter">ongoing upkeep — cost TBD</text>
+        <!-- contingent continuation: Phase 2/3, gated on 2nd raise or a Fab Five partner -->
+        <polyline points="353,234 490,190 627,150 760,110" fill="none" stroke="var(--color-text-disabled)" stroke-width="1.5" stroke-dasharray="4,4" stroke-linecap="round"/>
+        <rect x="548" y="115" width="145" height="20" rx="2" fill="var(--color-raised)" fill-opacity="0.92"/>
+        <text x="620" y="129" font-size="12" fill="var(--color-text-secondary)" font-weight="600" text-anchor="middle" font-family="Inter">Phase 2/3 — if funded</text>
+        <text x="80"  y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Aug '26</text>
+        <text x="217" y="264" font-size="14" fill="var(--color-warning)" text-anchor="middle" font-weight="600" font-family="Inter">Oct '26</text>
+        <text x="353" y="264" font-size="14" fill="var(--color-primary-light)" text-anchor="middle" font-weight="600" font-family="Inter">Dec '26</text>
+        <text x="490" y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Feb '27</text>
+        <text x="627" y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Apr '27</text>
+        <text x="760" y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Jun '27</text>
+      </svg>
     </div>
-  </div>
 
-  <div class="pc-grid">
-    <div class="pc-box pro">
-      <h3>Benefits</h3>
-      <ul>
-        <li>Sized to the ~$125k set aside for tech; hardening is estimated around ~$100k. The other phases would need funding this raise doesn't provide</li>
-        <li>Aimed squarely at the biggest concern — the platform breaking while new clients are signing up</li>
-        <li>Doesn't gamble on landing an institutional partner — the work makes sense whether or not that materializes</li>
-        <li>Intended to buy time for the raise-and-build cycle without an avoidable outage getting in the way</li>
-      </ul>
+    <ul class="bullets">
+      <li>Money lands late Aug–early Sep 2026; spend ramps to ~$50k/mo for 2–3 months once the work is staffed up — a fixed, front-loaded effort, not an open-ended build</li>
+      <li>Microsoft is retiring an older Azure storage type on October 13, 2026 — we haven't confirmed our production storage is affected, but it's an example of the vendor deadlines that periodically land on aging infrastructure whether or not we're ready</li>
+      <li>We keep raising money in parallel, not after — the plan is to approach investors now, targeting more capital closing around the same November window</li>
+      <li>No new features ship: no Legacy Fund portal, no automated scoring reports, no fund dashboards — the team keeps handling those the same way it does today</li>
+      <li>Hardening is estimated to wrap up around November — roughly the same time our own math suggests the $500k is largely spent across salaries, marketing, debt, and tech combined</li>
+      <li>The runway is tighter than it looks: a Legacy Fund could realistically need the platform as early as Q1–Q2 2027 — as little as one to four months after this work finishes</li>
+    </ul>
+  </section>
+
+  <section class="sec" id="scoping">
+    <div class="sec-label">Scope</div>
+    <h2>Ways to Scope This</h2>
+    <div class="tier-box">
+      <h3>Three Ways to Scope This — Still a Decision to Make</h3>
+      <div class="tier-grid">
+        <div class="tier-item"><strong>Basic</strong>Bring the oldest, riskiest software up to date and fix the 9 known bugs. The minimum needed to stop the platform from breaking.<span class="tier-cost">~$40–50k · 4–6 wks</span></div>
+        <div class="tier-item tier-selected"><strong>Standard (this plan)</strong>Basic, plus fixing the email delivery problems that slow down onboarding new clients, and fixing the billing bugs that block signups and can let unpaid accounts through.<span class="tier-cost">~$100k · 2–3 mo</span></div>
+        <div class="tier-item"><strong>Extended</strong>Standard, plus deciding now whether to stay on our current cloud provider or move — worth doing if we already know which cloud a future partner prefers — plus basic backup and activity-logging.<span class="tier-cost">$150k+ · 3+ mo</span></div>
+      </div>
     </div>
-    <div class="pc-box con">
-      <h3>Risks &amp; Trade-offs</h3>
-      <ul>
-        <li>Adds no new capability — Legacy Fund applications, scoring reports, and fund dashboards all stay fully manual</li>
-        <li>Some of this spend won't carry forward — if we rebuild the platform later, the billing fix in particular gets thrown away, not reused</li>
-        <li>This ~$100k isn't extra money — it's competing for the same $500k as salaries, marketing, and debt payoff</li>
-        <li>Built for reliability at today's size (50–100 clients), not unlimited growth — a big surge in signups still needs Phase 2 or 3 money to handle properly</li>
-      </ul>
+  </section>
+
+  <section class="sec" id="fixes">
+    <div class="sec-label">Scope</div>
+    <h2>What Gets Fixed</h2>
+    <div class="scope-box">
+      <h3>What This Actually Fixes — 3 Areas*</h3>
+      <div class="scope-grid">
+        <div class="scope-item"><strong>1 — Aging software</strong>The two core systems the platform runs on have gone years without a security update from their makers. Bringing them current, plus fixing all 9 known bugs — including a documented billing fault that could block client submissions if it resurfaces.</div>
+        <div class="scope-item"><strong>2 — Email &amp; billing</strong>Today, setting up a new client's email delivery is a manual, multi-day process that regularly derails onboarding. We also can't currently create new products or adjust pricing in our payment system. Both get fixed.</div>
+        <div class="scope-item"><strong>3 — Basic monitoring</strong>Simple alerting so we find out about a problem before a client does. The Extended tier adds real backup/recovery and a record of who changed what.</div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="additive-note">
-    <strong>Note on the existing demo:</strong> the AI-generated prototype already built is a sales tool for showing investors what the platform could look like — it has no real backend and can't take on an actual paying client. It's neither this hardening work nor Phase 2's pilot; it's a separate, useful asset for fundraising conversations.
-  </div>
+  <section class="sec" id="tradeoffs">
+    <div class="sec-label">Decision</div>
+    <h2>Benefits &amp; Trade-offs</h2>
+    <div class="pc-grid">
+      <div class="pc-box pro">
+        <h3>Benefits</h3>
+        <ul>
+          <li>Sized to the ~$125k set aside for tech; hardening is estimated around ~$100k. The other phases would need funding this raise doesn't provide</li>
+          <li>Aimed squarely at the biggest concern — the platform breaking while new clients are signing up</li>
+          <li>Doesn't gamble on landing an institutional partner — the work makes sense whether or not that materializes</li>
+          <li>Intended to buy time for the raise-and-build cycle without an avoidable outage getting in the way</li>
+        </ul>
+      </div>
+      <div class="pc-box con">
+        <h3>Risks &amp; Trade-offs</h3>
+        <ul>
+          <li>Adds no new capability — Legacy Fund applications, scoring reports, and fund dashboards all stay fully manual</li>
+          <li>Some of this spend won't carry forward — if we rebuild the platform later, the billing fix in particular gets thrown away, not reused</li>
+          <li>This ~$100k isn't extra money — it's competing for the same $500k as salaries, marketing, and debt payoff</li>
+          <li>Built for reliability at today's size (50–100 clients), not unlimited growth — a big surge in signups still needs Phase 2 or 3 money to handle properly</li>
+        </ul>
+      </div>
+    </div>
 
-  <div class="footer">
-    <div class="stat"><div class="stat-val">~$100k</div><div class="stat-lbl">Rough cost estimate</div></div>
-    <div class="stat"><div class="stat-val">~Nov '26</div><div class="stat-lbl">Estimated completion</div></div>
-    <div class="stat"><div class="stat-val">6+ yrs</div><div class="stat-lbl">Since the backend last had a security patch</div></div>
-    <div class="stat"><div class="stat-val">~50–100</div><div class="stat-lbl">Scale it aims to hold (estimate)</div></div>
-  </div>
+    <div class="additive-note">
+      <strong>Note on the existing demo:</strong> the AI-generated prototype already built is a sales tool for showing investors what the platform could look like — it has no real backend and can't take on an actual paying client. It's neither this hardening work nor Phase 2's pilot; it's a separate, useful asset for fundraising conversations.
+    </div>
+  </section>
 
-  <p class="caveat">* All figures are conceptual estimates, anchored to Joe's July 16, 2026 verbal estimate (~$100k over 2–3 months) and the three-tier framing from that same call. Exact scope and cost require a formal engineering assessment before commitments are made to investors. The ongoing upkeep cost after this work is complete is genuinely not known yet — no document or conversation to date has priced it; that number needs to come from real hosting and support figures, not a guess.</p>
+  <section class="sec" id="numbers">
+    <div class="sec-label">Decision</div>
+    <h2>The Numbers</h2>
+    <div class="footer">
+      <div class="stat"><div class="stat-val">~$100k</div><div class="stat-lbl">Rough cost estimate</div></div>
+      <div class="stat"><div class="stat-val">~Nov '26</div><div class="stat-lbl">Estimated completion</div></div>
+      <div class="stat"><div class="stat-val">6+ yrs</div><div class="stat-lbl">Since the backend last had a security patch</div></div>
+      <div class="stat"><div class="stat-val">~50–100</div><div class="stat-lbl">Scale it aims to hold (estimate)</div></div>
+    </div>
+
+    <p class="caveat">* All figures are conceptual estimates, anchored to Joe's July 16, 2026 verbal estimate (~$100k over 2–3 months) and the three-tier framing from that same call. Exact scope and cost require a formal engineering assessment before commitments are made to investors. The ongoing upkeep cost after this work is complete is genuinely not known yet — no document or conversation to date has priced it; that number needs to come from real hosting and support figures, not a guess.</p>
+  </section>
+
+</main>
+</div>
+
+<script>
+const secs = document.querySelectorAll('.sec[id]');
+const links = document.querySelectorAll('.toc nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.toc nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+secs.forEach(s => io.observe(s));
+</script>
 </body>
 </html>

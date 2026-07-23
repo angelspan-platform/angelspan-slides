@@ -26,10 +26,14 @@
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
   --mono:'JetBrains Mono','Fira Code','Courier New',monospace;
 }
-/* Auto dark mode disabled — design system defers dark mode until light mode
-   is fully validated (design-system/DESIGN_SYSTEM.md, Open Items). This page
-   stays light-only, matching roadmap_presentation.html and the phase pages.
-   The [data-theme] rules below are inert unless something sets that attribute. */
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0F1219;--surface:#181C26;--border:#252B3A;
+  --text:#E4E8F0;--text-2:#94A0B3;--text-3:#4E5870;--raised:#1D2130;
+  --green-bg:rgba(42,107,60,.15);--green-bd:rgba(42,107,60,.35);
+  --amber-bg:rgba(255,128,0,.13);--amber-bd:rgba(255,128,0,.32);
+  --red-bg:rgba(207,31,63,.13);--red-bd:rgba(207,31,63,.32);
+  --lf-bg:rgba(27,61,95,.18);--lf-bd:rgba(27,61,95,.4);
+}}
 :root[data-theme="light"]{--bg:#FAFAF8;--surface:#F4F1EC;--border:#E0DBD3;--text:#303030;--text-2:#606060;--text-3:#909090;--raised:#ffffff;--green-bg:#D4EDDA;--green-bd:#A8D5B8;--amber-bg:#FFF3E0;--amber-bd:#FFCC90;--red-bg:#FEE8EC;--red-bd:#F4B3BF;--lf-bg:#E8F0F7;--lf-bd:#A8C8E0;}
 :root[data-theme="dark"]{--bg:#0F1219;--surface:#181C26;--border:#252B3A;--text:#E4E8F0;--text-2:#94A0B3;--text-3:#4E5870;--raised:#1D2130;--green-bg:rgba(42,107,60,.15);--green-bd:rgba(42,107,60,.35);--amber-bg:rgba(255,128,0,.13);--amber-bd:rgba(255,128,0,.32);--red-bg:rgba(207,31,63,.13);--red-bd:rgba(207,31,63,.32);--lf-bg:rgba(27,61,95,.18);--lf-bd:rgba(27,61,95,.4);}
 
@@ -71,7 +75,7 @@ a:hover{text-decoration:underline;}
 .sn-link{display:flex;align-items:center;gap:9px;padding:7px 22px;text-decoration:none;color:var(--text-2);font-size:0.75rem;transition:background .08s;}
 .sn-link:hover{background:rgba(0,74,109,.05);color:var(--text);text-decoration:none;}
 .sn-link-icon{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.5833rem;font-weight:800;flex-shrink:0;}
-.qi-p{background:var(--navy);color:#fff;}
+.qi-p{background:rgba(0,74,109,.1);color:var(--navy);border:1px solid rgba(0,74,109,.28);}
 .qi-s{background:rgba(80,173,219,.12);color:var(--blue);border:1px solid rgba(80,173,219,.3);}
 .qi-gh{background:var(--raised);color:var(--text-2);border:1px solid var(--border);}
 .qi-doc{background:rgba(42,107,60,.1);color:var(--green);border:1px solid rgba(42,107,60,.2);}
