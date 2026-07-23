@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>AngelSpan — Working Mock Build Tracker</title>
+<link rel="stylesheet" href="shared.css">
 <style>
 :root {
   /* AngelSpan brand */
@@ -96,6 +97,11 @@ a:hover{text-decoration:underline;}
 
 /* ── Main content ── */
 .main{padding:48px 60px 80px;min-width:0;}
+
+/* ── Masthead — matches roadmap_presentation.html / dashboard_strategy.html ── */
+.eyebrow{font-size:0.6667rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--sky);margin-bottom:10px;}
+h1{font-size:1.875rem;font-weight:700;color:var(--navy);letter-spacing:-.02em;line-height:1.18;margin-bottom:8px;text-wrap:balance;}
+.subtitle{font-size:0.9167rem;color:var(--text-2);margin-bottom:28px;line-height:1.5;max-width:640px;}
 
 /* ── Section hierarchy ── */
 .sec{margin-top:56px;scroll-margin-top:20px;}
@@ -389,13 +395,13 @@ a:hover{text-decoration:underline;}
     </div>
     <span class="sn-link-arr">↗</span>
   </a>
-  <a class="sn-link" href="https://docs.google.com/document/d/10DR3-uz90S8FfMLpEqqElgK4csjuOncVRAnm-62KC2E/edit?usp=drive_link" target="_blank">
+  <a class="sn-link" href="prototype_assumptions.html">
     <div class="sn-link-icon qi-doc">DOC</div>
     <div class="sn-link-text">
       <div class="sn-link-name">Prototype assumptions</div>
-      <div class="sn-link-sub">Design decisions · Google Doc</div>
+      <div class="sn-link-sub">What carries forward · engineering handoff</div>
     </div>
-    <span class="sn-link-arr">↗</span>
+    <span class="sn-link-arr">→</span>
   </a>
 
   <div class="sn-cred">
@@ -445,6 +451,10 @@ a:hover{text-decoration:underline;}
 
 <!-- MAIN CONTENT -->
 <main class="main">
+
+  <div class="eyebrow">AngelSpan · Build Tracker</div>
+  <h1>Working Mock — Build Tracker</h1>
+  <p class="subtitle">Live status of the 12-epic prototype build — what's done, what's active, and what needs attention before engineering handoff.</p>
 
   <!-- Working mock callout -->
   <div class="callout-mock">

@@ -1,0 +1,41 @@
+/* AngelSpan / Legacy Funds — shared design tokens and cross-page navigation.
+   Source of truth: design-system/DESIGN_SYSTEM.md — keep values in sync.
+   Linked by every page in slides/ so colors, type, and the back-nav stay identical. */
+
+:root {
+  --color-primary: #004A6D;
+  --color-primary-light: #0179B5;
+  --color-primary-pale: #50ADDB;
+  --color-bg: #FAFAF8;
+  --color-surface: #F4F1EC;
+  --color-border: #E0DBD3;
+  --color-text: #303030;
+  --color-text-secondary: #606060;
+  --color-text-disabled: #ADADAD;
+  --color-success: #2A6B3C;
+  --color-warning: #FF8000;
+  --color-error: #CF1F3F;
+  --color-lf-primary: #1B3D5F;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+/* Cross-page navigation. Place as the first element inside each page's
+   main content container so it inherits that container's width/padding. */
+.back-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.back-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-primary-light);
+  text-decoration: none;
+  font-weight: 600;
+}
+.back-nav a:hover { text-decoration: underline; }
+.back-nav .sep { color: var(--color-text-disabled); }

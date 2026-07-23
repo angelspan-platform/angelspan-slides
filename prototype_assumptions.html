@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — Prototype Assumptions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+html { font-size: clamp(14px, 0.5vw + 11px, 18px); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --c-navy:       #004A6D;
+  --c-blue:       #0179B5;
+  --c-sky:        #50ADDB;
+  --c-lf:         #1B3D5F;
+  --c-bg:         #FAFAF8;
+  --c-surface:    #F4F1EC;
+  --c-border:     #E0DBD3;
+  --c-text:       #1C1C1C;
+  --c-text-2:     #4A4A4A;
+  --c-text-3:     #888;
+  --c-green:      #166534;
+  --c-green-bg:   #F0FDF4;
+  --c-green-bd:   #BBF7D0;
+  --c-amber:      #92400E;
+  --c-amber-bg:   #FFFBEB;
+  --c-amber-bd:   #FDE68A;
+  --c-red:        #991B1B;
+  --c-red-bg:     #FEF2F2;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono: 'SFMono-Regular', 'SF Mono', 'Fira Code', Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A;
+    --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870;
+  }
+}
+:root[data-theme="light"] { --c-bg:#FAFAF8; --c-surface:#F4F1EC; --c-border:#E0DBD3; --c-text:#1C1C1C; --c-text-2:#4A4A4A; --c-text-3:#888; }
+:root[data-theme="dark"]  { --c-bg:#0F1219; --c-surface:#181C26; --c-border:#252B3A; --c-text:#E4E8F0; --c-text-2:#94A0B3; --c-text-3:#4E5870; }
+
+body { font-family: var(--font); background: var(--c-bg); color: var(--c-text); font-size: 0.9167rem; line-height: 1.72; }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
+
+/* Sidebar */
+.toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--c-border); background: var(--c-surface); }
+.toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--c-sky); margin-bottom: 4px; }
+.toc-title { font-size: 0.75rem; font-weight: 600; color: var(--c-text-2); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+.toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin: 18px 0 5px; }
+.toc nav a { display: block; font-size: 0.75rem; color: var(--c-text-2); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+.toc nav a:hover, .toc nav a.on { color: var(--c-navy); border-left-color: var(--c-navy); padding-left: 8px; }
+
+/* Content */
+.content { padding: 56px 68px 100px; max-width: 880px; }
+.eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--c-sky); margin-bottom: 12px; }
+h1 { font-size: 1.875rem; font-weight: 700; color: var(--c-navy); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 10px; text-wrap: balance; }
+.subtitle { font-size: 1.0rem; color: var(--c-text-2); margin-bottom: 8px; line-height: 1.5; }
+.meta { font-size: 0.75rem; color: var(--c-text-3); padding-bottom: 40px; border-bottom: 2px solid var(--c-navy); margin-bottom: 56px; }
+
+/* Sections */
+.sec { margin-top: 60px; scroll-margin-top: 20px; }
+.sec-label { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--c-text-3); margin-bottom: 4px; }
+.sec h2 { font-size: 1.3333rem; font-weight: 700; color: var(--c-navy); border-bottom: 1px solid var(--c-border); padding-bottom: 12px; margin-bottom: 22px; letter-spacing: -.01em; }
+.sec h3 { font-size: 0.875rem; font-weight: 700; color: var(--c-text); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: .04em; }
+p { color: var(--c-text-2); margin-bottom: 16px; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--c-text); font-weight: 600; }
+code { font-family: var(--mono); font-size: 0.85em; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 3px; padding: 1px 5px; color: var(--c-navy); }
+
+/* Callouts */
+.box { border-left: 3px solid; padding: 16px 20px; border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 0.875rem; line-height: 1.65; }
+.box .lbl { font-size: 0.5833rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; display: block; margin-bottom: 7px; }
+.box.blue  { border-color: var(--c-blue); background: rgba(1,121,181,.07); color: var(--c-text-2); }
+.box.blue .lbl { color: var(--c-blue); }
+.box.green { border-color: #16A34A; background: var(--c-green-bg); color: var(--c-green); }
+.box.green .lbl { color: var(--c-green); }
+.box.amber { border-color: #D97706; background: var(--c-amber-bg); color: var(--c-amber); }
+.box.amber .lbl { color: var(--c-amber); }
+.box.navy  { border-color: var(--c-navy); background: rgba(0,74,109,.05); color: var(--c-text-2); }
+.box.navy .lbl { color: var(--c-navy); }
+
+/* Repo tree */
+.tree { font-family: var(--mono); font-size: 0.75rem; line-height: 1.9; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 4px; padding: 18px 22px; margin: 20px 0; overflow-x: auto; white-space: pre; color: var(--c-text-2); }
+.tree .fold { color: var(--c-navy); font-weight: 700; }
+.tree .note { color: var(--c-text-3); font-family: var(--font); font-style: italic; }
+
+/* Workflow steps (matches dashboard_strategy.html) */
+.workflow { border: 1px solid var(--c-border); border-radius: 4px; overflow: hidden; margin: 24px 0; }
+.wf-step { display: grid; grid-template-columns: 48px 1fr; border-bottom: 1px solid var(--c-border); }
+.wf-step:last-child { border-bottom: none; }
+.wf-step:nth-child(even) { background: var(--c-surface); }
+.wf-num { background: var(--c-navy); color: rgba(255,255,255,.85); font-size: 0.75rem; font-weight: 700; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; flex-shrink: 0; }
+.wf-body { padding: 14px 20px; }
+.wf-title { font-size: 0.875rem; font-weight: 700; color: var(--c-text); margin-bottom: 5px; }
+.wf-desc { font-size: 0.8333rem; color: var(--c-text-2); line-height: 1.6; }
+
+/* Tables (matches dashboard_strategy.html) */
+table { width: 100%; border-collapse: collapse; font-size: 0.8333rem; margin: 18px 0; display: block; overflow-x: auto; }
+table td, table th { overflow-wrap: break-word; }
+table th:first-child, table td:first-child { white-space: nowrap; width: 1%; }
+thead th { background: var(--c-navy); color: rgba(255,255,255,.85); text-align: left; padding: 10px 14px; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+tbody tr { border-bottom: 1px solid var(--c-border); }
+tbody tr:nth-child(even) { background: var(--c-surface); }
+tbody td { padding: 11px 14px; color: var(--c-text-2); vertical-align: top; }
+tbody td:first-child { font-weight: 600; color: var(--c-text); }
+tbody tr:last-child td { border-bottom: none; }
+.did { font-family: var(--mono); font-size: 0.75rem; color: var(--c-navy); font-weight: 700; }
+
+/* Simple list-panel (decision record anatomy, handoff list) */
+.panel-list { list-style: none; border: 1px solid var(--c-border); border-radius: 4px; overflow: hidden; margin: 16px 0; }
+.panel-list li { padding: 12px 18px; border-bottom: 1px solid var(--c-border); font-size: 0.875rem; color: var(--c-text-2); }
+.panel-list li:nth-child(even) { background: var(--c-surface); }
+.panel-list li:last-child { border-bottom: none; }
+.panel-list li strong { color: var(--c-text); display: inline-block; min-width: 150px; }
+
+/* Open-item / correction list */
+.item-list { list-style: none; margin: 16px 0; }
+.item-list li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--c-border); align-items: flex-start; }
+.item-list li:last-child { border-bottom: none; }
+.item-list .did-badge { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; color: var(--c-navy); background: rgba(0,74,109,.08); border: 1px solid rgba(0,74,109,.2); border-radius: 2px; padding: 2px 7px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+.item-list .item-body { font-size: 0.8333rem; color: var(--c-text-2); line-height: 1.6; }
+
+/* Closing rule */
+.closing { border-top: 2px solid var(--c-navy); margin-top: 68px; padding-top: 28px; }
+.closing p { font-size: 0.875rem; color: var(--c-text-2); line-height: 1.8; }
+
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .content { padding: 32px 24px 64px; max-width: 100%; }
+  .wf-step { grid-template-columns: 36px 1fr; }
+  table { table-layout: auto; font-size: 0.75rem; }
+  .panel-list li strong { display: block; min-width: 0; margin-bottom: 3px; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-brand">AngelSpan</div>
+  <div class="toc-title">Prototype Assumptions</div>
+  <a href="prototype_dashboard.html" style="display:inline-flex;align-items:center;gap:5px;font-size:0.6667rem;color:var(--c-text-3);text-decoration:none;margin-bottom:20px;margin-top:-10px;" onmouseover="this.style.color='var(--c-blue)'" onmouseout="this.style.color='var(--c-text-3)'">← Build Tracker</a>
+  <nav>
+    <div class="toc-group">Orientation</div>
+    <a href="#repo-access">Repository Access</a>
+    <a href="#organization">How This Is Organized</a>
+    <div class="toc-group">Decisions</div>
+    <a href="#reading-decisions">Reading a Decision Record</a>
+    <a href="#decision-index">Complete Decision Index</a>
+    <div class="toc-group">Process</div>
+    <a href="#how-built">How the Prototype Was Built</a>
+    <a href="#spec-organization">How Specs Are Organized</a>
+    <div class="toc-group">The Core Split</div>
+    <a href="#core-principle">The Core Principle</a>
+    <a href="#proves">What It Proves</a>
+    <a href="#does-not-prove">What It Doesn't Prove</a>
+    <div class="toc-group">Before Production</div>
+    <a href="#resolution-needed">Needs Resolution</a>
+    <a href="#typescript-files">Reading the TS Data Files</a>
+    <div class="toc-group">Handoff</div>
+    <a href="#handoff-package">What the Dev Team Gets</a>
+    <a href="#bottom-line">The Bottom Line</a>
+  </nav>
+</nav>
+
+<main class="content">
+
+  <nav class="back-nav">
+    <a href="prototype_dashboard.html">← Build Tracker Dashboard</a>
+    <span class="sep">·</span>
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+  </nav>
+
+  <div class="eyebrow">AngelSpan · Engineering Handoff</div>
+  <h1>Prototype Assumptions</h1>
+  <p class="subtitle">What the prototype proves, what it doesn't, and what changes at production.</p>
+  <p class="meta">Prepared 2026-05-08 &nbsp;·&nbsp; Owner: Adam McKinstrie &nbsp;·&nbsp; Source: AngelSpan Prototype Assumptions (Google Doc)</p>
+
+  <div class="box navy" style="margin-top:24px;">
+    <span class="lbl">Who this is for</span>
+    The development team receiving the handoff package. Read this before reviewing any source code in <code>src/</code>. It will save significant time by clarifying which parts of the prototype are inputs to your work and which parts are implementation artifacts to discard.
+  </div>
+
+  <!-- Repository Access -->
+  <section class="sec" id="repo-access">
+    <div class="sec-label">Orientation</div>
+    <h2>Repository Access</h2>
+    <p>The full project — specifications, decisions, design system, context documents, feedback logs, and prototype source code — is in a private GitHub repository:</p>
+    <p><code>https://github.com/angelspan-platform/angelspan-platform</code><br><code>https://angelspan-bridge-flow.lovable.app</code> (prototype site)</p>
+    <p>The repository is private. To request access, contact <code>adam@angelspan.com</code> with your GitHub username. You will be added as a collaborator.</p>
+    <p>The repository has one branch: <code>main</code>. The prototype source code (<code>src/</code>) is managed by Lovable.ai and committed automatically. All other folders (<code>context/</code>, <code>specifications/</code>, <code>decisions/</code>, <code>design-system/</code>, <code>feedback/</code>) are managed locally and pushed manually. Do not edit <code>src/</code> locally — see <code>WORKFLOW.md</code> at the repository root for the full rules on directory ownership and commit conventions.</p>
+  </section>
+
+  <!-- How Organized -->
+  <section class="sec" id="organization">
+    <div class="sec-label">Orientation</div>
+    <h2>How This Project Is Organized</h2>
+    <p>The repository has five folders. Everything lives in one of them.</p>
+    <div class="tree">angelspan-platform/
+├── <span class="fold">context/</span>          <span class="note">← Why the product exists. Business history, research, training</span>
+│                       <span class="note">  transcripts, SMART IR methodology, Legacy Funds playbook.</span>
+│                       <span class="note">  Mostly immutable reference material.</span>
+│
+├── <span class="fold">specifications/</span>   <span class="note">← What the platform does. Feature inventory, workflow specs,</span>
+│                       <span class="note">  design requirements, and the Lovable prompt files used to</span>
+│                       <span class="note">  build the prototype. Living documents.</span>
+│
+├── <span class="fold">design-system/</span>    <span class="note">← How it looks. Dual-brand token spec, typography, spacing,</span>
+│                       <span class="note">  component patterns, accessibility rules.</span>
+│
+├── <span class="fold">decisions/</span>        <span class="note">← Why we chose what we chose. Decision records (D-001 through</span>
+│                       <span class="note">  D-038), agent context files, and this document.</span>
+│
+└── <span class="fold">feedback/</span>         <span class="note">← What testers found. UAT round logs, stakeholder reactions,</span>
+                        <span class="note">  open issues from prototype testing.</span></div>
+    <p>Two files at the root matter immediately:</p>
+    <ul class="panel-list">
+      <li><strong><code>SESSION.md</code></strong>The running state document maintained throughout the prototype build. Contains the full decision index, the complete list of what was built cluster by cluster, pre-production flags, known limitations, and mock credentials. Read this first for a fast orientation to everything that exists.</li>
+      <li><strong><code>CLAUDE.md</code></strong>Project-level instructions and context summary. Contains key terminology, platform overview, file structure map, and critical context for any working session.</li>
+    </ul>
+  </section>
+
+  <!-- Reading a decision record -->
+  <section class="sec" id="reading-decisions">
+    <div class="sec-label">Decisions</div>
+    <h2>How to Read a Decision Record</h2>
+    <p>Every non-trivial product choice made during the prototype build is captured as a decision record in <code>decisions/</code>. Records are numbered sequentially from <code>D-001</code> through <code>D-038</code>. Each record has four sections:</p>
+    <ul class="panel-list">
+      <li><strong>Context</strong>What problem or question prompted the decision — why it needed to be made at all.</li>
+      <li><strong>Options Considered</strong>What alternatives were evaluated, described plainly enough to understand the trade-offs.</li>
+      <li><strong>Choice</strong>What was selected and, where relevant, implementation detail on how it works.</li>
+      <li><strong>Consequences</strong>What follows from the choice: what it enables, what it constrains, what remains open.</li>
+    </ul>
+    <p>Records also carry a metadata header with <code>id</code>, <code>status</code>, <code>owner</code>, <code>last_updated</code>, and <code>dependencies</code>. The <code>dependencies</code> field links to other decisions or design system components that this record builds on.</p>
+    <div class="box blue">
+      <span class="lbl">Reading references</span>
+      When you encounter a reference like "see D-003" in a specification, that reference points to the decision record that explains <strong>why</strong> the feature works the way it does — not just what it does.
+    </div>
+  </section>
+
+  <!-- Decision index -->
+  <section class="sec" id="decision-index">
+    <div class="sec-label">Decisions</div>
+    <h2>Complete Decision Index</h2>
+    <p>All 38 decisions made during the prototype build. Each has a corresponding file in <code>decisions/</code>.</p>
+    <table>
+      <thead><tr><th>ID</th><th>Decision</th><th>Key outcome</th></tr></thead>
+      <tbody>
+        <tr><td class="did">D-001</td><td>Dual-brand palette strategy</td><td>One design system, two color schemes. Brand switching via a single CSS class on the root element.</td></tr>
+        <tr><td class="did">D-002</td><td>RBAC role model</td><td>Ten roles across two brand contexts. Scoped role-entity assignments. Full compatibility matrix.</td></tr>
+        <tr><td class="did">D-003</td><td>Authentication and login strategy</td><td>Two branded login URLs (<code>app.angelspan.com</code> / <code>app.thelegacyfunds.com</code>), one auth backend. Context switcher in nav for multi-role users.</td></tr>
+        <tr><td class="did">D-004</td><td>Stakeholder role phases</td><td>Phase 1: magic link only. Phase 2: authenticated portal with LP conversion pathway.</td></tr>
+        <tr><td class="did">D-005</td><td>Founder onboarding wizard requirements</td><td>Step-by-step wizard for new Founder first login. Company profile, team, stakeholder import.</td></tr>
+        <tr><td class="did">D-006</td><td>Slide-out panel pattern + Monthly Update consolidation</td><td>Slide-outs (680px) as primary detail/edit surface. Monthly Update is a single screen with phase-appropriate views, not separate screens.</td></tr>
+        <tr><td class="did">D-007</td><td>Artifact lifecycle</td><td>Draft → Distributed (locked). Corrections via superseding document — distributed artifacts are never edited.</td></tr>
+        <tr><td class="did">D-008</td><td>PA stakeholder access and engagement placement</td><td>PA has read-only access to stakeholder lists. Founder owns distribution. Engagement lives as a Publications sub-view, not a standalone section.</td></tr>
+        <tr><td class="did">D-009</td><td>Founder self-service signup workflow</td><td>No ghost records. Admin confirms PA assignment after signup. Founders always pay at signup. Legacy Fund coupon acts as a diligence filter.</td></tr>
+        <tr><td class="did">D-010</td><td>Shared stakeholder and engagement components</td><td><code>canEdit</code> prop controls Founder vs. PA access. One component, two access modes.</td></tr>
+        <tr><td class="did">D-011</td><td>Lovable prompt authoring standard</td><td>Prose and schema descriptions only — no implementation code in prompts. Overly long or code-heavy prompts caused Lovable loading failures.</td></tr>
+        <tr><td class="did">D-012</td><td>Stripe billing integration</td><td>Stripe Elements at signup. Stripe Customer Portal for Founder self-service plan management. Webhooks → Supabase for Admin billing screen.</td></tr>
+        <tr><td class="did">D-013</td><td>UAT feedback process</td><td>Triage categories, UAT log structure, tester communication protocol. Active log: <code>feedback/UAT-round-1.md</code>.</td></tr>
+        <tr><td class="did">D-014</td><td>Legacy Funds fund entity structure</td><td>SPV / 506(b) / 506(c) as selectable field at fund creation. Compliance notice placeholder. Production entity mechanics deferred.</td></tr>
+        <tr><td class="did">D-015</td><td>LP accreditation workflow <em>(superseded by D-025)</em></td><td>Manual LF Admin toggle (Pending → Accredited/Rejected). Document upload stub. Third-party verification deferred.</td></tr>
+        <tr><td class="did">D-016</td><td>Capital calls and distributions</td><td>Not modeled in prototype. Commitment amounts are static strings. Distribution history stub with empty state.</td></tr>
+        <tr><td class="did">D-017</td><td>Prototype to production handoff strategy</td><td>Finish Clusters in Lovable → UAT → Figma engineering handoff. This document is part of that handoff.</td></tr>
+        <tr><td class="did">D-018</td><td>Multiple GPs per fund</td><td><code>gpId: string</code> changed to <code>gpIds: string[]</code>. Create Fund form captures multi-GP input.</td></tr>
+        <tr><td class="did">D-019</td><td>Champion workflow</td><td>Applicant → Candidate → Decision flow. Quota system (target companies ÷ Champions). Track record visible to LF Admin.</td></tr>
+        <tr><td class="did">D-020</td><td>Fund formation by LF Admin</td><td>Fund formation application deferred. LF Admin creates fund via expanded form (fund URL, target portfolio companies, multi-GP input).</td></tr>
+        <tr><td class="did">D-021</td><td>Legacy Fund founder eligibility cap</td><td>$800K (not $1M). §1244 protection requires room for the fund investment within the first $1M of cumulative capital raised. $800K–$999K is a soft-warning zone. Full rationale in <code>specifications/LF-eligibility-canonical.md</code>.</td></tr>
+        <tr><td class="did">D-022</td><td>LP management model</td><td>LP management is GP-owned, not self-service. GPs manually add/edit/delete LP records. "Become an LP" CTA sends email to GP — it does not create a record.</td></tr>
+        <tr><td class="did">D-025</td><td>LP management scope <em>(supersedes D-015)</em></td><td>LP management belongs to GP, not LF Admin. LF Admin has oversight-only visibility. Champion <code>quota</code> field displayed as "Target" in UI.</td></tr>
+        <tr><td class="did">D-026</td><td>GP-to-LP quarterly reporting</td><td>Reporting via platform is intentional (standard fund practice, platform differentiator). GP writes narrative only. LPs have direct dashboard access to portfolio data.</td></tr>
+        <tr><td class="did">D-027</td><td>Champion management ownership</td><td>Champions are recruited and managed by the GP. LF Admin has read-only oversight only. LF Admin Champions screen in prototype retains management UI — must be corrected before production.</td></tr>
+        <tr><td class="did">D-028</td><td>Fund selection in application wizard</td><td>Self-select only — no geographic or sector filter in prototype. All non-closed funds shown with name, geography, sector, size, and slots remaining. Geographic enforcement deferred to production.</td></tr>
+        <tr><td class="did">D-029</td><td>Multi-fund application model</td><td>Multi-select checkboxes in Step 1. One wizard session creates one <code>LFFounderApplication</code> record per selected fund.</td></tr>
+        <tr><td class="did">D-030</td><td>Champion self-select from application pool</td><td>Champions claim applications from a shared pool. Application locks to claiming Champion. Deny re-pools the application. Decision history is visible to subsequent Champions.</td></tr>
+        <tr><td class="did">D-031</td><td>Intelligence plan obligation</td><td>Intelligence plan is an obligation of Legacy Fund admission, not a benefit. Triggers at capital deployment. <code>recordChampionDecision("Accepted")</code> upgrades Founder plan in prototype.</td></tr>
+        <tr><td class="did">D-032</td><td>Single internal staff role</td><td>PA is the only internal staff role. CC and CRA designations do not exist in the platform. All prior spec references corrected.</td></tr>
+        <tr><td class="did">D-033</td><td>Bubble chart temporal animation</td><td>GP Dashboard: animated (scrubber, trail lines, hover-to-pause, ~800ms/frame, no loop). LP: static + window selector only. PA: stage-filtered static. Window selector is animation range — chart always shows current scores.</td></tr>
+        <tr><td class="did">D-034</td><td>GP Dashboard fund filter</td><td>Fund pills above bubble chart scope the chart and Submission Health panel. Reference lines recalculate on filter change. Champion Pipeline not filtered.</td></tr>
+        <tr><td class="did">D-035</td><td>Shared company detail components</td><td><code>&lt;CompanySmartIRDetail&gt;</code> and <code>&lt;CompanyPublicationsView&gt;</code> are shared parameterized components. Props control role-specific visibility. Never implement role-specific versions of these.</td></tr>
+        <tr><td class="did">D-036</td><td>Fund Administrator Portal links</td><td>AngelSpan stores <code>fundAdminName</code> and <code>fundAdminPortalUrl</code> per fund, configurable by Super Admin. AngelSpan provides the link only — no SSO, no data ingestion.</td></tr>
+        <tr><td class="did">D-037</td><td>No capital calls</td><td>Legacy Funds is not a drawdown fund. Capital calls do not apply. No "capital called," "uncalled capital," or capital call history anywhere in the platform.</td></tr>
+        <tr><td class="did">D-038</td><td>Capital tracking model</td><td>Three metrics only: Target Raise, Committed Capital, Deployed Capital. Do not label any of these as AUM. Open decision: Target Raise editability post-creation.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- How Built -->
+  <section class="sec" id="how-built">
+    <div class="sec-label">Process</div>
+    <h2>How the Prototype Was Built</h2>
+    <p>The prototype was built using a structured human-in-the-loop process involving three components: Claude (AI assistant), Lovable (AI-powered prototype builder), and GitHub (version control). Understanding this process helps explain the structure of the specification files and why correction prompts exist.</p>
+
+    <h3>The Workflow</h3>
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-num">1</div>
+        <div class="wf-body">
+          <div class="wf-title">Session setup</div>
+          <div class="wf-desc">Each working session began by reading SESSION.md to re-establish current state — what had been built, what decisions were in effect, and what was next. This was the memory continuity mechanism across sessions.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">2</div>
+        <div class="wf-body">
+          <div class="wf-title">Prompt drafting (Claude)</div>
+          <div class="wf-desc">Claude drafted each Lovable prompt based on the master spec for the cluster being built, the relevant decision records, the design system, and the shared agent context. Claude played multiple roles during this drafting process — product manager, UX designer, frontend lead, backend lead, and technical architect — reviewing the prompt from each perspective before finalizing it, to catch conflicts and gaps before anything was sent to Lovable.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">3</div>
+        <div class="wf-body">
+          <div class="wf-title">Human review</div>
+          <div class="wf-desc">Adam reviewed each drafted prompt before it was sent. This included reading the prompt for correctness, asking clarifying questions, challenging assumptions, and approving or requesting changes. No prompt was sent to Lovable without human review and approval — the point where the human confirmed that the specification being sent matched the intended product behavior.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">4</div>
+        <div class="wf-body">
+          <div class="wf-title">Delivery to Lovable</div>
+          <div class="wf-desc">Approved prompts were copied into the Lovable.ai chat interface and submitted. Lovable interpreted the prompt and made code changes to the prototype, automatically committing them to the main branch on GitHub.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">5</div>
+        <div class="wf-body">
+          <div class="wf-title">Verification</div>
+          <div class="wf-desc">After Lovable completed the build, Adam reviewed the prototype at angelspan-bridge-flow.lovable.app to verify that the implementation matched what the prompt specified — a functional walkthrough checking that screens rendered correctly, flows worked as intended, and data behaved as expected.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">6</div>
+        <div class="wf-body">
+          <div class="wf-title">Correction or next prompt</div>
+          <div class="wf-desc">If verification revealed that Lovable had misinterpreted the prompt, partially executed it, or introduced a bug, a correction prompt was written (e.g., <code>C6-lovable-prompt-A2-correction.md</code>) and the cycle repeated from step 2. If verification passed, the session moved to the next prompt. SESSION.md was updated at the end of each session.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">7</div>
+        <div class="wf-body">
+          <div class="wf-title">Decision capture</div>
+          <div class="wf-desc">Whenever a non-trivial choice was made during the session — whether during prompt drafting, human review, or post-verification — a decision record was written and added to decisions/. This ensured that the rationale behind each product choice was captured at the moment it was made, not reconstructed later.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>What This Means for the Handoff Package</h3>
+    <p>The correction prompts in <code>specifications/</code> are not a sign of failure — they are a record of the refinement process. Each correction reflects a place where the specification needed more precision or where the prototype tool's interpretation diverged from intent. Reading the A → B → correction sequence for a complex cluster (C8 is a good example, with five correction passes) gives a clear picture of where the hard product questions were and how they were resolved.</p>
+    <div class="box navy">
+      <span class="lbl">Most durable artifact</span>
+      The decision records in <code>decisions/</code> represent the output of the human review step — the choices that were explicitly examined rather than left implicit. They capture intent, <strong>not</strong> implementation.
+    </div>
+  </section>
+
+  <!-- Spec organization -->
+  <section class="sec" id="spec-organization">
+    <div class="sec-label">Process</div>
+    <h2>How Specifications Are Organized</h2>
+    <p>Specifications are organized into clusters (<code>C0</code> through <code>C11</code>), each covering a functional area of the platform:</p>
+    <table>
+      <thead><tr><th>Cluster</th><th>Area</th></tr></thead>
+      <tbody>
+        <tr><td>C0</td><td>Authentication</td></tr>
+        <tr><td>C1</td><td>Founder flow</td></tr>
+        <tr><td>C2</td><td>Publications infrastructure</td></tr>
+        <tr><td>C3</td><td>Stakeholder lifecycle and delivery</td></tr>
+        <tr><td>C4a</td><td>PA core flow (dashboard, queue, SMART IR scoring)</td></tr>
+        <tr><td>C4b</td><td>Service tiers, Founder SMART IR access, tear sheet PDF</td></tr>
+        <tr><td>C5</td><td>Client lifecycle</td></tr>
+        <tr><td>C6</td><td>AngelSpan Admin, feedback mechanism, help panel</td></tr>
+        <tr><td>C7</td><td>Legacy Funds Admin</td></tr>
+        <tr><td>C8</td><td>Legacy Funds GP</td></tr>
+        <tr><td>C9</td><td>Founder → Legacy Fund application</td></tr>
+        <tr><td>C10</td><td>SMART IR visualizations and portfolio analytics</td></tr>
+        <tr><td>C11</td><td>LP screens, Super Admin, fund administrator config</td></tr>
+      </tbody>
+    </table>
+    <p>Each cluster has a master spec file (e.g., <code>C4a-pa-flow.md</code>) that defines the full intended behavior of that area — written for humans, not for the prototype tool. These are the authoritative product specifications.</p>
+    <p>Each cluster also has a set of Lovable prompt files (e.g., <code>C4a-lovable-prompt-A.md</code>, <code>C4a-lovable-prompt-B.md</code>) that were the actual instructions sent to the Lovable.ai prototype builder. These are implementation artifacts from the build process — useful for understanding how the prototype was constructed, but not product specifications. <strong>When a prompt file and a master spec conflict, the master spec is correct.</strong></p>
+    <p>Correction prompts (files ending in <code>-correction.md</code>) record places where the first prompt produced an incomplete or wrong result. The pattern of corrections in a cluster is a useful signal — it shows where the specification was ambiguous or where the prototype tool made wrong assumptions that had to be overridden.</p>
+  </section>
+
+  <!-- Core Principle -->
+  <section class="sec" id="core-principle">
+    <div class="sec-label">The Core Split</div>
+    <h2>The Core Principle</h2>
+    <p>The prototype was built to prove user experience and product decisions, <strong>not</strong> architecture. Every screen, flow, and interaction at <code>angelspan-bridge-flow.lovable.app</code> represents a validated product decision. The underlying technical implementation — authentication model, data stores, API surface, PDF generation, billing integration — was chosen for prototype convenience and is fully disposable.</p>
+    <div class="box amber">
+      <span class="lbl">Treat src/ as</span>
+      A high-fidelity wireframe, not as a starting point for production code.
+    </div>
+  </section>
+
+  <!-- Proves -->
+  <section class="sec" id="proves">
+    <div class="sec-label">The Core Split</div>
+    <h2>What the Prototype Proves (Carry Forward)</h2>
+    <p>These are durable product decisions, validated through the build and UAT round 1. They are documented in <code>decisions/</code> and referenced here by ID.</p>
+
+    <h3>User Model and Access Control</h3>
+    <ul class="panel-list">
+      <li>Ten roles across two brand contexts (AngelSpan and Legacy Funds). Full role definition and compatibility matrix in <span class="did">D-002</span>.</li>
+      <li>Two branded login URLs, one auth backend — <code>app.angelspan.com</code> and <code>app.thelegacyfunds.com</code>, brand context determined by URL, context switcher in nav for multi-role users. See <span class="did">D-003</span>.</li>
+      <li>Single platform, role-based views. One application; what you see is determined by your role. No separate portals requiring logout/login — a non-negotiable architecture principle.</li>
+      <li>Stakeholder phase model. Phase 1: magic link only. Phase 2: authenticated portal with LP conversion pathway. See <span class="did">D-004</span>.</li>
+      <li>PA is the only internal staff role (no CC/CRA distinction). See <span class="did">D-032</span>.</li>
+    </ul>
+
+    <h3>Information Architecture and UX Patterns</h3>
+    <ul class="panel-list">
+      <li>Dual-brand palette strategy. One design system, two color schemes. Spacing, typography, shadows, and border radii are identical across both brands. Colors differ and are swapped by applying a single CSS class — <code>.brand-angelspan</code> or <code>.brand-legacy</code> — to the root element. No component code changes between brand contexts. Full spec in <span class="did">D-001</span> and <code>design-system/DESIGN_SYSTEM.md</code>.</li>
+      <li>Slide-out panel pattern as the primary detail/editing surface across the platform. 680px width standard. See <span class="did">D-006</span>.</li>
+      <li>Monthly Update screen consolidation. Single screen with phase-appropriate views rather than separate screens per workflow state. See <span class="did">D-006</span>.</li>
+      <li>Artifact lifecycle model. Draft → Distributed (locked). Corrections via superseding document, not edits to distributed artifacts. See <span class="did">D-007</span>.</li>
+      <li>PA read-only stakeholder access. Founder owns the distribution list. See <span class="did">D-008</span>.</li>
+      <li>Shared company detail components. <code>&lt;CompanySmartIRDetail&gt;</code> and <code>&lt;CompanyPublicationsView&gt;</code> are shared parameterized components, not role-specific implementations. See <span class="did">D-035</span>.</li>
+    </ul>
+
+    <h3>Service Tiers and Billing Model</h3>
+    <ul class="panel-list">
+      <li>Three service tiers: Essentials ($249/mo), Insights ($399/mo), Intelligence ($599/mo). SMART IR access is gated by tier.</li>
+      <li>Stripe Elements at signup, Stripe Customer Portal for Founder self-service. See <span class="did">D-012</span>.</li>
+      <li>Intelligence plan is an obligation of Legacy Fund admission, not a benefit. Triggers at capital deployment. See <span class="did">D-031</span>.</li>
+    </ul>
+
+    <h3>Legacy Funds Product Decisions</h3>
+    <ul class="panel-list">
+      <li>Legacy Fund founder eligibility cap is $800K (not $1M). §1244 protection rationale documented in <code>specifications/LF-eligibility-canonical.md</code>. See <span class="did">D-021</span>.</li>
+      <li>LP management is GP-owned, not self-service. "Become an LP" CTA sends email to GP; it does not create a record. See <span class="did">D-022</span>, <span class="did">D-025</span>.</li>
+      <li>No capital calls. Legacy Funds is not a drawdown fund. Capital tracking uses three metrics only: Target Raise, Committed Capital, Deployed Capital. See <span class="did">D-037</span>, <span class="did">D-038</span>.</li>
+      <li>Champion workflow. Self-select from submitted application pool. Application locks to claiming Champion. Deny re-pools. Accept upgrades Founder plan to Intelligence. See <span class="did">D-019</span>, <span class="did">D-030</span>.</li>
+      <li>Fund Administrator Portal links. AngelSpan provides the link only — no SSO, no data ingestion. See <span class="did">D-036</span>.</li>
+      <li>GP-to-LP quarterly reporting via platform is intentional. GP writes narrative only; LPs have direct dashboard access to portfolio data. See <span class="did">D-026</span>.</li>
+    </ul>
+
+    <h3>SMART IR Visualizations</h3>
+    <ul class="panel-list">
+      <li>Bubble chart behavior. Full spec in <span class="did">D-033</span>: GP Dashboard gets animated chart (temporal scrubber, trail lines, hover-to-pause); LP gets static chart with window selector only; PA Dashboard gets stage-filtered static chart.</li>
+      <li>GP Dashboard fund filter. Fund pills scope the bubble chart and Submission Health panel. Reference lines recalculate on filter change. See <span class="did">D-034</span>.</li>
+    </ul>
+  </section>
+
+  <!-- Does not prove -->
+  <section class="sec" id="does-not-prove">
+    <div class="sec-label">The Core Split</div>
+    <h2>What the Prototype Does Not Prove (Disposable)</h2>
+    <p>These are implementation choices made for prototype velocity. They are <strong>not</strong> product decisions and should not be treated as architectural direction.</p>
+
+    <h3>Authentication and Identity</h3>
+    <table>
+      <thead><tr><th>Prototype</th><th>Production Target</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Supabase Auth (email/password + TOTP stub)</td><td>Azure AD B2C or Auth0</td><td>Production identity provider is not yet finalized — see open decisions in <code>decisions/agents/_shared_context.md</code></td></tr>
+        <tr><td>MFA bypassable ("Skip — prototype only")</td><td>MFA required, no bypass</td><td>Every session in the prototype has an active skip backdoor</td></tr>
+        <tr><td>Session state: client-side only</td><td>Server-enforced sessions with idle timeout, max concurrent sessions, remote revoke</td><td>Session management spec in D-003 defines the target; the prototype does not implement it</td></tr>
+        <tr><td>Role switching: client-side toggle</td><td>API-level RBAC enforcement on every endpoint</td><td>The prototype's role switcher is purely cosmetic — it changes what the UI renders, not what data the backend returns. All authorization logic must be enforced at the API layer in production.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Data Layer</h3>
+    <table>
+      <thead><tr><th>Prototype</th><th>Production Target</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>TypeScript in-memory stores (<code>lf-data.ts</code>, <code>admin-data.ts</code>, <code>pa-data.ts</code>, etc.)</td><td>MS SQL Server (core) + Azure CosmosDB (analytics)</td><td>These TypeScript files are not database schemas. They reflect product decisions, not normalized relational models — a useful reference for what data needs to exist, not how it should be stored.</td></tr>
+        <tr><td>Data lost on page reload (except feedback)</td><td>Full persistence with ACID transactions</td><td>The prototype's in-memory mutation model (hooks + array mutations) has no equivalent in production</td></tr>
+        <tr><td>One Supabase table (feedback)</td><td>Full relational schema</td><td>The Supabase integration in the prototype is minimal — one table added to support UAT feedback collection</td></tr>
+        <tr><td>Seed data hardcoded in TypeScript</td><td>Seeded via database migrations with admin tooling</td><td>Seed data structures (15 companies, 28 months of SMART IR snapshots, fund/LP/GP records) are useful as a specification for realistic test data — not as a migration source</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Backend and API</h3>
+    <table>
+      <thead><tr><th>Prototype</th><th>Production Target</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>No backend — all logic in React (client-side only)</td><td>.NET 8+ REST API (OpenAPI spec)</td><td>All "business logic" (eligibility checks, SMART IR calculations, plan enforcement, billing validation) runs in the browser in TypeScript. None of the <code>src/lib/</code> mutation functions are production business logic.</td></tr>
+        <tr><td>No API surface</td><td>RESTful APIs, API-first design</td><td>The prototype provides no API reference</td></tr>
+        <tr><td>Client-side billing validation</td><td>Stripe webhooks → backend</td><td>The prototype accepts any 16-digit card and processes coupons entirely client-side. Both are security issues in production.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Frontend Framework and Deployment</h3>
+    <table>
+      <thead><tr><th>Prototype</th><th>Production Target</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>React + Vite (Lovable default)</td><td>React + Next.js</td><td>Different build system, different deployment model (SSR/SSG vs. pure SPA), different routing patterns</td></tr>
+        <tr><td>Deployed to Lovable hosting</td><td>Azure App Services</td><td>No configuration in the prototype is relevant to the production deployment target</td></tr>
+        <tr><td><code>wrangler.jsonc</code> at project root</td><td>Not applicable</td><td>Cloudflare Workers config auto-added by Lovable during Supabase integration. Not a deliberate decision — investigate and remove before production deployment.</td></tr>
+        <tr><td><code>window.print()</code> for tear sheet PDFs</td><td>Server-side PDF generation (Puppeteer or WeasyPrint)</td><td>Print-to-PDF works for demos but produces inconsistent output and requires a human to trigger it. Production tear sheets must generate server-side and attach to distribution emails automatically.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Email and Notifications</h3>
+    <table>
+      <thead><tr><th>Prototype</th><th>Production Target</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Toast notifications only (in-memory, same-tab)</td><td>SendGrid (upgraded tier, removing 1,000/send limit)</td><td>No email is sent anywhere in the prototype. Status transitions that trigger notifications all simulate via transient toast messages.</td></tr>
+        <tr><td>Cross-tab state not shared</td><td>Server-side event model</td><td>Multi-persona demos (e.g., Champion accepts → Founder sees updated status) require staying in the same browser tab. This is a prototype constraint, not a product constraint.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Resolution needed -->
+  <section class="sec" id="resolution-needed">
+    <div class="sec-label">Before Production</div>
+    <h2>Decisions That Need Resolution Before Production</h2>
+    <p>These are items flagged in the decision log or SESSION.md as prototype-acceptable but requiring resolution before the production build begins.</p>
+
+    <h3>Open Decisions</h3>
+    <ul class="item-list">
+      <li><span class="did-badge">D-038</span><span class="item-body"><strong>Target Raise editability.</strong> Whether a fund's Target Raise amount can be edited after creation is unresolved. Options and a recommendation are documented in <code>decisions/D-038-capital-tracking-model.md</code>. Must be decided before the production Fund Admin edit flow is implemented.</span></li>
+      <li><span class="did-badge">—</span><span class="item-body"><strong>Identity provider: Azure AD B2C vs. Auth0.</strong> Not yet finalized. The product decisions around authentication (D-003) are implementation-agnostic, but the development team will need this resolved early in Phase 0.</span></li>
+      <li><span class="did-badge">—</span><span class="item-body"><strong>Stripe: patch current integration vs. adopt Stripe Billing fully.</strong> The prototype implements the "full Stripe Billing" model (Elements + Customer Portal), but the legacy platform has known Stripe bugs. The dev team needs explicit direction before Phase 1 billing work begins.</span></li>
+      <li><span class="did-badge">—</span><span class="item-body"><strong>Monolith vs. modular services.</strong> Not yet finalized. The prototype's frontend-only architecture provides no signal on this.</span></li>
+    </ul>
+
+    <h3>Known Pre-Production Corrections</h3>
+    <p>These were accepted as prototype limitations but must be corrected before production:</p>
+    <ul class="item-list">
+      <li><span class="did-badge">D-027</span><span class="item-body"><strong>LF Admin Champions screen.</strong> Currently retains Champion management UI. Correct to GP-owned (Champion management belongs to GP, LF Admin is read-only oversight). The prototype has this wrong.</span></li>
+      <li><span class="did-badge">D-035</span><span class="item-body">Founder <code>/app/founder/smartir</code> not yet using shared <code>&lt;CompanySmartIRDetail&gt;</code>. Deferred from C10. The production build should use the shared component from day one.</span></li>
+      <li><span class="did-badge">—</span><span class="item-body"><strong>LP fundsReceived toggle UX.</strong> Current implementation buries the toggle in an edit modal. This is a routine recurring action for GPs — it must be an inline row toggle accessible directly from the LP list.</span></li>
+      <li><span class="did-badge">—</span><span class="item-body">GP Fund Activity "Distributed" tile shows $0. Acceptable in prototype. Needs proper calculation in production.</span></li>
+      <li><span class="did-badge">D-008</span><span class="item-body"><strong>PA stakeholder access.</strong> Currently enforced only at the UI layer. The product decision is that PAs cannot modify Founder stakeholder lists — this must be enforced at the API level in production.</span></li>
+    </ul>
+  </section>
+
+  <!-- TypeScript files -->
+  <section class="sec" id="typescript-files">
+    <div class="sec-label">Before Production</div>
+    <h2>How to Read the TypeScript Data Files</h2>
+    <p>The prototype's in-memory data structures (<code>src/lib/lf-data.ts</code>, <code>src/lib/admin-data.ts</code>, etc.) are best understood as annotated product specifications in executable form. They tell you:</p>
+    <ul class="panel-list">
+      <li>What entities exist and what fields they have</li>
+      <li>What relationships exist between entities (fund → companies → LPs → GPs)</li>
+      <li>What state machines exist (application status: Draft → Submitted → Under Review → Accepted/Denied)</li>
+      <li>What calculations are performed (slope, composite SMART IR, eligibility checks)</li>
+    </ul>
+    <p>They do not tell you:</p>
+    <ul class="panel-list">
+      <li>How those entities should be stored in a relational database</li>
+      <li>What indexes, constraints, or foreign keys apply</li>
+      <li>What should be computed at write time vs. read time</li>
+      <li>What belongs in the core SQL database vs. the analytics store</li>
+    </ul>
+    <div class="box green">
+      <span class="lbl">How to use them</span>
+      As a specification input to the data model design phase — not as a schema to migrate from.
+    </div>
+  </section>
+
+  <!-- Handoff package -->
+  <section class="sec" id="handoff-package">
+    <div class="sec-label">Handoff</div>
+    <h2>What the Development Team Gets at Handoff</h2>
+    <table>
+      <thead><tr><th>Artifact</th><th>Location</th><th>Start here if you want to…</th></tr></thead>
+      <tbody>
+        <tr><td>Project state overview</td><td><code>SESSION.md</code></td><td>Get oriented fast — what exists, what's deferred, what's flagged</td></tr>
+        <tr><td>Platform and business context</td><td><code>context/reference/angelspan_memo_draft.md</code></td><td>Understand the business, the market, and why this product exists</td></tr>
+        <tr><td>Full product plan</td><td><code>decisions/Product_Development_Plan.md</code></td><td>Understand scope, phases, budget context, and module map</td></tr>
+        <tr><td>Shared platform context</td><td><code>decisions/agents/_shared_context.md</code></td><td>Get a structured summary of roles, tech stack, phase structure, and key terminology in one document</td></tr>
+        <tr><td>Feature inventory</td><td><code>specifications/requirements.md</code></td><td>See the full feature scope in one place</td></tr>
+        <tr><td>Workflow specs</td><td><code>specifications/C0</code> through <code>C11</code> master spec files</td><td>Understand how each functional area is supposed to work</td></tr>
+        <tr><td>Design system</td><td><code>design-system/DESIGN_SYSTEM.md</code></td><td>Understand the visual language, dual-brand strategy, and component patterns</td></tr>
+        <tr><td>Decision log</td><td><code>decisions/D-001</code> through <code>D-038</code></td><td>Understand why things work the way they do</td></tr>
+        <tr><td>Working prototype</td><td>angelspan-bridge-flow.lovable.app</td><td>See the UX in action — all 13 test credentials in <code>SESSION.md</code></td></tr>
+        <tr><td>UAT feedback</td><td><code>feedback/UAT-round-1.md</code></td><td>Know what testers flagged in round 1</td></tr>
+        <tr><td>SMART IR methodology</td><td><code>context/reference/smartir_methodology.md</code> and <code>context/data/scoring_process_transcript.md</code></td><td>Understand the scoring system being automated — critical for Phase 2</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="closing" id="bottom-line">
+    <p>The prototype answered the hardest product questions: does the information architecture make sense across nine roles, does the dual-brand strategy work, does the SMART IR scoring UX communicate what it needs to communicate, is the Legacy Fund application flow coherent? It answered all of these at relatively low cost.</p>
+    <p style="margin-top:14px;">The prototype did not answer any production engineering questions. Those start fresh with the development team. The durable output of this phase is the decision log, the specifications, and the design system — not the code.</p>
+  </div>
+
+</main>
+</div>
+
+<script>
+const secs = document.querySelectorAll('.sec[id]');
+const links = document.querySelectorAll('.toc nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.toc nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+secs.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
