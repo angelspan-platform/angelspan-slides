@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — Board &amp; Governance Considerations</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-primary: #004A6D;
+    --color-primary-light: #0179B5;
+    --color-primary-pale: #50ADDB;
+    --color-bg: #FAFAF8;
+    --color-surface: #F4F1EC;
+    --color-raised: #FFFFFF;
+    --color-border: #E0DBD3;
+    --color-text: #303030;
+    --color-text-secondary: #606060;
+    --color-text-disabled: #ADADAD;
+    --color-success: #2A6B3C;
+    --color-success-bg: #F4FAF5;
+    --color-warning: #FF8000;
+    --color-warning-bg: #FFF8F0;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0F1219;
+      --color-surface: #181C26;
+      --color-raised: #1D2130;
+      --color-border: #252B3A;
+      --color-text: #E4E8F0;
+      --color-text-secondary: #94A0B3;
+      --color-text-disabled: #4E5870;
+      --color-success-bg: rgba(42,107,60,.15);
+      --color-warning-bg: rgba(255,128,0,.13);
+    }
+  }
+  html { font-size: clamp(14px, 0.5vw + 11px, 18px); -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); font-size: 0.9167rem; line-height: 1.6; }
+
+  .layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
+  .toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--color-border); background: var(--color-surface); }
+  .toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); margin-bottom: 4px; }
+  .toc-title { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+  .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
+  .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages { margin-bottom: 22px; }
+  .toc-pages a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc-pages a:hover { color: var(--color-primary-light); border-left-color: var(--color-primary-light); padding-left: 8px; }
+  .toc-pages a.page-active { color: var(--color-primary); font-weight: 700; border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-mark { width: 28px; height: 28px; background: var(--color-primary); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+  .toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
+  .toc-wordmark:hover .toc-name { color: var(--color-primary-light); }
+  .toc-name { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); }
+
+  .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
+  .eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
+  h1 { font-size: 1.875rem; font-weight: 700; color: var(--color-primary); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 8px; text-wrap: balance; }
+  .subtitle { font-size: 1rem; color: var(--color-text-secondary); margin-bottom: 12px; line-height: 1.5; max-width: min(900px, 100%); }
+  .hero-meta { font-size: 0.75rem; color: var(--color-text-disabled); margin-bottom: 32px; }
+
+  .board-item { background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .board-item .bi-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+  .board-item h3 { font-size: 1rem; font-weight: 700; color: var(--color-text); }
+  .board-item p { font-size: 0.8333rem; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .board-item p:last-child { margin-bottom: 0; }
+  .board-item .bi-action { font-size: 0.8rem; color: var(--color-text); background: var(--color-surface); border-left: 3px solid var(--color-primary-pale); padding: 8px 12px; border-radius: 0 4px 4px 0; margin-top: 10px; }
+  .board-item .bi-action strong { color: var(--color-primary); }
+
+
+  .caveat { font-size: 0.8rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 0.7rem; color: var(--color-text-disabled); text-align: center; }
+
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    .content { padding: 32px 24px 64px; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc">
+  <a href="index.html" class="toc-wordmark" title="Home">
+    <div class="toc-mark"><span>AS</span></div>
+    <span class="toc-name">AngelSpan</span>
+  </a>
+  <div class="toc-title">Board &amp; Governance Considerations</div>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html" class="page-active">Board &amp; Governance Considerations</a>
+  </div>
+
+  <nav>
+    <div class="toc-group">On This Page</div>
+    <a href="#legal">Legal &amp; Compliance Counsel</a>
+    <a href="#soc2">SOC 2</a>
+    <a href="#ai-data">AI &amp; Client Data</a>
+    <a href="#keyperson">Scoring Methodology</a>
+    <a href="#cyberpolicy">Cybersecurity Policies</a>
+    <a href="#devpartner">Dev-Partner Structure</a>
+  </nav>
+</nav>
+
+<main class="content">
+
+  <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+  </nav>
+
+  <div class="eyebrow">For the Board</div>
+  <h1>Board &amp; Governance Considerations</h1>
+  <p class="subtitle">Non-technical items outside the engineering roadmap that the board should have visibility into — legal, compliance, governance, and reporting, not build status.</p>
+  <div class="hero-meta">Prepared July 2026</div>
+
+  <div class="board-item" id="legal">
+    <div class="bi-head"><h3>Legal &amp; Compliance Counsel — Not Yet Engaged</h3></div>
+    <p>Legacy Funds' application process, fund administration, K-1 generation, and QSBS eligibility determination all carry legal and regulatory weight beyond a typical product build. The March 2026 planning document explicitly flagged this as a gate: investment law counsel should review the platform specification before Legacy Funds engineering begins. No counsel has been identified or engaged yet.</p>
+    <div class="bi-action"><strong>Needs a decision:</strong> identify and engage investment law counsel before Legacy Funds work begins in earnest — Phase 2's first integration, or Phase 3's full build.</div>
+  </div>
+
+  <div class="board-item" id="soc2">
+    <div class="bi-head"><h3>SOC 2 — What It Is, and Why It May Merit Consideration</h3></div>
+    <p>SOC 2 (System and Organization Controls 2) is an independent audit, under AICPA standards, that verifies a company's security, availability, and confidentiality controls actually work — not just that they're documented. It isn't a legal requirement; it's a trust signal institutional buyers use as a vendor-diligence gate.</p>
+    <p><strong>Why it may matter here:</strong> institutional LPs (pensions, endowments, family offices) and larger fund sponsors often require SOC 2 or an equivalent before allocating capital through, or entrusting financial data to, a third-party platform — and AngelSpan/Legacy Funds handles exactly the kind of data (startup financials, investor holdings, fund administration records) that SOC 2 is built around. Certification requires 12+ months of audit-ready operation and can't be compressed by spending more — only started earlier.</p>
+    <div class="bi-action"><strong>For discussion:</strong> the current plan defers formal SOC 2 certification to the $5M scenario / Phase 4. Worth the board weighing in on whether that timeline is acceptable given the institutional LP segment Legacy Funds is targeting, or whether foundational controls (audit logging, access control, incident response — see below) should start earlier even if certification itself stays deferred.</div>
+  </div>
+
+  <div class="board-item" id="ai-data">
+    <div class="bi-head"><h3>AI and Client Data — No Current Plans, Flagged for Later</h3></div>
+    <p>There are no definitive plans today to run client data through AI. If AI-assisted scoring gets pursued later (see the AI strategy on the Implementation Plan page), it would need a data processing agreement with whichever model provider is used, confirming client data isn't used for model training; disclosure in the Terms of Service before the feature is enabled; and sign-off against the six-gate framework already defined for AI features.</p>
+    <div class="bi-action"><strong>No action needed now</strong> — flagging this so it's a decision point before any AI feature touches real client data, not an afterthought once one is already built.</div>
+  </div>
+
+  <div class="board-item" id="keyperson">
+    <div class="bi-head"><h3>Scoring Methodology — Documented, Could Be More Robust</h3></div>
+    <p>The SMART IR / Bell Mason scoring methodology — formulas, weightings, thresholds, stage-classification logic — is documented and accessible to AngelSpan personnel today, not confined to one person's head. What it isn't yet is formalized to the level a development partner could build against without ambiguity or repeated back-and-forth clarification.</p>
+    <div class="bi-action"><strong>Worth doing before Phase 2 or 3 engineering begins:</strong> tighten the existing documentation into a single authoritative specification. Reduces both build risk and the underlying key-person dependency as the team scales.</div>
+  </div>
+
+  <div class="board-item" id="cyberpolicy">
+    <div class="bi-head"><h3>Cybersecurity Policies — Tied to SOC 2</h3></div>
+    <p>Separate from technical hardening (Phase 1's engineering work), there are no documented cybersecurity policies today — an incident response plan, an access control policy, a data handling/classification policy, a vendor security review process. These aren't code; they're written organizational commitments. They're also literally what a SOC 2 audit evaluates.</p>
+    <div class="bi-action"><strong>Doesn't require Phase 3 funding to start:</strong> drafting these earlier reduces near-term risk and shortens the runway to SOC 2 readiness whenever that gets pursued.</div>
+  </div>
+
+  <div class="board-item" id="devpartner">
+    <div class="bi-head"><h3>Dev-Partner Contract Structure</h3></div>
+    <p>Not yet officially decided. Time-and-materials is the current thinking, not fixed-price, but this hasn't been finalized. Worth noting for whenever it is: the March 2026 plan's own risk mitigation for dev-partner scope creep suggested pairing time-and-materials with hard budget caps per phase — a lightweight companion practice worth considering alongside whichever structure gets decided on.</p>
+  </div>
+
+  <div class="caveat">
+    <p>These are governance and compliance considerations, not engineering scope — they don't block Phase 1 and most don't block Phase 2. They're listed here so the board can weigh in on timing and ownership before any of them becomes urgent rather than after.</p>
+  </div>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
+
+</main>
+</div>
+
+<script>
+const secs = document.querySelectorAll('.board-item[id]');
+const links = document.querySelectorAll('.toc nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.toc nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+secs.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

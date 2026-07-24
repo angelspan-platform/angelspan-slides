@@ -51,13 +51,23 @@
   .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
   .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
   .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages { margin-bottom: 22px; }
+  .toc-pages a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc-pages a:hover { color: var(--color-primary-light); border-left-color: var(--color-primary-light); padding-left: 8px; }
+  .toc-pages a.page-active { color: var(--color-primary); font-weight: 700; border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages a.ext { color: var(--color-text-disabled); }
   .toc-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.6667rem; color: var(--color-text-disabled); text-decoration: none; margin-bottom: 20px; margin-top: -10px; }
   .toc-back:hover { color: var(--color-primary-light); }
+  .toc-mark { width: 28px; height: 28px; background: var(--color-primary); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+  .toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
+  .toc-wordmark:hover .toc-name { color: var(--color-primary-light); }
+  .toc-name { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); }
 
   .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
   .hero-eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
   h1 { font-size: 1.875rem; font-weight: 700; color: var(--color-primary); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 8px; text-wrap: balance; }
-  .lead { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.55; max-width: 680px; margin-bottom: 8px; }
+  .lead { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.55; max-width: min(900px, 100%); margin-bottom: 8px; }
   .hero-meta { font-size: 0.75rem; color: var(--color-text-disabled); margin-bottom: 32px; }
 
   .sec { margin-top: 48px; scroll-margin-top: 20px; }
@@ -118,11 +128,22 @@
   .rec-box p { font-size: 0.875rem; color: var(--color-text); line-height: 1.6; margin-bottom: 9px; }
   .rec-box p:last-child { margin-bottom: 0; }
 
+  /* Bulleted prose — shared by rec-box, risk-card, roadmap-note, caveat */
+  ul.bullets { list-style: none; margin: 0; padding: 0; }
+  ul.bullets li { position: relative; padding-left: 16px; margin-bottom: 10px; }
+  ul.bullets li:last-child { margin-bottom: 0; }
+  ul.bullets li::before { content: "—"; position: absolute; left: 0; color: var(--color-primary-pale); }
+  ul.bullets.tight li { margin-bottom: 7px; }
+  ul.bullets li strong { color: var(--color-text); font-weight: 700; }
+
   /* Footer links */
   .foot-links { display: flex; flex-wrap: wrap; gap: 14px; padding-top: 20px; border-top: 1px solid var(--color-border); margin-top: 48px; }
   .foot-links a { font-size: 0.8rem; color: var(--color-primary-light); text-decoration: none; font-weight: 600; }
   .foot-links a:hover { text-decoration: underline; }
   .caveat { font-size: 0.75rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.6; margin-top: 18px; }
+  .confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 0.7rem; color: var(--color-text-disabled); text-align: center; }
+  .caveat > p { margin-bottom: 8px; }
+  .caveat ul.bullets li { line-height: 1.55; }
 
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
@@ -139,10 +160,36 @@
 <div class="layout">
 
 <nav class="toc">
-  <div class="toc-brand">AngelSpan</div>
+  <a href="index.html" class="toc-wordmark" title="Home">
+    <div class="toc-mark"><span>AS</span></div>
+    <span class="toc-name">AngelSpan</span>
+  </a>
   <div class="toc-title">Current State &amp; Path Forward</div>
-  <a href="prototype_dashboard.html" class="toc-back">← Build Tracker</a>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html" class="page-active">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
+
   <nav>
+    <div class="toc-group">On This Page</div>
     <div class="toc-group">Today</div>
     <a href="#today">Where We Are Today</a>
     <div class="toc-group">Funding</div>
@@ -157,6 +204,8 @@
 <main class="content">
 
   <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
     <a href="prototype_dashboard.html">← Build Tracker Dashboard</a>
   </nav>
 
@@ -164,6 +213,11 @@
   <h1>Current State &amp; Path Forward</h1>
   <p class="lead">Where the platform stands today, what the incoming raise actually funds, and the three phases available for moving forward — framed for a business decision, not an engineering one.</p>
   <div class="hero-meta">Prepared July 2026 · Sources: July 16, 2026 budget call (Joe, Matt, Alec, Adam) and platform documentation</div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-primary-pale); border-radius: 4px; padding: 16px 20px; margin-bottom: 28px;">
+    <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 8px;">Why fund this at all?</div>
+    <p style="font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.55;">This page covers what's broken and how the raise fixes it. For the underlying argument — why the business itself is worth funding — see <a href="investment_thesis.html" style="color: var(--color-primary-light); font-weight: 600;">The Investment Thesis →</a></p>
+  </div>
 
   <!-- CURRENT STATE -->
   <section class="sec" id="today">
@@ -182,7 +236,7 @@
       </div>
       <div class="risk-card">
         <div class="tag">Example — vendor deadlines don't wait</div>
-        <p>Microsoft is retiring an older Azure storage type (GPv1) on October 13, 2026. We haven't yet confirmed whether our production storage is affected — but this is the kind of vendor-forced deadline that periodically lands on aging infrastructure, on someone else's schedule, ready or not.</p>
+        <p>Microsoft retires services and API versions on its own schedule, not ours — TLS 1.0/1.1 support in Storage Accounts, .NET 9 support in App Service, and older Key Vault API versions are all being retired within the next 12 months. We don't believe any of these specifically affect us today, but this is the pattern: vendor-forced deadlines land on aging infrastructure continuously, on someone else's schedule, ready or not.</p>
       </div>
     </div>
   </section>
@@ -254,7 +308,7 @@
         <div class="ph">
           <div class="num">Phase 2</div>
           <h3>Prototype + Validate</h3>
-          <div class="sub">Test the model with a small beta group drawn from the hardened base.</div>
+          <div class="sub">Test the model — including a first Legacy Funds integration — with a small beta group drawn from the hardened base.</div>
           <span class="badge later">Needs more capital</span>
         </div>
         <div class="body">
@@ -275,11 +329,11 @@
           <span class="badge later">Needs more capital</span>
         </div>
         <div class="body">
-          <div class="metric-row"><span class="k">Est. cost</span><span class="v">~$1.2M / ~18mo</span></div>
+          <div class="metric-row"><span class="k">Est. cost</span><span class="v">~$1.2–2.0M / ~18mo</span></div>
           <div class="metric-row"><span class="k">Raise needed</span><span class="v">~$3–5M total</span></div>
           <div class="metric-row"><span class="k">Timing</span><span class="v">After or alongside Ph. 2</span></div>
           <div class="pros"><strong>Benefit</strong>One finished, production-ready platform built to run Legacy Funds and AngelSpan at real scale — strongest asset for a future partner.</div>
-          <div class="cons"><strong>Trade-off</strong>The tech build itself is ~$1.2M, but the raise needed is ~$3–5M — the rest funds staffing and operations standing up around it. Depends on the largest raise of the three phases.</div>
+          <div class="cons"><strong>Trade-off</strong>The tech build itself scales with the raise — a consistent ~40%, or ~$1.2M at $3M up to ~$2.0M at $5M — but the rest funds staffing and operations standing up around it. Depends on the largest raise of the three phases.</div>
         </div>
         <a class="cta" href="phase3_full_build.html">See full details →</a>
       </div>
@@ -299,7 +353,6 @@
         <text x="260" y="63" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" font-family="Inter">Phase 1 — Harden the platform</text>
         <rect x="510" y="30" width="340" height="54" rx="4" fill="var(--color-primary-pale)" fill-opacity="0.5"/>
         <text x="680" y="63" font-size="13" font-weight="600" fill="var(--color-primary)" text-anchor="middle" font-family="Inter">Keep raising capital</text>
-        <text x="260" y="100" font-size="10.5" fill="var(--color-warning)" text-anchor="middle" font-family="Inter">Oct 13 — possible Microsoft cutoff (unconfirmed)</text>
 
         <!-- ── Convergence to decision point ── -->
         <line x1="430" y1="84" x2="430" y2="140" stroke="var(--color-text-secondary)" stroke-width="1.5"/>
@@ -347,9 +400,9 @@
 
         <rect x="330" y="300" width="280" height="86" rx="4" fill="var(--color-info-bg)" stroke="var(--color-primary-light)" stroke-width="1.5"/>
         <text x="470" y="323" font-size="13" font-weight="700" fill="var(--color-primary-light)" text-anchor="middle" font-family="Inter">Phase 3 begins now</text>
-        <text x="470" y="342" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">Full build starts immediately;</text>
-        <text x="470" y="357" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">Phase 2 beta (5–10 clients)</text>
-        <text x="470" y="372" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">runs alongside it</text>
+        <text x="470" y="342" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">Full build starts immediately,</text>
+        <text x="470" y="357" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">using the existing mock to</text>
+        <text x="470" y="372" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">gather feedback as it's built</text>
 
         <rect x="630" y="300" width="280" height="86" rx="4" fill="var(--color-surface)" stroke="var(--color-text-disabled)" stroke-width="1.5"/>
         <text x="770" y="323" font-size="13" font-weight="700" fill="var(--color-text-secondary)" text-anchor="middle" font-family="Inter">Keep operating as-is</text>
@@ -357,10 +410,23 @@
         <text x="770" y="357" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">raising, on the now-hardened</text>
         <text x="770" y="372" font-size="11" fill="var(--color-text)" text-anchor="middle" font-family="Inter">platform</text>
       </svg>
-      <p class="roadmap-note">Only the first ~3 months are committed: Phase 1 hardening and a parallel fundraising push, both wrapping up around November. That next raise is targeted at $3–5M total — it could land all at once, or in stages, with an opening ~$1M tranche funding Phase 2 before the rest arrives for Phase 3, rather than Phase 2 needing separate capital on top of that $3–5M. If a more modest ~$1M lands first — as its own raise or as that opening tranche — Phase 2's prototype and beta validation run before the full build. If the full $3–5M raise arrives directly, Phase 3's full build starts immediately and Phase 2's beta validation runs alongside it instead of gating it. If neither has landed, we keep operating on the hardened platform — no new build — and keep raising, rather than spin up a team we can't sustain. Nothing past November is a commitment; it's a branch that resolves on how and when the money arrives.</p>
+      <p class="roadmap-note">Only the first ~3 months are committed: Phase 1 hardening and a parallel fundraising push, both wrapping up around November. That next raise is targeted at $3–5M total, and could land all at once or in stages:</p>
+      <ul class="bullets" style="margin-top:10px; font-size:0.8rem; color:var(--color-text-secondary); line-height:1.6;">
+        <li><strong>~$1M lands first</strong> — as its own raise, or as an opening tranche of the $3–5M target. Phase 2's prototype and beta validation run before the full build.</li>
+        <li><strong>The full $3–5M arrives directly</strong> — Phase 3's full build starts immediately. Feedback comes from the existing working mock as the build progresses, rather than running a separate, funded Phase 2 client pilot in parallel.</li>
+        <li><strong>Neither has landed yet</strong> — we keep operating on the hardened platform, no new build, and keep raising rather than spin up a team we can't sustain.</li>
+      </ul>
+      <p class="roadmap-note" style="margin-top:10px; padding-top:0; border-top:none;">Nothing past November is a commitment; it's a branch that resolves on how and when the money arrives.</p>
       <div class="risk-card" style="margin-top:16px;">
         <div class="tag">Risk — the $1M tranche lands, the rest doesn't</div>
-        <p>"Phase 2, then Phase 3" assumes the remaining $2–4M follows before the $1M tranche's buffer runs out. If it stalls instead, this isn't the same as "keep operating as-is" — we'd be supporting a validated prototype for 5–10 beta clients while the rest of the client base — 50–100+ by the time a Legacy Fund is live — stays on the merely-hardened legacy platform, with no funded path to the full build. What we'd actually do in that scenario — pause onboarding, attempt a smaller follow-on raise, or fold Phase 2's learnings back into the existing platform instead of a separate full build — isn't decided yet, and needs an answer before we commit to this path.</p>
+        <p>"Phase 2, then Phase 3" assumes the remaining $2–4M follows before the $1M tranche's buffer runs out. If it stalls instead, this isn't the same as "keep operating as-is" — we'd be supporting a validated prototype for 5–10 beta clients while the rest of the client base — 50–100+ by the time a Legacy Fund is live — stays on the merely-hardened legacy platform, with no funded path to the full build.</p>
+        <p style="margin-top:8px;">What we'd actually do in that scenario isn't decided yet — options include:</p>
+        <ul class="bullets tight" style="margin-top:6px;">
+          <li>Pause onboarding</li>
+          <li>Attempt a smaller follow-on raise</li>
+          <li>Fold Phase 2's learnings back into the existing platform instead of a separate full build</li>
+        </ul>
+        <p style="margin-top:8px;">This needs an answer before we commit to this path.</p>
       </div>
     </div>
   </section>
@@ -371,22 +437,41 @@
     <h2>Fund Phase 1 now. Which phase comes next depends on how capital arrives.</h2>
     <div class="rec-box">
       <h3>Why this sequencing</h3>
-      <p>Phase 1 is the only one of the three sized to what this raise leaves for technology. It's aimed at the biggest operational risk — the current platform failing under its own weight — without betting on money we don't have yet. Moving on to Phase 2 or 3 would depend on additional fundraising, not this raise.</p>
-      <p>That second raise — targeted at $3–5M total — would be pursued in parallel, starting now rather than after Phase 1 wraps up. How it lands, not just whether it does, determines what happens next: it could arrive all at once, or in stages. If it arrives in stages, an initial ~$1M tranche of that same target funds Phase 2's prototype and beta validation first, with the full build following once the rest of that capital comes in — Phase 2 isn't necessarily capital on top of the $3–5M, it can be the first slice of it. If the full $3–5M arrives directly instead, the full build starts immediately, with Phase 2's beta validation running alongside it rather than as a prerequisite.</p>
-      <p>Neither Phase 2 nor Phase 3 is just a technology budget. Scaling past Phase 1 — onboarding 50–100+ clients and standing up Legacy Funds — also means scaling the team: this can't stay a one-person product/technology/operations operation, and there are real, currently unpriced costs in hiring, compute/storage, cybersecurity, and compliance that any Phase 2 or 3 raise needs to account for.</p>
-      <p>Timing is a factor: a Legacy Fund could need the platform as early as Q1–Q2 2027 — potentially only one to four months after Phase 1 would finish. That's a thin margin, which is the argument for starting the next raise sooner rather than waiting for more clarity. All of these dates and costs are estimates.</p>
+      <ul class="bullets">
+        <li><strong>Sized to what we actually have.</strong> Phase 1 is the only one of the three sized to what this raise leaves for technology. It's aimed at the biggest operational risk — the current platform failing under its own weight — without betting on money we don't have yet. Moving on to Phase 2 or 3 would depend on additional fundraising, not this raise.</li>
+        <li><strong>The next raise runs in parallel, not after.</strong> That second raise — targeted at $3–5M total — would be pursued starting now rather than after Phase 1 wraps up. How it lands, not just whether it does, determines what happens next: it could arrive all at once, or in stages. If it arrives in stages, an initial ~$1M tranche of that same target funds Phase 2's prototype and beta validation first, with the full build following once the rest of that capital comes in — Phase 2 isn't necessarily capital on top of the $3–5M, it can be the first slice of it. If the full $3–5M arrives directly instead, the full build starts immediately — using the existing working mock to gather feedback as it's built, rather than running a separate, funded Phase 2 client pilot in parallel.</li>
+        <li><strong>Neither Phase 2 nor Phase 3 is just a technology budget.</strong> Scaling past Phase 1 — onboarding 50–100+ clients and standing up Legacy Funds — also means scaling the team: this can't stay a one-person product/technology/operations operation, and there are real, currently unpriced costs in hiring, compute/storage, cybersecurity, and compliance that any Phase 2 or 3 raise needs to account for.</li>
+        <li><strong>Timing is tight.</strong> A Legacy Fund could need the platform as early as Q1–Q2 2027 — potentially only one to four months after Phase 1 would finish. That's a thin margin, which is the argument for starting the next raise sooner rather than waiting for more clarity. All of these dates and costs are estimates.</li>
+      </ul>
     </div>
   </section>
 
   <div class="foot-links">
     <a href="prototype_dashboard.html">← Back to Build Tracker Dashboard</a>
-    <a href="dashboard_strategy.html">Build Methodology ↗</a>
+    <a href="investment_thesis.html">Investment Thesis ↗</a>
     <a href="phase1_harden_stabilize.html">Phase 1 detail ↗</a>
     <a href="phase2_prototype_validate.html">Phase 2 detail ↗</a>
     <a href="phase3_full_build.html">Phase 3 detail ↗</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress ↗</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations ↗</a>
+    <a href="dashboard_strategy.html">Build Methodology ↗</a>
   </div>
 
-  <p class="caveat">All figures are conceptual estimates drawn from the July 16, 2026 budget call and platform planning documents. Exact scope, cost, and timeline for any path require a formal engineering assessment before commitments are made to investors. Technology is allocated ~$125k; the rough estimate to harden the platform is ~$100k, with the remainder held back because that estimate is soft on a system this old. Moving on to Phase 2 or 3 would be funded by additional fundraising, not by this raise. The $95k "uncommitted / reserve" figure is separate — it reflects the gap between the $500k raise and the four named cost categories, and has not been itemized. Ongoing operating expenses (hosting, compute/storage, software subscriptions) sit outside all four categories entirely and would reduce the reserve further once priced. Phase 2's ~$1M and Phase 3's ~$3–5M are both separate from the current $500k raise — but not necessarily separate from each other: the $1M could be the opening tranche of the same $3–5M target rather than capital on top of it. In both phases, "raise needed" and "build cost" are different numbers: Phase 2's build is ~$200k plus unsized ongoing maintenance against a ~$1M raise; Phase 3's build is ~$1.2M over ~18 months against a ~$3–5M raise. The gap in both cases funds staffing, operations, marketing, and SG&amp;A standing up around the build, not the build itself. The $3–5M raise figure is sourced from 2026 tech-raise planning documents rather than the July 16 call; the ~$1.2M build estimate is a separate engineering estimate. None of these are priced plans — headcount, infrastructure, cybersecurity, and compliance costs within them are flagged but not yet itemized.</p>
+  <div class="caveat">
+    <p>All figures are conceptual estimates drawn from the July 16, 2026 budget call and platform planning documents. Exact scope, cost, and timeline for any path require a formal engineering assessment before commitments are made to investors.</p>
+    <ul class="bullets tight">
+      <li><strong>Technology allocation.</strong> Technology is allocated ~$125k; the rough estimate to harden the platform is ~$100k, with the remainder held back because that estimate is soft on a system this old.</li>
+      <li><strong>Phase 2/3 need new capital.</strong> Moving on to Phase 2 or 3 would be funded by additional fundraising, not by this raise.</li>
+      <li><strong>The reserve isn't itemized.</strong> The $95k "uncommitted / reserve" figure reflects the gap between the $500k raise and the four named cost categories, and has not been itemized.</li>
+      <li><strong>Ongoing costs sit outside this breakdown.</strong> Operating expenses (hosting, compute/storage, software subscriptions) sit outside all four categories entirely and would reduce the reserve further once priced.</li>
+      <li><strong>$1M and $3–5M may overlap.</strong> Phase 2's ~$1M and Phase 3's ~$3–5M are both separate from the current $500k raise — but not necessarily separate from each other: the $1M could be the opening tranche of the same $3–5M target rather than capital on top of it.</li>
+      <li><strong>Raise needed ≠ build cost.</strong> Phase 2's build is ~$200k plus unsized ongoing maintenance against a ~$1M raise; Phase 3's build is a consistent ~40% of whatever's raised — ~$1.2M at $3M, up to ~$2.0M at $5M — over ~18 months. The gap in both cases funds staffing, operations, marketing, and SG&amp;A standing up around the build, not the build itself.</li>
+      <li><strong>Source note.</strong> The $3–5M raise figure and the ~40% tech-allocation split are both sourced from 2026 tech-raise planning documents rather than the July 16 call; the ~$1.2–2.0M range is that percentage applied across the raise range, not a separate bottom-up engineering estimate.</li>
+      <li><strong>None of this is a priced plan.</strong> Headcount, infrastructure, cybersecurity, and compliance costs within these figures are flagged but not yet itemized.</li>
+    </ul>
+  </div>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
 
 </main>
 </div>

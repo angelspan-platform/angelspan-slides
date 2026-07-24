@@ -49,8 +49,17 @@
   .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
   .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
   .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages { margin-bottom: 22px; }
+  .toc-pages a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc-pages a:hover { color: var(--color-primary-light); border-left-color: var(--color-primary-light); padding-left: 8px; }
+  .toc-pages a.page-active { color: var(--color-primary); font-weight: 700; border-left-color: var(--color-primary); padding-left: 8px; }
   .toc-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.6667rem; color: var(--color-text-disabled); text-decoration: none; margin-bottom: 20px; margin-top: -10px; }
   .toc-back:hover { color: var(--color-primary-light); }
+  .toc-mark { width: 28px; height: 28px; background: var(--color-primary); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+  .toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
+  .toc-wordmark:hover .toc-name { color: var(--color-primary-light); }
+  .toc-name { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); }
 
   .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
   .eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
@@ -95,6 +104,7 @@
   .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--color-success); }
   .stat-lbl { font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 3px; }
   .caveat { font-size: 0.8rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 0.7rem; color: var(--color-text-disabled); text-align: center; }
 
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
@@ -112,10 +122,36 @@
 <div class="layout">
 
 <nav class="toc">
-  <div class="toc-brand">AngelSpan</div>
+  <a href="index.html" class="toc-wordmark" title="Home">
+    <div class="toc-mark"><span>AS</span></div>
+    <span class="toc-name">AngelSpan</span>
+  </a>
   <div class="toc-title">Phase 2 — Prototype + Validate</div>
-  <a href="prototype_dashboard.html" class="toc-back">← Build Tracker</a>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html" class="page-active">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
+
   <nav>
+    <div class="toc-group">On This Page</div>
     <div class="toc-group">Overview</div>
     <a href="#funding">What This Raise Funds</a>
     <a href="#playout">Two Ways This Can Play Out</a>
@@ -131,6 +167,8 @@
 <main class="content">
 
   <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
     <a href="prototype_dashboard.html">← Build Tracker Dashboard</a>
     <span class="sep">·</span>
     <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
@@ -138,7 +176,7 @@
 
   <div class="eyebrow">Phase 2</div>
   <h1>Prototype + Validate</h1>
-  <p class="subtitle">Test the model with a small group of real clients — timing relative to the full build depends on how capital arrives</p>
+  <p class="subtitle">Test the model — including a first Legacy Funds integration — with a small group of real clients. This phase runs only if ~$1M lands first; the existing working mock covers early feedback if the full raise arrives directly instead</p>
 
   <section class="sec" id="funding">
     <div class="sec-label">Overview</div>
@@ -156,7 +194,7 @@
       <h3>Two Ways This Can Play Out</h3>
       <div class="scope-grid cols-2">
         <div class="scope-item"><strong>If ~$1M lands first</strong>Whether as its own raise or the opening tranche of the same $3–5M target, this phase runs on its own: build the prototype, validate it with a small beta group, then move into the Phase 3 full build once the rest of that capital lands.</div>
-        <div class="scope-item"><strong>If $3–5M arrives directly</strong>Phase 3's full build starts right away. This same beta validation runs alongside it instead of ahead of it — same clients, same purpose, just a parallel timeline instead of a sequential one.</div>
+        <div class="scope-item"><strong>If $3–5M arrives directly</strong>This phase doesn't run as its own funded effort. Phase 3's full build starts right away, using the existing working mock — already built, no added cost — to gather feedback as it goes, instead of a separate real-client pilot.</div>
       </div>
     </div>
   </section>
@@ -183,7 +221,7 @@
       <li>Everyone else keeps using the hardened Phase 1 platform normally while the beta group tests the new prototype in parallel</li>
       <li>Once built, the prototype has an ongoing monthly maintenance cost that hasn't been sized yet — a real, recurring expense on top of the one-time ~$200k build</li>
       <li>The ~$800k beyond the prototype build is a separate, deliberate buffer, not yet broken into line items — it's meant to cover marketing, SG&amp;A, and the reality that scaling past a one-person product/technology/operations team requires hiring, plus compute/storage, cybersecurity, and compliance costs that don't show up in a pure dev budget</li>
-      <li>Work produced in the prototype isn't thrown away — it becomes the tested blueprint for the Phase 3 full build, whether that follows sequentially or runs in parallel</li>
+      <li>Work produced in the prototype isn't thrown away — it becomes the tested blueprint for the Phase 3 full build, when this phase runs first. If $3–5M arrives directly instead, this real build is skipped entirely — the existing mock covers early feedback, and Phase 3 is built directly</li>
     </ul>
   </section>
 
@@ -232,11 +270,13 @@
       <div class="stat"><div class="stat-val">~$200k</div><div class="stat-lbl">Est. cost to build the prototype, plus ongoing maintenance (not yet sized)</div></div>
       <div class="stat"><div class="stat-val">~$1M</div><div class="stat-lbl">Total raise this phase's timeframe would need (incl. buffer)</div></div>
       <div class="stat"><div class="stat-val">5–10</div><div class="stat-lbl">Beta clients, drawn from the hardened base</div></div>
-      <div class="stat"><div class="stat-val">Varies</div><div class="stat-lbl">Runs before or alongside Phase 3, depending on capital timing</div></div>
+      <div class="stat"><div class="stat-val">Varies</div><div class="stat-lbl">Runs only if ~$1M lands first — skipped (mock covers it) if $3–5M arrives directly</div></div>
     </div>
 
     <p class="caveat">* All figures are conceptual estimates, not a priced plan. Exact prototype scope, cost, and timeline — plus the headcount, infrastructure, cybersecurity, and compliance needs noted above — require formal scoping before commitments are made to investors.</p>
   </section>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
 
 </main>
 </div>

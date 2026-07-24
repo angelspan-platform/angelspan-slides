@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — The Investment Thesis</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-primary: #004A6D;
+    --color-primary-light: #0179B5;
+    --color-primary-pale: #50ADDB;
+    --color-bg: #FAFAF8;
+    --color-surface: #F4F1EC;
+    --color-raised: #FFFFFF;
+    --color-border: #E0DBD3;
+    --color-text: #303030;
+    --color-text-secondary: #606060;
+    --color-text-disabled: #ADADAD;
+    --color-success: #2A6B3C;
+    --color-success-bg: #F4FAF5;
+    --color-warning: #FF8000;
+    --color-warning-bg: #FFF8F0;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0F1219;
+      --color-surface: #181C26;
+      --color-raised: #1D2130;
+      --color-border: #252B3A;
+      --color-text: #E4E8F0;
+      --color-text-secondary: #94A0B3;
+      --color-text-disabled: #4E5870;
+      --color-success-bg: rgba(42,107,60,.15);
+      --color-warning-bg: rgba(255,128,0,.13);
+    }
+  }
+  html { font-size: clamp(14px, 0.5vw + 11px, 18px); -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); font-size: 0.9167rem; line-height: 1.6; }
+
+  .layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
+  .toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--color-border); background: var(--color-surface); }
+  .toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); margin-bottom: 4px; }
+  .toc-title { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+  .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
+  .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages { margin-bottom: 22px; }
+  .toc-pages a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc-pages a:hover { color: var(--color-primary-light); border-left-color: var(--color-primary-light); padding-left: 8px; }
+  .toc-pages a.page-active { color: var(--color-primary); font-weight: 700; border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-mark { width: 28px; height: 28px; background: var(--color-primary); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+  .toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
+  .toc-wordmark:hover .toc-name { color: var(--color-primary-light); }
+  .toc-name { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); }
+
+  .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
+  .eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
+  h1 { font-size: 1.875rem; font-weight: 700; color: var(--color-primary); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 8px; text-wrap: balance; }
+  .subtitle { font-size: 1rem; color: var(--color-text-secondary); margin-bottom: 12px; line-height: 1.5; max-width: min(900px, 100%); }
+  .hero-meta { font-size: 0.75rem; color: var(--color-text-disabled); margin-bottom: 32px; }
+
+  .sec { margin-top: 48px; scroll-margin-top: 20px; }
+  .sec:first-child { margin-top: 0; }
+  .sec-label { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--color-text-disabled); margin-bottom: 4px; }
+  .sec h2 { font-size: 1.2rem; font-weight: 700; color: var(--color-primary); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; margin-bottom: 18px; letter-spacing: -.01em; }
+  .sec p.body { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.65; margin-bottom: 14px; }
+  .sec p.body:last-child { margin-bottom: 0; }
+  .sec p.body strong { color: var(--color-text); }
+
+  .highlight { background: var(--color-surface); border: 1px solid var(--color-border); border-left: 3px solid var(--color-primary); border-radius: 4px; padding: 14px 18px; margin: 16px 0; font-size: 0.875rem; color: var(--color-text); line-height: 1.6; }
+
+  table.plan-table { width: 100%; border-collapse: collapse; font-size: 0.8333rem; margin: 0 0 16px; background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; overflow: hidden; }
+  table.plan-table th { background: var(--color-surface); color: var(--color-text-secondary); text-align: left; padding: 10px 14px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--color-border); }
+  table.plan-table td { padding: 11px 14px; border-bottom: 1px solid var(--color-border); color: var(--color-text); vertical-align: top; }
+  table.plan-table tr:last-child td { border-bottom: none; }
+  .table-wrap { overflow-x: auto; }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: 0; background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin: 16px 0 20px; }
+  .stat-cell { flex: 1 1 25%; min-width: 140px; padding: 15px 18px; border-right: 1px solid var(--color-border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-cell .v { font-size: 1.3rem; font-weight: 700; color: var(--color-primary); line-height: 1.1; }
+  .stat-cell .l { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.35; }
+  .stat-cell.zero .v { color: var(--color-success); }
+
+  .caveat { font-size: 0.8rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 0.7rem; color: var(--color-text-disabled); text-align: center; }
+
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    .content { padding: 32px 24px 64px; max-width: 100%; }
+    .stat-cell { flex: 1 1 45%; border-right: none; border-bottom: 1px solid var(--color-border); }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc">
+  <a href="index.html" class="toc-wordmark" title="Home">
+    <div class="toc-mark"><span>AS</span></div>
+    <span class="toc-name">AngelSpan</span>
+  </a>
+  <div class="toc-title">The Investment Thesis</div>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html" class="page-active">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
+
+  <nav>
+    <div class="toc-group">On This Page</div>
+    <a href="#problem">The Problem</a>
+    <a href="#fund-model">The Modern Fund Model</a>
+    <a href="#qsbs">The QSBS Advantage</a>
+    <a href="#place-based">Place-Based Investing</a>
+    <a href="#moat">Why This Is Defensible</a>
+  </nav>
+</nav>
+
+<main class="content">
+
+  <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="roadmap_presentation.html">← Current State &amp; Path Forward</a>
+  </nav>
+
+  <div class="eyebrow">The Investment Thesis</div>
+  <h1>Why This, Why Now</h1>
+  <p class="subtitle">AngelSpan isn't just fixing an aging platform — it's built on a specific, researched argument for why early-stage investing is broken, and what fixes it. This is that argument, and where the raise ties back to it.</p>
+  <div class="hero-meta">Source: Joe Milam, four articles in <em>The Journal of Private Equity</em> (2018–2019) · Distilled July 2026</div>
+
+  <section class="sec" id="problem">
+    <div class="sec-label">The Problem</div>
+    <h2>Private Markets Have No GAAP</h2>
+    <p class="body">Public markets work because reporting is standardized and mandated — GAAP, SEC filings, and an entire analytics industry (S&amp;P, Bloomberg, CapIQ) built on top of that standard. Early-stage private investing has none of this. Startups report irregularly, on no common standard, to whoever happens to ask. That gap is what lets information asymmetry get monetized instead of solved — investors and intermediaries can charge for access to information, not just for capital.</p>
+    <p class="body">The 2013 JOBS Act tried to fix half of this problem — easier <strong>access</strong> to funding, via crowdfunding and Reg A+. It never touched the other half: standardized <strong>reporting</strong> from the companies raising that capital.</p>
+    <div class="highlight"><strong>SMART IR is AngelSpan's answer to the half the JOBS Act left alone</strong> — a standardized reporting expectation for startups, in place of the ad hoc updates the rest of the industry still runs on. Standardized information is what let public markets become efficient; nothing equivalent has existed for private, early-stage companies until now.</div>
+  </section>
+
+  <section class="sec" id="fund-model">
+    <div class="sec-label">The Model</div>
+    <h2>Legacy Funds Implements the "Modern Fund"</h2>
+    <p class="body">The traditional venture model is structurally misaligned with LP interests: high fees regardless of performance, concentrated "hunt for unicorns" portfolios, and after-tax returns nobody bothers optimizing. Legacy Funds is a direct, structural response to each of those problems — not a pitch deck reaction to them.</p>
+    <div class="table-wrap">
+      <table class="plan-table">
+        <thead><tr><th>Traditional VC</th><th>Legacy Funds (Modern Fund)</th></tr></thead>
+        <tbody>
+          <tr><td>2% management fee + 20% carry erodes returns regardless of outcome</td><td>Lower fees, higher hurdle rate</td></tr>
+          <tr><td>Concentrated "Power Law" portfolios — most startups never return capital</td><td>Diversified portfolios, 100–200 companies per fund</td></tr>
+          <tr><td>Opaque, relationship-driven selection</td><td>Transparent, SMART IR-scored selection</td></tr>
+          <tr><td>After-tax treatment largely ignored</td><td>QSBS optimization built in from day one</td></tr>
+          <tr><td>~1% GP capital vs. 99% LP capital — misaligned incentives</td><td>Sponsor-Champion model keeps local operators accountable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="qsbs">
+    <div class="sec-label">The Advantage</div>
+    <h2>The After-Tax Advantage: 23.8%, for Structuring Correctly</h2>
+    <p class="body">Two tax provisions most VC funds don't bother structuring around: <strong>Section 1202</strong> makes gains on qualifying small-business stock — held 5+ years — 100% federal-tax-free up to the first $10M of profit (or 10× cost basis, whichever is higher). <strong>Section 1244</strong> makes losses on the same qualifying stock deductible against ordinary income, not just capital gains. Legacy Funds structures every investment to qualify from the start.</p>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="v">$1M → $11M</div><div class="l">Example investment and exit — a $10M gain</div></div>
+      <div class="stat-cell"><div class="v">~$2.38M</div><div class="l">Tax owed on that gain under standard capital gains + NIIT treatment</div></div>
+      <div class="stat-cell zero"><div class="v">$0</div><div class="l">Tax owed on that same gain, QSBS-qualified</div></div>
+      <div class="stat-cell"><div class="v">23.8%</div><div class="l">Net performance advantage — for structuring correctly, not for outperforming</div></div>
+    </div>
+    <p class="body">Most funds don't educate LPs on this, and most founders don't know to ask for C-Corp structuring that preserves it. Family offices and high-net-worth individuals — the fastest-growing LP segment — care specifically about after-tax returns. Legacy Funds makes QSBS optimization a headline feature, not a footnote.</p>
+  </section>
+
+  <section class="sec" id="place-based">
+    <div class="sec-label">The Geography</div>
+    <h2>Diversifying Away From Two Zip Codes</h2>
+    <p class="body">Venture capital is heavily concentrated: the large majority of U.S. VC dollars flow to just two regions — California/Oregon/Washington and the New York/New Jersey corridor. Silicon Valley and Boston had roughly six decades to build their startup ecosystems; most of the country hasn't had that runway, and traditional VC portfolio construction doesn't translate well to smaller, less-networked markets.</p>
+    <p class="body">Legacy Funds' sponsor-created, place-based funds put local capital behind local founders, with local Champions who know the market — reducing the systemic risk of a portfolio concentrated in two or three metro areas, and reaching deal flow traditional VC structurally overlooks. It also aligns with how institutional LPs increasingly evaluate opportunities: pensions, endowments, and family offices are placing growing weight on impact and ESG criteria alongside pure returns.</p>
+  </section>
+
+  <section class="sec" id="moat">
+    <div class="sec-label">The Defensibility</div>
+    <h2>Why This Is Defensible</h2>
+    <p class="body">Incumbent VC firms can't easily copy this. Adopting standardized reporting, transparent selection, and QSBS optimization would mean admitting the 2%-and-20%, opaque-selection model they're built on is the problem being solved. The advantage compounds rather than erodes: standardized reporting builds LP trust, trust attracts more capital, more capital onboards more startups, more startups generate more scoring data — and that data (SMART IR history across 100+ companies) becomes a harder-to-replicate asset the longer the platform runs.</p>
+  </section>
+
+  <div class="caveat">
+    <p>Distilled from four articles by Joe Milam published in <em>The Journal of Private Equity</em> (2018–2019); source PDFs available on request. This page describes the strategic argument behind the business, not a forward-looking financial projection — actual fund performance depends on execution, market conditions, and the scoring and selection process working as designed.</p>
+  </div>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
+
+</main>
+</div>
+
+<script>
+const secs = document.querySelectorAll('.sec[id]');
+const links = document.querySelectorAll('.toc nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.toc nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+secs.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

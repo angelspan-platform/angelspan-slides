@@ -59,7 +59,7 @@ a:hover{text-decoration:underline;}
 .sn-brand{padding:30px 22px 18px;}
 .sn-mark{width:28px;height:28px;background:var(--navy);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
 .sn-mark span{color:rgba(255,255,255,.9);font-size:0.625rem;font-weight:800;letter-spacing:-.02em;}
-.sn-wordmark{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.sn-wordmark{display:flex;align-items:center;gap:8px;margin-bottom:8px;text-decoration:none;}
 .sn-name{font-size:0.6667rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);}
 .sn-ctx{font-size:0.6667rem;color:var(--text-3);line-height:1.5;}
 .sn-div{height:1px;background:var(--border);margin:6px 0;}
@@ -72,17 +72,14 @@ a:hover{text-decoration:underline;}
 .btn-primary{background:var(--navy);color:#fff;width:100%;text-align:center;}
 .btn-primary:hover{background:var(--blue);text-decoration:none;color:#fff;}
 .sn-group{padding:14px 22px 4px;font-size:0.5833rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--text-3);}
-.sn-link{display:flex;align-items:center;gap:9px;padding:7px 22px;text-decoration:none;color:var(--text-2);font-size:0.75rem;transition:background .08s;}
-.sn-link:hover{background:rgba(0,74,109,.05);color:var(--text);text-decoration:none;}
-.sn-link-icon{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.5833rem;font-weight:800;flex-shrink:0;}
-.qi-p{background:rgba(0,74,109,.1);color:var(--navy);border:1px solid rgba(0,74,109,.28);}
-.qi-s{background:rgba(80,173,219,.12);color:var(--blue);border:1px solid rgba(80,173,219,.3);}
-.qi-gh{background:var(--raised);color:var(--text-2);border:1px solid var(--border);}
-.qi-doc{background:rgba(42,107,60,.1);color:var(--green);border:1px solid rgba(42,107,60,.2);}
-.sn-link-text{flex:1;}
-.sn-link-name{font-size:0.75rem;font-weight:500;line-height:1.25;}
-.sn-link-sub{font-size:0.625rem;color:var(--text-3);line-height:1.25;margin-top:1px;}
-.sn-link-arr{font-size:0.6667rem;color:var(--text-3);flex-shrink:0;}
+.toc-pages{padding:0 22px;margin-bottom:8px;}
+.toc-pages a{display:block;font-size:0.75rem;color:var(--text-2);text-decoration:none;padding:4px 12px 4px 0;border-left:2px solid transparent;line-height:1.4;transition:color .12s,border-color .12s,padding-left .12s;}
+.toc-pages a:hover{color:var(--navy);border-left-color:var(--navy);padding-left:8px;text-decoration:none;}
+.toc-pages a.page-active{color:var(--navy);font-weight:700;border-left-color:var(--navy);padding-left:8px;}
+.toc-ext{padding:2px 22px 4px;}
+.toc-ext a{font-size:0.75rem;color:var(--text-3);text-decoration:none;}
+.toc-ext a:hover{color:var(--navy);text-decoration:underline;}
+.confidential-footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);font-size:0.7rem;color:var(--text-3);text-align:center;}
 .sn-cred{padding:10px 22px 12px;border-top:1px solid var(--border);font-size:0.6667rem;color:var(--text-3);}
 .sn-cred-m{font-family:var(--mono);font-size:0.6667rem;color:var(--text-2);}
 .sn-dom{padding-bottom:8px;}
@@ -93,7 +90,6 @@ a:hover{text-decoration:underline;}
 .dom-bar{height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
 .dom-fill{height:100%;border-radius:2px;}
 .dom-n{font-size:0.8333rem;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;min-width:20px;text-align:right;}
-.sn-footer{margin-top:auto;padding:14px 22px;border-top:1px solid var(--border);font-size:0.625rem;color:var(--text-3);line-height:1.6;}
 
 /* ── Main content ── */
 .main{padding:48px 60px 80px;min-width:0;}
@@ -312,7 +308,7 @@ h1{font-size:1.875rem;font-weight:700;color:var(--navy);letter-spacing:-.02em;li
 }
 
 @media(max-width:520px){
-  .sn-link-sub,.sn-cred,.sn-footer{display:none;}
+  .sn-cred{display:none;}
   .chart-row{gap:10px;}
   .et-hdr,.et-row{grid-template-columns:24px 34px 1fr 60px;}
   .ms-track{grid-template-columns:1fr 20px 1fr 20px 1fr 20px 1fr;}
@@ -327,10 +323,10 @@ h1{font-size:1.875rem;font-weight:700;color:var(--navy);letter-spacing:-.02em;li
 <nav class="sidenav">
 
   <div class="sn-brand">
-    <div class="sn-wordmark">
+    <a class="sn-wordmark" href="index.html">
       <div class="sn-mark"><span>AS</span></div>
       <span class="sn-name">AngelSpan</span>
-    </div>
+    </a>
     <div class="sn-ctx">Working Mock — Build Tracker</div>
   </div>
 
@@ -345,64 +341,30 @@ h1{font-size:1.875rem;font-weight:700;color:var(--navy);letter-spacing:-.02em;li
 
   <div class="sn-div"></div>
 
-  <div class="sn-group">Quick access</div>
+  <div class="sn-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
 
-  <a class="sn-link" href="roadmap_presentation.html">
-    <div class="sn-link-icon qi-p">★</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">Current State &amp; Path Forward</div>
-      <div class="sn-link-sub">Start here — business summary of all 3 phases</div>
-    </div>
-    <span class="sn-link-arr">→</span>
-  </a>
-  <a class="sn-link" href="phase1_harden_stabilize.html">
-    <div class="sn-link-icon qi-s">1</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">Phase 1 — Harden + Stabilize</div>
-      <div class="sn-link-sub">Current agreed direction</div>
-    </div>
-    <span class="sn-link-arr">→</span>
-  </a>
-  <a class="sn-link" href="phase2_prototype_validate.html">
-    <div class="sn-link-icon qi-s">2</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">Phase 2 — Prototype + Validate</div>
-      <div class="sn-link-sub">~$1M — before or alongside Phase 3</div>
-    </div>
-    <span class="sn-link-arr">→</span>
-  </a>
-  <a class="sn-link" href="phase3_full_build.html">
-    <div class="sn-link-icon qi-s">3</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">Phase 3 — Full build</div>
-      <div class="sn-link-sub">~$3–5M — after or alongside Phase 2</div>
-    </div>
-    <span class="sn-link-arr">→</span>
-  </a>
-  <a class="sn-link" href="dashboard_strategy.html">
-    <div class="sn-link-icon qi-s">DS</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">Build methodology</div>
-      <div class="sn-link-sub">Process &amp; handoff strategy</div>
-    </div>
-    <span class="sn-link-arr">→</span>
-  </a>
-  <a class="sn-link" href="https://github.com/angelspan-platform/angelspan-platform" target="_blank">
-    <div class="sn-link-icon qi-gh">GH</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">GitHub repository</div>
-      <div class="sn-link-sub">Specs, decisions, source</div>
-    </div>
-    <span class="sn-link-arr">↗</span>
-  </a>
-  <a class="sn-link" href="prototype_assumptions.html">
-    <div class="sn-link-icon qi-doc">DOC</div>
-    <div class="sn-link-text">
-      <div class="sn-link-name">Prototype assumptions</div>
-      <div class="sn-link-sub">What carries forward · engineering handoff</div>
-    </div>
-    <span class="sn-link-arr">→</span>
-  </a>
+  <div class="sn-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html" class="page-active">Prototype Dashboard</a>
+  </div>
+  <div class="toc-ext">
+    <a href="https://github.com/angelspan-platform/angelspan-platform" target="_blank">GitHub repository ↗</a>
+  </div>
+
+  <div class="sn-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
 
   <div class="sn-cred">
     Test password &nbsp;<span class="sn-cred-m">demo1234</span>
@@ -442,15 +404,14 @@ h1{font-size:1.875rem;font-weight:700;color:var(--navy);letter-spacing:-.02em;li
     </div>
   </div>
 
-  <div class="sn-footer">
-    Spec: Claude &nbsp;·&nbsp; Build: Lovable<br>
-    <a href="mailto:adam@angelspan.com">adam@angelspan.com</a> &nbsp;·&nbsp; Updated Jul 17, 2026
-  </div>
-
 </nav>
 
 <!-- MAIN CONTENT -->
 <main class="main">
+
+  <nav class="back-nav">
+    <a href="index.html">Home</a>
+  </nav>
 
   <div class="eyebrow">AngelSpan · Build Tracker</div>
   <h1>Working Mock — Build Tracker</h1>
@@ -720,6 +681,8 @@ h1{font-size:1.875rem;font-weight:700;color:var(--navy);letter-spacing:-.02em;li
     </div>
   </div>
 
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
+
 </main>
 </div><!-- /layout -->
 
@@ -794,7 +757,7 @@ const FEATS = [
   { id:'F09', name:'Legacy Funds admin', track:'lf', status:'built', prompts:7, desc:'LF Admin control plane: fund creation and management, GP/Champion assignment, LP application queue.', stories:['Create funds with name, sponsor, theme, target raise, and QSBS strategy','GPs assigned to funds; Champions assigned to specific portfolio companies','LP application queue with accreditation status management','Fund administrator portal links per fund'], decs:['D-014','D-015','D-018','D-020','D-036'] },
   { id:'F10', name:'GP portfolio management', track:'lf', status:'built', prompts:11, desc:'GP workspace: multi-fund portfolio view, fund filter, bubble chart, Champion management, and LP reporting.', stories:['Portfolio companies with SMART IR scores, stage, and Champion assignment','Fund filter pills for multi-fund GPs — no re-login required','Bubble chart: portfolio in score × stage space with temporal animation','GP composes and distributes quarterly LP reports'], decs:['D-019','D-022','D-023','D-024','D-026','D-027','D-034','D-035','D-037','D-038'] },
   { id:'F11', name:'Fund application', track:'lf', status:'built', prompts:8, desc:'Founder applies to join a Legacy Fund via eligibility wizard, Champion review, and GP admission decision.', stories:['Intelligence plan required to initiate a fund application','Eligibility wizard gates on stage, sector, geography, and SMART IR score','Champion pool self-selects; first to open locks the application','GP reviews Champion recommendation and grants or denies admission'], decs:['D-021','D-028','D-029','D-030','D-031','D-042'] },
-  { id:'F12', name:'SMART IR analytics', track:'lf', status:'built', prompts:9, desc:'SMART IR visual layer: arc chart, trajectory chart, portfolio bubble chart, and annotated copy spec.', stories:['Arc chart: current SMART IR score across 5 Bell Mason categories','Trajectory chart: score progression by quarter and stage','Bubble chart: portfolio in score × stage space with temporal animation','All tooltips and annotations from the canonical copy spec'], decs:['D-033','D-035'] },
+  { id:'F12', name:'SMART IR analytics', track:'lf', status:'built', prompts:9, desc:'SMART IR visual layer: arc chart, trajectory chart, portfolio bubble chart, and annotated copy spec.', stories:['Arc chart: current SMART IR score across 4 Bell Mason categories','Trajectory chart: score progression by quarter and stage','Bubble chart: portfolio in score × stage space with temporal animation','All tooltips and annotations from the canonical copy spec'], decs:['D-033','D-035'] },
   { id:'F13', name:'LP investor portal', track:'lf', status:'built', prompts:8, desc:'LP dashboard: fund holdings, portfolio with SMART IR scores, QSBS calculator, and fund admin links.', stories:['Fund holdings with commitment amounts, vintage, and funds-received status','Portfolio companies: stage, read-only SMART IR and Transparency Tell scores','QSBS Benefit Calculator for modeling after-tax performance advantage','Fund administrator portal links per fund'], decs:['D-015','D-016','D-025','D-036','D-037','D-038'] },
   { id:'F14', name:'UAT stabilization', track:'lf', status:'built', prompts:7, desc:'Final UAT-round fixes: clean slate accounts, data persistence, PA distribution flow, Champion demo reset.', stories:['New founder accounts start with no pre-loaded test data','Feedback submissions persist across sessions via Supabase','PA distribution with correct confirmation and lock-state behavior','Champion logout auto-resets demo for repeatable UAT'], decs:['D-011','D-013','D-017','D-043'] },
 ];

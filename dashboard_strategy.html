@@ -50,10 +50,17 @@ body { font-family: var(--font); background: var(--c-bg); color: var(--c-text); 
 /* Sidebar */
 .toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--c-border); background: var(--c-surface); }
 .toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--c-sky); margin-bottom: 4px; }
+.toc-mark { width: 28px; height: 28px; background: var(--c-navy); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+.toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
 .toc-title { font-size: 0.75rem; font-weight: 600; color: var(--c-text-2); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
 .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-text-3); margin: 18px 0 5px; }
 .toc nav a { display: block; font-size: 0.75rem; color: var(--c-text-2); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
 .toc nav a:hover, .toc nav a.on { color: var(--c-navy); border-left-color: var(--c-navy); padding-left: 8px; }
+.toc-pages { margin-bottom: 22px; }
+.toc-pages a { display: block; font-size: 0.75rem; color: var(--c-text-2); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+.toc-pages a:hover { color: var(--c-blue); border-left-color: var(--c-blue); padding-left: 8px; }
+.toc-pages a.page-active { color: var(--c-navy); font-weight: 700; border-left-color: var(--c-navy); padding-left: 8px; }
 
 /* Content */
 .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
@@ -165,6 +172,7 @@ tbody tr:last-child td { border-bottom: none; }
 
 /* Closing rule */
 .closing { border-top: 2px solid var(--c-navy); margin-top: 68px; padding-top: 28px; }
+.confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--c-border); font-size: 0.7rem; color: var(--c-text-3); text-align: center; }
 .closing p { font-size: 0.875rem; color: var(--c-text-2); line-height: 1.8; }
 
 @media (max-width: 760px) {
@@ -186,10 +194,36 @@ tbody tr:last-child td { border-bottom: none; }
 
 <!-- TOC -->
 <nav class="toc">
-  <div class="toc-brand">AngelSpan</div>
+  <a href="index.html" title="Home" class="toc-wordmark">
+    <div class="toc-mark"><span>AS</span></div>
+    <div class="toc-brand">AngelSpan</div>
+  </a>
   <div class="toc-title">Working Mock — Build Methodology &amp; Handoff Strategy</div>
-  <a href="prototype_dashboard.html" style="display:inline-flex;align-items:center;gap:5px;font-size:0.6667rem;color:var(--c-text-3);text-decoration:none;margin-bottom:20px;margin-top:-10px;" onmouseover="this.style.color='var(--c-blue)'" onmouseout="this.style.color='var(--c-text-3)'">← Build Tracker</a>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html" class="page-active">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
+
   <nav>
+    <div class="toc-group">On This Page</div>
     <div class="toc-group">The Approach</div>
     <a href="#methodology">Build Methodology</a>
     <a href="#accountability">The Accountability Layer</a>
@@ -210,6 +244,8 @@ tbody tr:last-child td { border-bottom: none; }
 <main class="content">
 
   <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
     <a href="prototype_dashboard.html">← Build Tracker Dashboard</a>
     <span class="sep">·</span>
     <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
@@ -221,7 +257,7 @@ tbody tr:last-child td { border-bottom: none; }
   <p class="meta">July 2026 &nbsp;·&nbsp; Owner: Adam McKinstrie &nbsp;·&nbsp; Prepared for engineering handoff</p>
   <div class="box blue" style="margin-top:24px;">
     <span class="lbl">About this project</span>
-    AngelSpan is an investor-relations SaaS platform for startups. Internally, a <strong>Performance Analyst (PA)</strong> reviews founder updates, enters <strong>SMART IR</strong> scores (a Bell Mason Diagnostic-based scoring system across Product, Market, Team, and Operations), and distributes polished reports to investors and advisors. <strong>Legacy Funds</strong> is a companion venture fund product where General Partners (GPs) manage startup portfolios and Limited Partners (LPs) invest — it uses AngelSpan's SMART IR data for fund-level decisions. Both products are covered by this working mock.
+    AngelSpan is an investor-relations SaaS platform for startups. Internally, a <strong>Performance Analyst (PA)</strong> reviews founder updates, enters <strong>SMART IR</strong> scores — the Bell Mason Diagnostic (Product, Market, Team, and Operations) plus a separate Transparency Tell score — and distributes polished reports to investors and advisors. <strong>Legacy Funds</strong> is a companion venture fund product where General Partners (GPs) manage startup portfolios and Limited Partners (LPs) invest — it uses AngelSpan's SMART IR data for fund-level decisions. Both products are covered by this working mock.
   </div>
 
   <div style="margin-top:16px;margin-bottom:0;">
@@ -613,6 +649,8 @@ tbody tr:last-child td { border-bottom: none; }
   <div class="closing">
     <p>The working mock answered the hardest product questions — does the information architecture work across ten roles spanning two brand contexts, does the dual-brand strategy hold, does the SMART IR scoring UX communicate what it needs to communicate, is the Legacy Fund application flow coherent — at relatively low cost. It did not answer production engineering questions; those start fresh with the development team. The structured build process — human review at every step, decisions captured at the moment they were made, explicit separation of intent from implementation — means the development team inherits a clear picture of why the product works the way it does, not just that it does.</p>
   </div>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
 
 </main>
 </div>

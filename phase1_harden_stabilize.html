@@ -51,8 +51,17 @@
   .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
   .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
   .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages { margin-bottom: 22px; }
+  .toc-pages a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc-pages a:hover { color: var(--color-primary-light); border-left-color: var(--color-primary-light); padding-left: 8px; }
+  .toc-pages a.page-active { color: var(--color-primary); font-weight: 700; border-left-color: var(--color-primary); padding-left: 8px; }
   .toc-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.6667rem; color: var(--color-text-disabled); text-decoration: none; margin-bottom: 20px; margin-top: -10px; }
   .toc-back:hover { color: var(--color-primary-light); }
+  .toc-mark { width: 28px; height: 28px; background: var(--color-primary); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+  .toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
+  .toc-wordmark:hover .toc-name { color: var(--color-primary-light); }
+  .toc-name { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); }
 
   .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
   .eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
@@ -103,6 +112,11 @@
   .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--color-primary); }
   .stat-lbl { font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 3px; }
   .caveat { font-size: 0.8rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 0.7rem; color: var(--color-text-disabled); text-align: center; }
+  .caveat ul.bullets-plain { list-style: none; margin: 0; padding: 0; }
+  .caveat ul.bullets-plain li { position: relative; padding-left: 14px; margin-bottom: 6px; }
+  .caveat ul.bullets-plain li:last-child { margin-bottom: 0; }
+  .caveat ul.bullets-plain li::before { content: "—"; position: absolute; left: 0; color: var(--color-text-disabled); }
   .additive-note { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.8333rem; color: var(--color-text-secondary); line-height: 1.7; }
   .additive-note strong { color: var(--color-primary); }
 
@@ -122,10 +136,36 @@
 <div class="layout">
 
 <nav class="toc">
-  <div class="toc-brand">AngelSpan</div>
+  <a href="index.html" class="toc-wordmark" title="Home">
+    <div class="toc-mark"><span>AS</span></div>
+    <span class="toc-name">AngelSpan</span>
+  </a>
   <div class="toc-title">Phase 1 — Harden + Stabilize</div>
-  <a href="prototype_dashboard.html" class="toc-back">← Build Tracker</a>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html" class="page-active">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
+
   <nav>
+    <div class="toc-group">On This Page</div>
     <div class="toc-group">Overview</div>
     <a href="#funding">What This Raise Funds</a>
     <a href="#timeline">Timeline &amp; Cost</a>
@@ -141,6 +181,8 @@
 <main class="content">
 
   <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
     <a href="prototype_dashboard.html">← Build Tracker Dashboard</a>
     <span class="sep">·</span>
     <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
@@ -181,10 +223,6 @@
         <polyline points="80,240 140,173 240,173 290,215 353,234 760,234" fill="none" stroke="var(--color-primary)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
         <rect x="130" y="144" width="120" height="20" rx="2" fill="var(--color-raised)" fill-opacity="0.92"/>
         <text x="190" y="159" font-size="14" fill="var(--color-primary)" font-weight="600" text-anchor="middle" font-family="Inter">~$50k/mo peak</text>
-        <!-- Azure GPv1 retirement, Oct 13 2026 — real MS date, applicability to us unconfirmed -->
-        <line x1="217" y1="20" x2="217" y2="248" stroke="var(--color-warning)" stroke-width="1.5" stroke-dasharray="3,3"/>
-        <rect x="149" y="48" width="136" height="22" rx="2" fill="var(--color-raised)" fill-opacity="0.95"/>
-        <text x="217" y="63" font-size="12" fill="var(--color-warning)" font-weight="700" text-anchor="middle" font-family="Inter">Oct 13 — Microsoft</text>
         <!-- hardening complete marker, ~Nov '26 -->
         <line x1="353" y1="40" x2="353" y2="248" stroke="var(--color-primary-pale)" stroke-width="1.5" stroke-dasharray="5,4"/>
         <rect x="288" y="48" width="130" height="22" rx="2" fill="var(--color-raised)" fill-opacity="0.95"/>
@@ -197,7 +235,7 @@
         <rect x="548" y="115" width="145" height="20" rx="2" fill="var(--color-raised)" fill-opacity="0.92"/>
         <text x="620" y="129" font-size="12" fill="var(--color-text-secondary)" font-weight="600" text-anchor="middle" font-family="Inter">Phase 2/3 — if funded</text>
         <text x="80"  y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Aug '26</text>
-        <text x="217" y="264" font-size="14" fill="var(--color-warning)" text-anchor="middle" font-weight="600" font-family="Inter">Oct '26</text>
+        <text x="217" y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Oct '26</text>
         <text x="353" y="264" font-size="14" fill="var(--color-primary-light)" text-anchor="middle" font-weight="600" font-family="Inter">Dec '26</text>
         <text x="490" y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Feb '27</text>
         <text x="627" y="264" font-size="14" fill="var(--color-text-disabled)" text-anchor="middle" font-family="Inter">Apr '27</text>
@@ -207,7 +245,7 @@
 
     <ul class="bullets">
       <li>Money lands late Aug–early Sep 2026; spend ramps to ~$50k/mo for 2–3 months once the work is staffed up — a fixed, front-loaded effort, not an open-ended build</li>
-      <li>Microsoft is retiring an older Azure storage type on October 13, 2026 — we haven't confirmed our production storage is affected, but it's an example of the vendor deadlines that periodically land on aging infrastructure whether or not we're ready</li>
+      <li>Microsoft retires services and API versions on its own schedule, not ours — TLS 1.0/1.1 support in Storage Accounts, .NET 9 support in App Service, and older Key Vault API versions are all being retired within the next 12 months. We don't believe any of these specifically affect us today, but the pattern is the point: aging infrastructure accumulates this kind of exposure continuously</li>
       <li>We keep raising money in parallel, not after — the plan is to approach investors now, targeting more capital closing around the same November window</li>
       <li>No new features ship: no Legacy Fund portal, no automated scoring reports, no fund dashboards — the team keeps handling those the same way it does today</li>
       <li>Hardening is estimated to wrap up around November — roughly the same time our own math suggests the $500k is largely spent across salaries, marketing, debt, and tech combined</li>
@@ -258,7 +296,7 @@
         <h3>Risks &amp; Trade-offs</h3>
         <ul>
           <li>Adds no new capability — Legacy Fund applications, scoring reports, and fund dashboards all stay fully manual</li>
-          <li>Some of this spend won't carry forward — if we rebuild the platform later, the billing fix in particular gets thrown away, not reused</li>
+          <li>Some of this spend won't carry forward if a full rebuild follows — the billing fix is the clearest example, but the monitoring and alerting added here don't survive it either: a full rebuild stands up its own logging, SSL automation, and audit trail for the new stack, so that spend gets redone, not reused</li>
           <li>This ~$100k isn't extra money — it's competing for the same $500k as salaries, marketing, and debt payoff</li>
           <li>Built for reliability at today's size (50–100 clients), not unlimited growth — a big surge in signups still needs Phase 2 or 3 money to handle properly</li>
         </ul>
@@ -280,8 +318,16 @@
       <div class="stat"><div class="stat-val">~50–100</div><div class="stat-lbl">Scale it aims to hold (estimate)</div></div>
     </div>
 
-    <p class="caveat">* All figures are conceptual estimates, anchored to Joe's July 16, 2026 verbal estimate (~$100k over 2–3 months) and the three-tier framing from that same call. Exact scope and cost require a formal engineering assessment before commitments are made to investors. The ongoing upkeep cost after this work is complete is genuinely not known yet — no document or conversation to date has priced it; that number needs to come from real hosting and support figures, not a guess.</p>
+    <div class="caveat">
+      <p style="margin-bottom:8px;">* All figures are conceptual estimates, anchored to Joe's July 16, 2026 verbal estimate (~$100k over 2–3 months) and the three-tier framing from that same call.</p>
+      <ul class="bullets-plain">
+        <li>Exact scope and cost require a formal engineering assessment before commitments are made to investors.</li>
+        <li>The ongoing upkeep cost after this work is complete is genuinely not known yet — no document or conversation to date has priced it; that number needs to come from real hosting and support figures, not a guess.</li>
+      </ul>
+    </div>
   </section>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
 
 </main>
 </div>

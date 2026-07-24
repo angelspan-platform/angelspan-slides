@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelSpan — Business &amp; Fundraising Progress</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-primary: #004A6D;
+    --color-primary-light: #0179B5;
+    --color-primary-pale: #50ADDB;
+    --color-bg: #FAFAF8;
+    --color-surface: #F4F1EC;
+    --color-raised: #FFFFFF;
+    --color-border: #E0DBD3;
+    --color-text: #303030;
+    --color-text-secondary: #606060;
+    --color-text-disabled: #ADADAD;
+    --color-success: #2A6B3C;
+    --color-success-bg: #F4FAF5;
+    --color-warning: #FF8000;
+    --color-warning-bg: #FFF8F0;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0F1219;
+      --color-surface: #181C26;
+      --color-raised: #1D2130;
+      --color-border: #252B3A;
+      --color-text: #E4E8F0;
+      --color-text-secondary: #94A0B3;
+      --color-text-disabled: #4E5870;
+      --color-success-bg: rgba(42,107,60,.15);
+      --color-warning-bg: rgba(255,128,0,.13);
+    }
+  }
+  html { font-size: clamp(14px, 0.5vw + 11px, 18px); -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); font-size: 0.9167rem; line-height: 1.6; }
+
+  .layout { display: grid; grid-template-columns: 216px 1fr; min-height: 100vh; }
+  .toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 44px 0 44px 28px; border-right: 1px solid var(--color-border); background: var(--color-surface); }
+  .toc-brand { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); margin-bottom: 4px; }
+  .toc-title { font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 28px; line-height: 1.45; max-width: 160px; }
+  .toc-group { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-disabled); margin: 18px 0 5px; }
+  .toc nav a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc nav a:hover, .toc nav a.on { color: var(--color-primary); border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-pages { margin-bottom: 22px; }
+  .toc-pages a { display: block; font-size: 0.75rem; color: var(--color-text-secondary); text-decoration: none; padding: 4px 12px 4px 0; border-left: 2px solid transparent; line-height: 1.4; transition: color .12s, border-color .12s, padding-left .12s; }
+  .toc-pages a:hover { color: var(--color-primary-light); border-left-color: var(--color-primary-light); padding-left: 8px; }
+  .toc-pages a.page-active { color: var(--color-primary); font-weight: 700; border-left-color: var(--color-primary); padding-left: 8px; }
+  .toc-mark { width: 28px; height: 28px; background: var(--color-primary); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toc-mark span { color: rgba(255,255,255,.9); font-size: 0.625rem; font-weight: 800; letter-spacing: -.02em; }
+  .toc-wordmark { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-decoration: none; }
+  .toc-wordmark:hover .toc-name { color: var(--color-primary-light); }
+  .toc-name { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--color-primary-pale); }
+
+  .content { padding: 56px 68px 100px; max-width: min(1400px, 90%); }
+  .eyebrow { font-size: 0.6667rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary-pale); margin-bottom: 10px; }
+  h1 { font-size: 1.875rem; font-weight: 700; color: var(--color-primary); letter-spacing: -.02em; line-height: 1.18; margin-bottom: 8px; text-wrap: balance; }
+  .subtitle { font-size: 1rem; color: var(--color-text-secondary); margin-bottom: 12px; line-height: 1.5; max-width: min(900px, 100%); }
+  .hero-meta { font-size: 0.75rem; color: var(--color-text-disabled); margin-bottom: 32px; }
+
+  .sec { margin-top: 48px; scroll-margin-top: 20px; }
+  .sec:first-child { margin-top: 0; }
+  .sec-label { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--color-text-disabled); margin-bottom: 4px; }
+  .sec h2 { font-size: 1.2rem; font-weight: 700; color: var(--color-primary); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; margin-bottom: 18px; letter-spacing: -.01em; }
+
+  .raise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 8px; }
+  .raise-card { background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .raise-card .rc-amt { font-size: 1.4rem; font-weight: 700; color: var(--color-primary); }
+  .raise-card .rc-label { font-size: 0.8rem; color: var(--color-text-secondary); margin: 2px 0 12px; }
+  .badge { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 2px; }
+  .badge.progress { background: var(--color-warning-bg); color: var(--color-warning); border: 1px solid var(--color-warning); }
+  .badge.done { background: var(--color-success-bg); color: var(--color-success); border: 1px solid var(--color-success); }
+  .badge.pending { background: var(--color-surface); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+  .raise-card .rc-note { font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 10px; line-height: 1.5; }
+
+  .ms-track { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: center; margin: 8px 0 4px; }
+  .ms-node { text-align: center; }
+  .ms-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin: 0 auto 8px; }
+  .ms-circle.pending { background: var(--color-surface); border: 2px solid var(--color-border); color: var(--color-text-disabled); }
+  .ms-circle.active { background: var(--color-warning-bg); border: 2px solid var(--color-warning); color: var(--color-warning); }
+  .ms-circle.done { background: var(--color-success); border: 2px solid var(--color-success); color: #fff; }
+  .ms-label { font-size: 0.85rem; font-weight: 700; color: var(--color-text); }
+  .ms-status { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.4; }
+  .ms-line { height: 2px; background: var(--color-border); }
+
+  table.plan-table { width: 100%; border-collapse: collapse; font-size: 0.8333rem; margin: 0 0 12px; background: var(--color-raised); border: 1px solid var(--color-border); border-radius: 4px; overflow: hidden; }
+  table.plan-table th { background: var(--color-surface); color: var(--color-text-secondary); text-align: left; padding: 10px 14px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--color-border); }
+  table.plan-table td { padding: 11px 14px; border-bottom: 1px solid var(--color-border); color: var(--color-text); vertical-align: top; }
+  table.plan-table tr:last-child td { border-bottom: none; }
+  table.plan-table td.hl { font-weight: 700; color: var(--color-primary); white-space: nowrap; }
+  table.plan-table td.zero { color: var(--color-text-disabled); }
+  .table-wrap { overflow-x: auto; }
+
+  .caveat { font-size: 0.8rem; color: var(--color-text-secondary); border-left: 3px solid var(--color-border); padding-left: 12px; line-height: 1.7; }
+  .confidential-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 0.7rem; color: var(--color-text-disabled); text-align: center; }
+
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    .content { padding: 32px 24px 64px; max-width: 100%; }
+    .raise-grid { grid-template-columns: 1fr; }
+    .ms-track { grid-template-columns: 1fr; }
+    .ms-line { display: none; }
+    .ms-node { padding: 10px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc">
+  <a href="index.html" class="toc-wordmark" title="Home">
+    <div class="toc-mark"><span>AS</span></div>
+    <span class="toc-name">AngelSpan</span>
+  </a>
+  <div class="toc-title">Business &amp; Fundraising Progress</div>
+
+  <div class="toc-group">Roadmap</div>
+  <div class="toc-pages">
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+    <a href="phase1_harden_stabilize.html">Phase 1 — Harden + Stabilize</a>
+    <a href="phase2_prototype_validate.html">Phase 2 — Prototype + Validate</a>
+    <a href="phase3_full_build.html">Phase 3 — Full Platform Build</a>
+  </div>
+
+  <div class="toc-group">Implementation</div>
+  <div class="toc-pages">
+    <a href="dashboard_strategy.html">Build Methodology</a>
+    <a href="prototype_assumptions.html">Prototype Assumptions</a>
+    <a href="prototype_dashboard.html">Prototype Dashboard</a>
+  </div>
+
+  <div class="toc-group">Business &amp; Governance</div>
+  <div class="toc-pages">
+    <a href="investment_thesis.html">Investment Thesis</a>
+    <a href="progress_dashboard.html" class="page-active">Business &amp; Fundraising Progress</a>
+    <a href="board_considerations.html">Board &amp; Governance Considerations</a>
+  </div>
+
+  <nav>
+    <div class="toc-group">On This Page</div>
+    <a href="#fundraising">Fundraising Status</a>
+    <a href="#phases">Phase Progress</a>
+    <a href="#budget">Budget vs. Plan</a>
+  </nav>
+</nav>
+
+<main class="content">
+
+  <nav class="back-nav">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="roadmap_presentation.html">Current State &amp; Path Forward</a>
+  </nav>
+
+  <div class="eyebrow">For the Board &amp; Executive Team</div>
+  <h1>Business &amp; Fundraising Progress</h1>
+  <p class="subtitle">A snapshot of raise status, phase progress, and budget vs. plan — separate from the internal engineering Build Tracker, which covers build/epic status for the team, not fundraising or spend.</p>
+  <div class="hero-meta">As of July 24, 2026 — updated periodically by Adam, not a live feed. Check the date above before treating any figure as current.</div>
+
+  <section class="sec" id="fundraising">
+    <div class="sec-label">Status</div>
+    <h2>Fundraising Status</h2>
+    <div class="raise-grid">
+      <div class="raise-card">
+        <div class="rc-amt">$500k</div>
+        <div class="rc-label">Bridge raise</div>
+        <span class="badge progress">In progress</span>
+        <div class="rc-note">Expected late Aug / early Sept 2026. Funds Phase 1 hardening, salaries, marketing, and debt payoff — see the funding breakdown on the roadmap.</div>
+      </div>
+      <div class="raise-card">
+        <div class="rc-amt">$3–5M</div>
+        <div class="rc-label">Follow-on raise</div>
+        <span class="badge progress">In progress</span>
+        <div class="rc-note">Being pursued in parallel with Phase 1, starting now rather than after it wraps. Could land all at once, or in stages (an opening ~$1M tranche, then the remainder).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="phases">
+    <div class="sec-label">Status</div>
+    <h2>Phase Progress</h2>
+    <div class="ms-track">
+      <div class="ms-node">
+        <div class="ms-circle pending">1</div>
+        <div class="ms-label">Harden + Stabilize</div>
+        <div class="ms-status">Not started — pending the $500k bridge</div>
+      </div>
+      <div class="ms-line"></div>
+      <div class="ms-node">
+        <div class="ms-circle pending">2</div>
+        <div class="ms-label">Prototype + Validate</div>
+        <div class="ms-status">Not started — pending ~$1M</div>
+      </div>
+      <div class="ms-line"></div>
+      <div class="ms-node">
+        <div class="ms-circle pending">3</div>
+        <div class="ms-label">Full Platform Build</div>
+        <div class="ms-status">Not started — pending $3–5M</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="budget">
+    <div class="sec-label">Status</div>
+    <h2>Budget vs. Plan — $500k Bridge</h2>
+    <div class="table-wrap">
+      <table class="plan-table">
+        <thead><tr><th>Category</th><th>Budgeted</th><th>Actual</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Salaries</td><td class="hl">$150k</td><td class="zero">$0</td><td>Not started</td></tr>
+          <tr><td>Marketing</td><td class="hl">$80k</td><td class="zero">$0</td><td>Not started</td></tr>
+          <tr><td>Debt payoff</td><td class="hl">$50k</td><td class="zero">$0</td><td>Not started</td></tr>
+          <tr><td>Technology (Phase 1 hardening)</td><td class="hl">$125k</td><td class="zero">$0</td><td>Not started</td></tr>
+          <tr><td>Uncommitted / reserve</td><td class="hl">$95k</td><td class="zero">—</td><td>Not yet itemized</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--color-text-secondary);">Fills in once the $500k lands and Phase 1 spend begins. See <a href="roadmap_presentation.html" style="color: var(--color-primary-light);">the roadmap</a> for how this breakdown was sized.</p>
+  </section>
+
+  <div class="caveat">
+    <p>This page is maintained manually and reflects a point-in-time snapshot, not a live feed — the "as of" date at the top is the freshness indicator. Figures here should always match the underlying roadmap and phase pages; if they diverge, the phase pages are the source of truth pending an update here.</p>
+  </div>
+
+  <div class="confidential-footer">Confidential — prepared for AngelSpan leadership, board, and prospective investors and partners. Not for public distribution.</div>
+
+</main>
+</div>
+
+<script>
+const secs = document.querySelectorAll('.sec[id]');
+const links = document.querySelectorAll('.toc nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`.toc nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('on');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+secs.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
